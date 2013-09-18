@@ -1,0 +1,63 @@
+{#
+ # This file is part of Redado.
+ #
+ # Copyright (C) 2013 Guillaume Royer
+ #
+ # Redado is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU Affero General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Redado is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU Affero General Public License for more details.
+ #
+ # You should have received a copy of the GNU Affero General Public License
+ # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
+ #}
+
+{% extends "RedadoCoreBundle::layout.html.twig" %}
+
+{% block h1 %}{{ user.name }}{% endblock %}
+
+{% block headinfo %}
+  <strong>{% trans %}Email :{% endtrans %}</strong> {{ user.email }}<br/>
+  <strong>{% trans %}Creation date :{% endtrans %}</strong> {% if user.created %}{{ user.created|localizeddate('full', 'short') }}{% endif %}
+{% endblock %}
+
+{% block content %}
+	<table class="table table-bordered table-striped">
+        <thead>
+			<tr>
+				<th>{% trans %}Groups{% endtrans %}</th>
+                <th>{% trans %}Direct{% endtrans %}</th>
+				<th>{% trans %}Join date{% endtrans %}</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for membership in user.memberships %}
+			<tr>
+				<td>
+					<a href="{{ path('group_show', { id : membership.group.id }) }}">{{ membership.group.name }}</a>
+				</td>
+                <td>
+                    {% if membership.direct == true %}
+                        {% trans %}Yes{% endtrans %}
+                    {% else %}
+                        {% trans %}No{% endtrans %}
+                    {% endif %}
+                </td>
+				<td>
+                    {% if membership.created %}
+                        {{ membership.created|localizeddate('full', 'short') }}
+                    {% endif %}
+                </td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
+
+{% block toolbar %}
+{% endblock %}

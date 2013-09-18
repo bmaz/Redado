@@ -1,0 +1,149 @@
+{#
+ # This file is part of Redado.
+ #
+ # Copyright (C) 2013 Guillaume Royer
+ #
+ # Redado is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU Affero General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Redado is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU Affero General Public License for more details.
+ #
+ # You should have received a copy of the GNU Affero General Public License
+ # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
+ #}
+
+{% extends "RedadoCoreBundle::layout.html.twig" %}
+
+{% block h1 %}{{ group.name }}{% endblock %}
+
+{% block headinfo %}
+    <p>
+        <strong>{% trans %}Creation date :{% endtrans %}</strong> {{ group.created|localizeddate('full', 'short') }}
+    </p>
+    <p>
+        <strong>{% trans %}Description :{% endtrans %}</strong> {{ group.description|nl2br }}
+    </p>
+{% endblock %}
+
+{% block content %}
+	<table class="table table-bordered table-striped">
+                <thead>
+			<tr>
+				<th>{% trans %}Members{% endtrans %}</th>
+                <th>{% trans %}Direct{% endtrans %}</th>
+				<th>{% trans %}Join date{% endtrans %}</th>
+                <th>{% trans %}Remove{% endtrans %}</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for membership in group.memberships %}
+			<tr>
+				<td>
+					<a href="{{ path('user_show', { id : membership.user.id }) }}">{{ membership.user.name }}</a>
+				</td>
+                <td>
+                    {% if membership.direct == true %}
+                        {% trans %}Yes{% endtrans %}
+                    {% else %}
+                        {% trans %}No{% endtrans %}
+                    {% endif %}
+                </td>
+				<td>{{ membership.created|localizeddate('full', 'short') }}</td>
+                <td>
+                    <a href="{{ path('group_removeuser', { id: group.id, user_id: membership.user.id }) }}"
+                    class="btn">
+                        Remove
+                    </a>
+                </td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
+
+{% block sidebar %}
+<div class="row-fluid">
+    <h5>{% trans %}Admins :{% endtrans %}</h5>
+    <ul>
+    {% for admin in group.adminGroup.users %}
+        <li>{{ admin.name }}</li>
+    {% endfor %}
+    </ul>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <h5>{% trans %}Parents group :{% endtrans %}</h5>
+        <ul class="unstyled">
+            {% for parent in group.parents %}
+                <li><a href="{{ path('group_show', { 'id' : parent.id } ) }}">{{ parent.name }}</a></li>
+            {% else %}
+                <li>{% trans %}No parents{% endtrans %}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+<div class="row-fluid">
+    <div class="span12">
+        <h5>{% trans %}Sub-groups :{% endtrans %}</h5>
+        <ul class="unstyled">
+            {% for child in group.children %}
+            {% set rand = random() %}
+                <li>
+                    <span class="pull-left"{% if child.children | length > 0 %} data-toggle="collapse" style="cursor:pointer;width:15px;"{% endif %} id="achild{{ child.id }}{{ rand }}" data-target="#child{{ child.id }}{{ rand }}">
+                        <i class="icon-chevron-right{% if child.children | length == 0 %} icon-white{% endif %}"></i>
+                    </span>
+                    <a href="{{ path('group_show', { 'id' : child.id })}}">{{ child.name }}</a>
+                    <ul id="child{{ child.id }}{{ rand }}" class="collapse">
+                    <br/>
+                    </ul>
+                    <script type="text/javascript">
+                        $("#child{{ child.id }}{{ rand }}").on('show', function () {
+                            if( !$("#child{{ child.id }}{{ rand }}").hasClass('loaded') ) {
+                                $.ajax({
+                                    url: "{{ path('ajax_get_group_children', {'id': child.id }) }}",
+                                    type: "get",
+                                    dataType: "html",
+                                    success: function(data) {
+                                        $("#child{{ child.id }}{{ rand }}").html(data);
+                                        $("#child{{ child.id }}{{ rand }}").addClass('loaded');
+                                    }
+                                });
+                            }
+                        });
+                        $("#child{{ child.id }}{{ rand }}").on('shown', function () {
+                            $("#achild{{ child.id }}{{ rand }}").html('<i class="icon-chevron-down"></i>');
+                        });
+                        $("#child{{ child.id }}{{ rand }}").on('hidden', function () {
+                            $("#achild{{ child.id }}{{ rand }}").html('<i class="icon-chevron-right"></i>');
+                        });
+                    </script>
+                </li>
+            {% else %}
+            {% endfor %}
+        </ul>
+        <a class="pull-right btn" href="{{ path('group_editstructure', { 'id' : group.id }) }}">
+            {% trans %}Edit{% endtrans %}
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block toolbar %}
+	{% if is_granted('edit_users', group) %}
+          <a href="{{ path('group_adduser', { 'id': group.id }) }}" class="btn btn-primary">
+            <i class="icon-plus icon-white"></i>
+            {% trans %}Add user{% endtrans %}
+          </a>
+	{% endif %}
+    {% if is_granted('admin', group) %}
+        <a href="{{ path('group_editpermission', { 'id': group.id }) }}" class="btn">
+            {% trans %}Admin rights{% endtrans %}
+        </a>
+    {% endif %}
+{% endblock %}

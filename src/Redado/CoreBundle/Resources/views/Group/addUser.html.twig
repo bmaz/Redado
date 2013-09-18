@@ -1,0 +1,62 @@
+{#
+ # This file is part of Redado.
+ #
+ # Copyright (C) 2013 Guillaume Royer
+ #
+ # Redado is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU Affero General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Redado is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU Affero General Public License for more details.
+ #
+ # You should have received a copy of the GNU Affero General Public License
+ # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
+ #}
+
+{% extends "RedadoCoreBundle::layout.html.twig" %}
+
+{% set group_name_link = "<a href=\"#{ path('group_show', { 'id': group.id }) }\">#{ group.name }</a>" %}
+
+{% block h1 %}
+{% trans %}Add user to group %group_name_link%{% endtrans %}
+{% endblock %}
+
+{% block content %}
+<div class="row-fluid">
+    <div class="span6">
+        <h2>{% trans %}Add a registered user{% endtrans %}</h2>
+        {{ form_start(form_registered) }}
+            <fieldset>
+                <div>
+                    {% set title %}
+                        {% trans %}Please enter user's email or do a search on his name.{% endtrans %}
+                    {% endset %}
+                    {{ form_widget(form_registered.user_email, {'attr': { 'title' : title, 'placeholder': 'Email'|trans } }) }}
+                </div>
+                {{ form_widget(form_registered.Save, { 'attr' : { 'class': 'btn btn-primary'} }) }}
+            </fieldset>
+        {{ form_end(form_registered) }}
+    </div>
+    <div class="span6">
+        <h2>Create another user</h2>
+        {{ form_start(form_new, { 'attr': { 'class': 'form'}}) }}
+            {{ form_widget(form_new.email, { 'attr':  {'placeholder' : 'Email'|trans }}) }}
+            {% set title %}
+                {% trans %}If account is not activated, user will be just as a contact and will not be informed of the registration.{% endtrans %}
+            {% endset %}
+            <label for={{ form_new.activate.vars.id }} id="{{form_new.activate.vars.id}}label" }} class="checkbox" title="{{ title }}">
+                {% trans %}Activate user account and send a mail{% endtrans %}
+                {{ form_widget(form_new.activate, { 'attr': {'title': title}}) }}
+                <script type="text/javascript">
+                    $('#{{ form_new.activate.vars.id }}label').tooltip({placement: 'top'});
+                </script>
+            </label>
+            {{ form_widget(form_new.save, { 'attr': { 'class' : 'btn btn-primary'}}) }}
+        {{ form_end(form_new) }}
+    </div>
+</div>
+{% endblock %}

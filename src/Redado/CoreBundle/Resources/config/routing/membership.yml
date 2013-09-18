@@ -1,0 +1,47 @@
+ # This file is part of Redado.
+ #
+ # Copyright (C) 2013 Guillaume Royer
+ #
+ # Redado is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU Affero General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Redado is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU Affero General Public License for more details.
+ #
+ # You should have received a copy of the GNU Affero General Public License
+ # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
+
+membership:
+    pattern:  /
+    defaults: { _controller: "RedadoCoreBundle:Membership:index" }
+
+membership_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "RedadoCoreBundle:Membership:show" }
+
+membership_new:
+    pattern:  /new
+    defaults: { _controller: "RedadoCoreBundle:Membership:new" }
+
+membership_create:
+    pattern:  /create
+    defaults: { _controller: "RedadoCoreBundle:Membership:create" }
+    requirements: { _method: post }
+
+membership_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "RedadoCoreBundle:Membership:edit" }
+
+membership_update:
+    pattern:  /{id}/update
+    defaults: { _controller: "RedadoCoreBundle:Membership:update" }
+    requirements: { _method: post|put }
+
+membership_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "RedadoCoreBundle:Membership:delete" }
+    requirements: { _method: post|delete }

@@ -1,0 +1,52 @@
+security:
+    firewalls:
+        private_area:
+            pattern: ^/
+            form_login:
+                provider: main
+                login_path: login
+                check_path: login_check
+            logout:
+                path: logout
+            anonymous: true
+    encoders:
+        Redado\CoreBundle\Entity\User:
+            algorithm: pbkdf2
+
+    providers:
+        main:
+            entity: { class: Redado\CoreBundle\Entity\User }
+
+    access_control:
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/install$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/_wdt, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/_profiler, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, role: ROLE_USER }
+
+
+#    firewalls:
+#        dev:
+#            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+#            security: false
+
+#        login:
+#            pattern:  ^/demo/secured/login$
+#            security: false
+
+#        secured_area:
+#            pattern:    ^/demo/secured/
+#            form_login:
+      #          check_path: _security_check
+     #           login_path: _demo_login
+    #        logout:
+   #             path:   _demo_logout
+  #              target: _demo
+            #anonymous: ~
+            #http_basic:
+            #    realm: "Secured Demo Area"
+
+ #   access_control:
+ #       - { path: ^/demo/secured/hello/admin/, roles: ROLE_ADMIN }
+        #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

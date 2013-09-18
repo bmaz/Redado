@@ -1,0 +1,14 @@
+ajax_group_search:
+    pattern: /search/group
+    defaults: { _controller: "RedadoCoreBundle:Ajax:searchGroup" }
+#    requirements: { _method: post }
+
+ajax_user_search:
+    pattern: /search/user/
+    defaults: { _controller: "RedadoCoreBundle:Ajax:searchUser" }
+    requirements: { _method: post }
+
+ajax_get_group_children:
+    pattern: /group/{id}/get/children
+    defaults: { _controller: "RedadoCoreBundle:Ajax:getGroupChildren" }
+    requirements: { _method: get }

@@ -1,0 +1,46 @@
+{#
+ # This file is part of Redado.
+ #
+ # Copyright (C) 2013 Guillaume Royer
+ #
+ # Redado is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU Affero General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Redado is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU Affero General Public License for more details.
+ #
+ # You should have received a copy of the GNU Affero General Public License
+ # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
+ #}
+{% extends 'RedadoCoreBundle::layout.html.twig' %}
+
+{% set user_name_link = "<a href=\"#{ path('user_show', { 'id': user.id }) }\">#{ user.name }</a>" %}
+{% set group_name_link = "<a href=\"#{ path('group_show', { 'id': group.id }) }\">#{ group.name }</a>" %}
+
+{% block h1 %}
+{% trans %}Remove %user_name_link% ?{% endtrans %}
+{% endblock %}
+
+{% block content %}
+    <p>
+    {% trans %}
+        Do you really want to remove %user_name_link% from %group_name_link% group ?
+    {% endtrans %}
+    </p>
+        {{ form_start(form) }}
+            <a href="{{ path('group_show', { 'id': group.id }) }}" class="btn">
+            {% trans %}
+                Back
+            {% endtrans %}
+            </a>
+
+            <input type="submit"
+            value="{% trans %}Remove{% endtrans %}"
+            class="btn btn-danger">
+
+        {{ form_end(form) }}
+{% endblock %}

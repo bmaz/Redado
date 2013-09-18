@@ -1,0 +1,57 @@
+ # This file is part of Redado.
+ #
+ # Copyright (C) 2013 Guillaume Royer
+ #
+ # Redado is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU Affero General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Redado is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU Affero General Public License for more details.
+ #
+ # You should have received a copy of the GNU Affero General Public License
+ # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
+
+group_show:
+    pattern:  /{id}/show
+    defaults: { _controller: "RedadoCoreBundle:Group:show" }
+
+group_edit:
+    pattern:  /{id}/edit
+    defaults: { _controller: "RedadoCoreBundle:Group:edit" }
+
+group_delete:
+    pattern:  /{id}/delete
+    defaults: { _controller: "RedadoCoreBundle:Group:delete" }
+    requirements: { _method: post|delete }
+
+group_adduser:
+    pattern: /{id}/add/user
+    defaults: { _controller: "RedadoCoreBundle:Group:addUser" }
+
+group_removeuser:
+    pattern: /{id}/remove/user/{user_id}
+    defaults: { _controller: "RedadoCoreBundle:Group:removeUser" }
+
+group_removechild:
+    pattern: /{id}/remove/child/{child_id}
+    defaults: { _controller: "RedadoCoreBundle:Group:removeChild" }
+
+group_removeparent:
+    pattern: /{id}/remove/parent/{parent_id}
+    defaults: { _controller: "RedadoCoreBundle:Group:removeParent" }
+
+group_editstructure:
+    pattern: /{id}/edit/structure
+    defaults: { _controller: "RedadoCoreBundle:Group:editStructure" }
+
+group_new:
+    pattern:  /{parent_id}/edit/structure/new
+    defaults: { _controller: "RedadoCoreBundle:Group:new" }
+
+group_editpermission:
+    pattern: /{id}/edit/permission
+    defaults: { _controller: "RedadoCoreBundle:Group:editPermission" }

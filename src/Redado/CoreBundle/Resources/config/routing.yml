@@ -1,0 +1,66 @@
+ # This file is part of Redado.
+ #
+ # Copyright (C) 2013 Guillaume Royer
+ #
+ # Redado is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU Affero General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Redado is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU Affero General Public License for more details.
+ #
+ # You should have received a copy of the GNU Affero General Public License
+ # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
+
+login:
+    pattern: /login
+    defaults: { _controller: RedadoCoreBundle:Main:login }
+
+login_check:
+    pattern: /login_check
+
+logout:
+    pattern: /logout
+
+test:
+    pattern: /test
+    defaults: { _controller: 'RedadoCoreBundle:Main:test' }
+
+install:
+    pattern: /install
+    defaults: { _controller: 'RedadoCoreBundle:Main:install' }
+
+RedadoCoreBundle_me:
+    resource: "@RedadoCoreBundle/Resources/config/routing/me.yml"
+    prefix: /
+
+RedadoCoreBundle_user:
+    resource: "@RedadoCoreBundle/Resources/config/routing/user.yml"
+    prefix:   /user
+
+RedadoCoreBundle_basegroupp:
+    resource: "@RedadoCoreBundle/Resources/config/routing/group.yml"
+    prefix:   /group
+
+#RedadoCoreBundle_grouptypeclosure:
+#    resource: "@RedadoCoreBundle/Resources/config/routing/grouptypeclosure.yml"
+#    prefix:   /grouptypeclosure
+
+RedadoCoreBundle_grouptype:
+    resource: "@RedadoCoreBundle/Resources/config/routing/grouptype.yml"
+    prefix:   /grouptype
+
+RedadoCoreBundle_structure:
+    resource: "@RedadoCoreBundle/Resources/config/routing/structure.yml"
+    prefix:   /structure
+
+RedadoCoreBundle_admin:
+    resource: "@RedadoCoreBundle/Resources/config/routing/admin.yml"
+    prefix:   /admin
+
+RedadoCoreBundle_ajax:
+    resource: "@RedadoCoreBundle/Resources/config/routing/ajax.yml"
+    prefix: /ajax

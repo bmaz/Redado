@@ -1,0 +1,180 @@
+{#
+ # This file is part of Redado.
+ #
+ # Copyright (C) 2013 Guillaume Royer
+ #
+ # Redado is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU Affero General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Redado is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU Affero General Public License for more details.
+ #
+ # You should have received a copy of the GNU Affero General Public License
+ # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
+ #}
+
+{% block typeahead_widget %}
+  {{ form_widget(form) }}
+  <script type="text/javascript">
+    $('.typeahead').typeahead({
+      source: function (query, process) {
+        $.ajax({
+          url: "{{ path(search_path) }}",
+          type: "post",
+          data: "term="+query,
+          dataType: "json",
+          success: function(data) {
+            process(data);
+	        }
+        });
+      },
+      minLength: 2
+    })
+  </script>
+{% endblock %}
+
+{% block user_typeahead_widget %}
+    {{ form_widget(form) }}
+    <script type="text/javascript">
+        $('#{{ form.vars.id }}').typeahead({
+            source: function (query, process) {
+                $.ajax(
+                {
+                    url: "{{ path(search_path) }}",
+                    type: "post",
+                    data: "term="+query,
+                    dataType: "json",
+                    success: function(data)
+                    {
+                        users = [];
+                        map = {};
+
+                        $.each(data, function (i, user)
+                        {
+                            map[user.userName] = user;
+                            users.push(user.userName);
+                        });
+
+                        process(users);
+	                }
+                });
+            },
+            matcher: function (item) {
+                if (item.toLowerCase().indexOf(this.query.trim().toLowerCase()) != -1) {
+                    return true;
+                }
+                if (map[item].userEmail.toLowerCase().indexOf(this.query.trim().toLowerCase()) != -1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            highlighter: function (item) {
+                user_email = map[item].userEmail;
+                var regex = new RegExp( '(' + this.query + ')', 'gi' );
+                return item.replace( regex, "<strong>$1</strong>" ) + ' - ' +
+                    '<small>' + user_email.replace( regex, "<strong>$1</strong>") + '</small>';
+            },
+            updater: function (item) {
+                user_email = map[item].userEmail;
+                return user_email;
+            },
+            minLength: 2
+        })
+    $('#{{ form.vars.id }}').tooltip({placement: 'right'});
+    </script>
+{% endblock %}
+
+{% block group_typeahead_widget %}
+    {{ form_widget(form) }}
+    <script type="text/javascript">
+        $('#{{ form.vars.id }}').typeahead({
+            source: function (query, process) {
+                $.ajax(
+                {
+                    url: "{{ path(search_path) }}",
+                    type: "post",
+                    data: "term="+query,
+                    dataType: "json",
+                    success: function(data)
+                    {
+                        groups = [];
+                        map = {};
+
+                        $.each(data, function (i, group)
+                        {
+                            map[group.groupName] = group;
+                            groups.push(group.groupName);
+                        });
+
+                        process(groups);
+	                }
+                });
+            },
+            matcher: function (item) {
+                if (item.toLowerCase().indexOf(this.query.trim().toLowerCase()) != -1) {
+                    return true;
+                }
+                if (map[item].groupSysname.toLowerCase().indexOf(this.query.trim().toLowerCase()) != -1) {
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            highlighter: function (item) {
+                group_sysname = map[item].groupSysname;
+                var regex = new RegExp( '(' + this.query + ')', 'gi' );
+                return item.replace( regex, "<strong>$1</strong>" ) + ' - ' +
+                    '<small>' + group_sysname.replace( regex, "<strong>$1</strong>") + '</small>';
+            },
+            updater: function (item) {
+                group_sysname = map[item].groupSysname;
+                return group_sysname;
+            },
+            minLength: 2
+        })
+    </script>
+{% endblock %}
+
+{% block multiple_group_select_row %}
+    {{ form_label(form) }}
+    {{ form_widget(form, {'attr' : {'style' :'width: 500px;'}}) }}
+    <script type="text/javascript">
+        $('#{{ form.vars.id }}').select2({
+            query: function (query) {
+                $.ajax(
+                {
+                    url: "{{ path(search_path) }}",
+                    type: "post",
+                    data: "term="+query.term,
+                    dataType: "json",
+                    success: function(data)
+                    {
+                        var groups = {results: []};
+                        map = {};
+
+                        $.each(data, function (i, group)
+                        {
+                            groups.results.push({id: group.groupSysname, text: group.groupSysname});
+                        });
+
+                        query.callback(groups);
+	                }
+                });
+            },
+            initSelection : function (element, callback) {
+                var data = [];
+                $(element.val().split(",")).each(function () {
+                    data.push({id: this, text: this});
+                });
+                callback(data);
+            },
+            minimumInputLength: 2,
+            multiple: true
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,47 @@
+{#
+ # This file is part of Redado.
+ #
+ # Copyright (C) 2013 Guillaume Royer
+ #
+ # Redado is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU Affero General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Redado is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU Affero General Public License for more details.
+ #
+ # You should have received a copy of the GNU Affero General Public License
+ # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
+ #}
+
+{% extends "RedadoCoreBundle::layout.html.twig" %}
+
+{% block h1 %}
+Group creation
+{% endblock %}
+
+{% block content %}
+    {% set parent_name = parent.name %}
+    <h3>{% trans %}Create a sub-group of group %parent_name%.{% endtrans %}</h3>
+    <form action="{{ path('group_new', {'parent_id': parent.id}) }}" method="post" {{ form_enctype(form) }}>
+        <label>Parent:</label>
+        <input type="text" readonly="true" value="{{ parent.name }}" />
+        {{ form_widget(form) }}
+        <script type="text/javascript">
+            function suggest() {
+                suggestion = '{{ parent.sysname|lower }}' + '-' + $("#{{ form.name.vars.id }}").val();
+                suggestion = suggestion.replace(/[\s]/gi, '-').replace(/[^\w-_]/gi, '');
+                $('#{{ form.sysname.vars.id }}').val(suggestion.toLowerCase())
+            }
+            $('#{{ form.name.vars.id }}').keyup(suggest);
+            $('#{{ form.name.vars.id }}').change(suggest);
+        </script>
+        <p>
+            <button type="submit">{% trans %}Create{% endtrans %}</button>
+        </p>
+    </form>
+
+{% endblock %}

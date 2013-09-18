@@ -1,0 +1,2 @@
+redado_core_locale:
+    resource: "@RedadoCoreBundle/Resources/config/routing.yml"

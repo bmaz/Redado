@@ -1,0 +1,84 @@
+{#
+ # This file is part of Redado.
+ #
+ # Copyright (C) 2013 Guillaume Royer
+ #
+ # Redado is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU Affero General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Redado is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU Affero General Public License for more details.
+ #
+ # You should have received a copy of the GNU Affero General Public License
+ # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
+ #}
+
+{% extends "::base.html.twig" %}
+
+{% block title %}{% trans %}Install{% endtrans %}{% endblock %}
+
+{% block body %}
+
+<div class="container">
+<div class="row"><br />
+</div>
+<div class="row"><div class="span4 well" style="float:none;margin:auto;">
+
+{% if created_user == false and users_exist == false %}
+    {{ form_start(form) }}
+    <p>
+        <strong>
+            {% trans %}
+                Please create the admin user :
+            {% endtrans %}
+        </strong>
+    </p>
+    {% set label %}{% trans %}First Name{% endtrans %}{% endset %}
+    {{ form_label(form.first_name, label) }}
+    {{ form_widget(form.first_name, { 'attr': { 'class': 'input-block-level' } } )}}
+    {{ form_errors(form.first_name) }}
+    {% set label %}{% trans %}Last Name{% endtrans %}{% endset %}
+    {{ form_label(form.last_name, label) }}
+    {{ form_widget(form.last_name, { 'attr': { 'class': 'input-block-level' } } )}}
+    {{ form_errors(form.last_name) }}
+    {% set label %}{% trans %}Email{% endtrans %}{% endset %}
+    {{ form_label(form.email, label) }}
+    {{ form_widget(form.email, { 'attr': { 'class': 'input-block-level' } } )}}
+    {{ form_errors(form.email) }}
+    {{ form_widget(form.password, { 'attr': { 'class': 'input-block-level' } }) }}
+    {{ form_errors(form.password) }}
+    {{ form_errors(form) }}
+    <button type="submit" class="btn btn-primary">{% trans %}Install{% endtrans %}</button>
+    {{ form_end(form) }}
+{% elseif created_user == false %}
+    <div class="alert alert-error">
+        {% trans %}Redado is already installed.{% endtrans %}
+    </div>
+{% endif %}
+
+{% if created_user == true %}
+    <div class="alert alert-success">
+        {% set user_name = user.name %}
+        {% trans %}Created user %user_name%.{% endtrans %}
+    </div>
+    {% if created_group_global == true %}
+        <div class="alert alert-success">
+            {% trans %}Created group Global.{% endtrans %}
+        </div>
+    {% endif %}
+    {% if created_group_admin == true %}
+        <div class="alert alert-success">
+            {% trans %}Created group Administrator.{% endtrans %}
+        </div>
+    {% endif %}
+    <div class="alert alert-success">
+        {% trans %}Redado sucessfully installed !{% endtrans %}
+    </div>
+    <a href="{{ path('login') }}" class="align-right">{% trans %}Go to login page{% endtrans %}</a>
+{% endif %}
+</div></div>
+{% endblock %}

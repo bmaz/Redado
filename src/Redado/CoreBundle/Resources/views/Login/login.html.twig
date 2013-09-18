@@ -1,0 +1,40 @@
+{#
+ # This file is part of Redado.
+ #
+ # Copyright (C) 2013 Guillaume Royer
+ #
+ # Redado is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU Affero General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Redado is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU Affero General Public License for more details.
+ #
+ # You should have received a copy of the GNU Affero General Public License
+ # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
+ #}
+
+{% extends "::base.html.twig" %}
+
+{% block title %}{% trans %}Login{% endtrans %} - Redado{% endblock %}
+
+
+{% block body %}
+<div class="container">
+<div class="row"><br />
+</div>
+<div class="row"><div class="span4" style="float:none;margin:auto;">
+<form action="{{ path('login_check') }}" method="post" class="well">
+{% if error %}
+<div class="alert alert-error">{{ error.message|trans }}</div>
+{% endif %}
+	<input type="text" id="username" placeholder="{% trans %}Email{% endtrans %}" name="_username" value="{{ last_username }}" class="input-block-level" />
+
+	<input type="password" id="password" placeholder="{% trans %}Password{% endtrans %}" name="_password" class="input-block-level" />
+	<button type="submit" class="btn-block btn btn-primary">{% trans %}Login{% endtrans %}</button>
+</form>
+</div></div>
+{% endblock %}

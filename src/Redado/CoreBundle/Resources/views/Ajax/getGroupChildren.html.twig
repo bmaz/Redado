@@ -1,0 +1,55 @@
+{#
+ # This file is part of Redado.
+ #
+ # Copyright (C) 2013 Guillaume Royer
+ #
+ # Redado is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU Affero General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Redado is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU Affero General Public License for more details.
+ #
+ # You should have received a copy of the GNU Affero General Public License
+ # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
+ #}
+{% for child in group.children %}
+{% set rand = random() %}
+    <li>
+        <span{% if child.children | length > 0 %} data-toggle="collapse" style="cursor:pointer;"{% endif %} id="achild{{ child.id }}{{ rand }}" data-target="#child{{ child.id }}{{ rand }}">
+            <i class="icon-chevron-right{% if child.children | length == 0 %} icon-white{% endif %}"></i>
+        </span>
+        <a href="{{ path('group_show', { 'id' : child.id })}}">{{ child.name }}</a>
+        <ul id="child{{ child.id }}{{ rand }}" class="collapse">
+        <br/>
+        </ul>
+        <script type="text/javascript">
+            $("#child{{ child.id }}{{ rand }}").on('show', function (event) {
+                event.stopPropagation();
+                if( !$("#child{{ child.id }}{{ rand }}").hasClass('loaded') ) {
+                    $.ajax({
+                        url: "{{ path('ajax_get_group_children', {'id': child.id }) }}",
+                        type: "get",
+                        dataType: "html",
+                        success: function(data) {
+                            $("#child{{ child.id }}{{ rand }}").html(data);
+                            $("#child{{ child.id }}{{ rand }}").addClass('loaded');
+                        }
+                    });
+                }
+            });
+            $("#child{{ child.id }}{{ rand }}").on('shown', function (event) {
+                event.stopPropagation();
+                $("#achild{{ child.id }}{{ rand }}").html('<i class="icon-chevron-down"></i>');
+            });
+            $("#child{{ child.id }}{{ rand }}").on('hidden', function (event) {
+                event.stopPropagation();
+                $("#achild{{ child.id }}{{ rand }}").html('<i class="icon-chevron-right"></i>');
+            });
+        </script>
+    </li>
+{% else %}
+{% endfor %}
