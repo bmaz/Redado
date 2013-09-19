@@ -70,8 +70,10 @@
 <div class="row-fluid">
     <h5>{% trans %}Admins :{% endtrans %}</h5>
     <ul>
-    {% for admin in group.adminGroup.users %}
-        <li>{{ admin.name }}</li>
+    {% for admin_groups in group.adminGroups %}
+        {% for admin in admin_groups.users %}
+            <li>{{ admin.name }}</li>
+        {% endfor %}
     {% endfor %}
     </ul>
 </div>

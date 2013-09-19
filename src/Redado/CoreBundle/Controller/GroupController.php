@@ -486,7 +486,7 @@ class GroupController extends Controller
             $em->flush();
         }
 
-        return $this->render('RedadoCoreBundle:Group:editPermission.html.twig',
+        return $this->render('RedadoCoreBundle:Group:editPermissions.html.twig',
             array(
                 'form' => $form->createView()
             )

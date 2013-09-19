@@ -97,12 +97,12 @@ class Group extends Role
     /**
      * Constructor
      */
-    public function __construct($type)
-    {
+    public function __construct($type = null) {
         $this->memberships = new \Doctrine\Common\Collections\ArrayCollection();
         $this->closuresParents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->closuresChildren = new \Doctrine\Common\Collections\ArrayCollection();
         $this->permissions = new \Doctrine\Common\Collections\ArrayCollection();
+        $type = ($type == null ? new GroupType() : $type);
         $this->type = $type;
     }
 
@@ -487,13 +487,9 @@ class Group extends Role
         return $this;
     }
 
-    public function getAdminGroup()
+    public function getAdminGroups()
     {
-        foreach ($this->closuresChildren as $closures) {
-            if ($closures->getChild()->getSysname() == $this->getSysname() + '-admin') {
-                return $closures->getChild();
-            }
-        }
+        return array_unique(array_merge($this->getGrantedGroups('admin'), $this->getGrantedGroups('all')));
     }
 
     public function __toString() {
