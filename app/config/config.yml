@@ -84,4 +84,74 @@ redado_core:
         site_name:      %redado_site_name%
         email_adress:   %redado_email_adress%
 
-
+guilro_protection_proxy:
+    protected_classes:
+        Redado\CoreBundle\Entity\Group:
+            view: view_group
+            methods:
+                getCreated:
+                    attribute: get_created
+                getModified:
+                    attribute: get_modified
+                setName:
+                    attribute: set_name
+                    return_proxy: true
+                getName:
+                    attribute: get_name
+                setSysname:
+                    attribute: set_sysname
+                    return_proxy: true
+                getSysname:
+                    attribute: get_sysname
+                setDescrption:
+                    attribute: set_description
+                    return_proxy: true
+                getDescription:
+                    attribute: get_description
+                addUser:
+                    attribute: add_user
+                    return_proxy: true
+                removeUser:
+                    attribute: remove_user
+                    return_proxy: true
+                autoRemoveUser:
+                    attribute: remove_user
+                    return_proxy: true
+                getUsers:
+                    attribute: get_users
+                    return_proxy: true
+                getMemberships:
+                    attribute: get_users
+                    return_proxy: true
+                addParent:
+                    attribute: add_parent
+                    return_proxy: true
+                removeParent:
+                    attribute: remove_parent
+                    return_proxy: true
+                getParents:
+                    attribute: get_parents
+                    return_proxy: true
+                addChild:
+                    attribute: add_child
+                    return_proxy: true
+                removeChild:
+                    attribute: remove_child
+                    return_proxy: true
+                getChildren:
+                    attribute: get_children
+                    return_proxy: true
+                getClosuresParents:
+                    attribute: get_parents
+                    return_proxy: true
+                getClosuresChildren:
+                    attribute: get_children
+                    return_proxy: true
+                getGrantedGroups:
+                    return_proxy: false
+                grantPermission:
+                    attribute: admin
+                    return_proxy: true
+                removePermission:
+                    attribute: admin
+                    return_proxy: true
