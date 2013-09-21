@@ -71,8 +71,8 @@ class GroupController extends Controller
     public function newAction(Request $request, $parent_id)
     {
         $em = $this->getDoctrine()->getManager();
-        $group = new Group(new GroupType());
         $parent = $em->getRepository('RedadoCoreBundle:Group')->find($parent_id);
+        $group = $parent->createChild(array($this->getUser()));
 
         $builder = $this->createFormBuilder($group, array(
             'validation_groups' => array('new')

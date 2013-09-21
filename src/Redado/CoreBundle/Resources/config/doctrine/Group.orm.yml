@@ -34,6 +34,7 @@ Redado\CoreBundle\Entity\Group:
             length: 255
         description:
             type: text
+            nullable: true
         created:
             type: datetime
             gedmo:

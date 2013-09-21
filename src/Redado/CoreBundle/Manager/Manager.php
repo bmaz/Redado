@@ -125,42 +125,32 @@ class Manager {
         return array(
             'Group' => array(
                 array(
-                    'name' => 'admin',
-                    'description' => 'Edit permissions.'
-                ),
-                array(
                     'name' => 'view_group',
-                    'description' => 'View group.'
+                    'description' => 'View that the group exists.'
                 ),
                 array(
-                    'name' => 'view_name',
-                    'description' => 'View name.'
+                    'name' => 'add_user',
+                    'description' => 'Add users to the group.'
                 ),
                 array(
-                    'name' => 'edit_name',
-                    'description' => 'Edit name.'
+                    'name' => 'remove_user',
+                    'description' => 'Remove users from the group.'
                 ),
                 array(
-                    'name' => 'view_created',
-                    'description' => 'View creation date.'
+                    'name' => 'get_users',
+                    'description' => 'See users in the group.'
                 ),
                 array(
-                    'name' => 'view_users',
-                    'description' => 'View who is member of the group.'
+                    'name' => 'edit_network',
+                    'description' => 'Add or remove parent and child groups to the group.'
                 ),
                 array(
-                    'name' => 'edit_users',
-                    'description' => 'Add or remove persons from the group.'
-                ),
-            ),
-            'Memberships' => array(
-                array(
-                    'name' => 'view_join_date',
-                    'description' => 'View join date of users'
+                    'name' => 'get_children',
+                    'description' => 'See the sub-groups of the group.'
                 ),
                 array(
-                    'name' => 'view_members_name',
-                    'description' => 'View members name.'
+                    'name' => 'get_parents',
+                    'description' => 'See the parent groups of the group.'
                 )
             )
         );

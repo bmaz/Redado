@@ -31,11 +31,13 @@ Redado\CoreBundle\Entity\Permission:
         object:
             targetEntity: Group
             inversedBy: permissions
+            cascade: [persist]
             joinColumn:
                 name: object_id
                 referencedColumnName: id
         subject:
             targetEntity: Group
+            cascade: [persist]
             joinColumn:
                 name: subject_id
                 referencedColumnName: id

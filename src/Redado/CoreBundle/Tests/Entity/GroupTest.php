@@ -25,6 +25,13 @@ use Redado\CoreBundle\Entity\User;
 
 class GroupTest extends\PHPUnit_Framework_TestCase
 {
+    public function testGetUsers()
+    {
+        $group = new Group();
+        $users = $group->getUsers();
+        $this->assertEmpty($users);
+    }
+
     public function testAddUser()
     {
         $group = new Group();
@@ -56,6 +63,22 @@ class GroupTest extends\PHPUnit_Framework_TestCase
         $group->removeUser($user);
         $users = $group->getUsers();
         $this->assertNotContains($user, $users);
+
+        return $group;
+    }
+
+
+    /**
+     * @depends testRemoveUser
+     */
+    public function testCreateChild(Group $group)
+    {
+        $users = $group->getUsers();
+        $this->assertNotEmpty($users);
+        $child = $group->createChild(array(end($users)));
+
+        $children = $group->getChildren();
+        $this->assertContains($child, $children);
     }
 
 }

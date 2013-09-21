@@ -97,13 +97,11 @@ class Group extends Role
     /**
      * Constructor
      */
-    public function __construct($type = null) {
+    public function __construct() {
         $this->memberships = new \Doctrine\Common\Collections\ArrayCollection();
         $this->closuresParents = new \Doctrine\Common\Collections\ArrayCollection();
         $this->closuresChildren = new \Doctrine\Common\Collections\ArrayCollection();
         $this->permissions = new \Doctrine\Common\Collections\ArrayCollection();
-        $type = ($type == null ? new GroupType() : $type);
-        $this->type = $type;
     }
 
     /**
@@ -168,6 +166,8 @@ class Group extends Role
     public function setSysname($sysname)
     {
         $this->sysname = $sysname;
+        $admin_group = $this->getAdminGroup();
+        $admin_group ? $admin_group->setSysname($sysname . '-admin') : null;
 
         return $this;
     }
@@ -216,13 +216,13 @@ class Group extends Role
      */
     public function addUser(\Redado\CoreBundle\Entity\User $user, $direct = true)
     {
-        if (in_array($user, $this->getUsers()->toArray()) && $direct == true) {
+        if (in_array($user, $this->getUsers()) && $direct == true) {
             foreach($this->memberships as $membership) {
                 if($membership->getUser() == $user) {
                     $membership->setDirect(true);
                 }
             }
-        } else if (!in_array($user, $this->getUsers()->toArray())) {
+        } else if (!in_array($user, $this->getUsers())) {
             $membership = new Membership($this, $user, $direct);
             $this->memberships[] = $membership;
             $user->addMembership($membership);
@@ -301,15 +301,35 @@ class Group extends Role
      */
     public function getUsers()
     {
+        $users = array();
+
+        $users = array_merge($this->getDirectUsers()->toArray(), $this->getIndirectUsers()->toArray());
+
+        return $users;
+    }
+
+    //TODO optimize not to search everytime
+    public function getDirectUsers()
+    {
         $users = new \Doctrine\Common\Collections\ArrayCollection();
 
-        foreach($this->memberships as $membership) {
-            $users[] = $membership->getUser();
+        foreach ($this->memberships as $membership) {
+            $membership->getDirect() ? $users[] = $membership->getUser() : null;
         }
 
         return $users;
     }
 
+    public function getIndirectUsers()
+    {
+        $users = new \Doctrine\Common\Collections\ArrayCollection();
+
+        foreach ($this->memberships as $membership) {
+            !$membership->getDirect() ? $users[] = $membership->getUser() : null ;
+        }
+
+        return $users;
+    }
 
     /**
      * Get Memberships
@@ -331,6 +351,12 @@ class Group extends Role
         if (!in_array($parent, $this->getParents()->toArray()) && $parent != $this) {
             $closure = new GroupClosure($parent, $this, $inherit_members);
             $this->closuresParents[] = $closure;
+            $parent->closuresChildren[] = $closure;
+            $parent_admin_groups = $parent->getGrantedGroups('admin');
+            $admin_groups = $this->getGrantedGroups('admin');
+            if (!empty($parent_admin_group) && !empty($admin_group)) {
+                $admin_groups[0]->addChild($parent_admin_groups[0]);
+            }
 
             if($inherit_members) {
                 foreach($this->getUsers() as $user) {
@@ -387,6 +413,16 @@ class Group extends Role
         return $this;
     }
 
+    public function createChild(array $admins, $name = null, $sysname = null)
+    {
+        $child = new Group();
+        $child->setName($name);
+        $child->grantPermission($child, 'view_group');
+        $child->setSysname($sysname);
+        $child->createAdminGroup($admins);
+        $this->addChild($child);
+        return $child;
+    }
 
     /**
      * Remove a child from the group.
@@ -444,6 +480,11 @@ class Group extends Role
      */
     public function grantPermission(\Redado\CoreBundle\Entity\Group $group, $name)
     {
+        if  ($name === 'admin') {
+            throw new \Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException('');
+            return $this;
+        }
+
         if (!in_array($group, $this->getGrantedGroups($name))) {
             $permission = new Permission();
             $permission->setName($name);
@@ -482,17 +523,53 @@ class Group extends Role
         return $return;
     }
 
-    public function getGroup()
+    public function getAdmins()
     {
-        return $this;
-    }
-
-    public function getAdminGroups()
-    {
-        return array_unique(array_merge($this->getGrantedGroups('admin'), $this->getGrantedGroups('all')));
+        $granted_groups = $this->getGrantedGroups('admin');
+        return !empty($granted_groups) ? $granted_groups[0]->getDirectUsers() : null;
     }
 
     public function __toString() {
         return $this->sysname;
     }
+
+    /**
+     * Create an admin group for a group. You still have to persist it after.
+     *
+     * @param array $users An array of the users to add in the admin group.
+     *
+     * @return Group The admin group.
+     */
+    private function createAdminGroup(array $users)
+    {
+        $admin_group = new Group();
+        $admin_group->grantPermission($admin_group, 'add_user');
+        $admin_group->grantPermission($admin_group, 'remove_user');
+        $admin_group->grantPermission($this, 'get_users');
+
+        $permission = new Permission();
+        $permission->setName('admin');
+        $permission->setObject($this);
+        $permission->setSubject($admin_group);
+        $this->permissions[] = $permission;
+
+        $admin_group->setName($this->getName() . ' - Administrators');
+        $admin_group->setSysname($this->getSysname() . '-admin');
+        foreach ($users as $user) {
+            $admin_group->addUser($user);
+        }
+
+        return $this;
+    }
+
+    private function getAdminGroup()
+    {
+        foreach($this->permissions as $permission) {
+            if ($permission->getName() == 'admin') {
+                return $permission->getSubject();
+            }
+        }
+        return false;
+    }
+
 }

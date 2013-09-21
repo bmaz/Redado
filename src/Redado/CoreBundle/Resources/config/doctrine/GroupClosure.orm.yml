@@ -40,12 +40,14 @@ Redado\CoreBundle\Entity\GroupClosure:
         parent:
             targetEntity: Group
             inversedBy: closuresChildren
+            cascade: [persist]
             joinColumn:
                 name: parent_id
                 referencedColumnName: id
         child:
             targetEntity: Group
             inversedBy: closuresParents
+            cascade: [persist]
             joinColumn:
                 name: child_id
                 referencedColumnName: id

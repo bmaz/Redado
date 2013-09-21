@@ -1,0 +1,131 @@
+{#
+ # This file is part of Redado.
+ #
+ # Copyright (C) 2013 Guillaume Royer
+ #
+ # Redado is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU Affero General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Redado is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU Affero General Public License for more details.
+ #
+ # You should have received a copy of the GNU Affero General Public License
+ # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
+ #}
+
+{% extends "RedadoCoreBundle::layout.html.twig" %}
+
+{% set group_name_link = "<a href=\"#{ path('group_show', { 'id': group.id }) }\">#{ group.name }</a>" %}
+
+{% block h1 %}
+{% trans %}Edit group %group_name_link%{% endtrans %}
+{% endblock %}
+
+{% block headinfo %}
+    <p>
+        <strong>{% trans %}Creation date :{% endtrans %}</strong> {{ group.created|localizeddate('full', 'short') }}
+    </p>
+    <p>
+        <strong>{% trans %}Description :{% endtrans %}</strong> {{ group.description|nl2br }}
+    </p>
+{% endblock %}
+
+{% block content %}
+    {{ form_start(form_parent, { 'action': '#', 'attr' : { 'class': 'form form-inline'} }) }}
+	<table class="table table-bordered table-striped">
+                <thead>
+			<tr>
+				<th>{% trans %}Parents{% endtrans %}</th>
+                <th>{% trans %}Inherhit members{% endtrans %}</th>
+                <th>{% trans %}Remove or add{% endtrans %}</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for closure in group.closuresParents %}
+			<tr>
+				<td>
+					<a href="{{ path('group_show', { id : closure.parent.id }) }}">{{ closure.parent.name }}</a>
+				</td>
+                <td>
+                    {% if closure.inheritMembers == true %}
+                        {% trans %}Yes{% endtrans %}
+                    {% else %}
+                        {% trans %}No{% endtrans %}
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('group_removeparent', { id: group.id, parent_id: closure.parent.id }) }}"
+                    class="btn">
+                        Remove
+                    </a>
+                </td>
+			</tr>
+		{% endfor %}
+            <tr>
+                <td>
+                    {{ form_widget(form_parent.parent, { 'attr' : {'placeholder' : 'New parent' } } ) }}
+                </td>
+                <td>
+                    {{ form_widget(form_parent.inherit_members) }}
+                </td>
+                <td>
+                    <button type="submit" class="btn">{% trans %}Add{% endtrans %}</button>
+                </td>
+            </tr>
+		</tbody>
+	</table>
+    {{ form_errors(form_parent) }}
+    {{ form_end(form_parent) }}
+
+    {{ form_start(form_child, { 'action': '#', 'attr' : { 'class': 'form form-inline' } }) }}
+	<table class="table table-bordered table-striped">
+                <thead>
+			<tr>
+				<th>{% trans %}Children{% endtrans %}</th>
+                <th>{% trans %}Inherhit members{% endtrans %}</th>
+                <th>{% trans %}Remove or add{% endtrans %}</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for closure in group.closuresChildren %}
+			<tr>
+				<td>
+					<a href="{{ path('group_show', { id : closure.child.id }) }}">{{ closure.child.name }}</a>
+				</td>
+                <td>
+                    {% if closure.inheritMembers == true %}
+                        {% trans %}Yes{% endtrans %}
+                    {% else %}
+                        {% trans %}No{% endtrans %}
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('group_removechild', { id: group.id, child_id: closure.child.id }) }}"
+                    class="btn">
+                        Remove
+                    </a>
+                </td>
+			</tr>
+		{% endfor %}
+            <tr>
+                <td>
+                    {{ form_widget(form_child.child, { 'attr' : {'placeholder' : 'New child' } } ) }}
+                </td>
+                <td>
+                    {{ form_widget(form_child.inherit_members ) }}
+                </td>
+                <td>
+                    <button type="submit" class="btn">{% trans %}Add{% endtrans %}</button>
+                </td>
+            </tr>
+		</tbody>
+	</table>
+    {{ form_end(form_child) }}
+<a href="{{ path('group_new', { 'parent_id' : group.id } ) }}" class="btn">Create a new group as child</a>
+
+
+{% endblock %}

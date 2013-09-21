@@ -94,25 +94,15 @@ guilro_protection_proxy:
         Redado\CoreBundle\Entity\Group:
             view: view_group
             methods:
-                getCreated:
-                    attribute: get_created
-                getModified:
-                    attribute: get_modified
                 setName:
-                    attribute: set_name
+                    attribute: admin
                     return_proxy: true
-                getName:
-                    attribute: get_name
                 setSysname:
-                    attribute: set_sysname
+                    attribute: admin
                     return_proxy: true
-                getSysname:
-                    attribute: get_sysname
                 setDescrption:
-                    attribute: set_description
+                    attribute: admin
                     return_proxy: true
-                getDescription:
-                    attribute: get_description
                 addUser:
                     attribute: add_user
                     return_proxy: true
@@ -125,23 +115,26 @@ guilro_protection_proxy:
                 getUsers:
                     attribute: get_users
                     return_proxy: true
+                getIndirectUsers:
+                    attribute:  get_indirect_users
+                    return_proxy: true
                 getMemberships:
                     attribute: get_users
                     return_proxy: true
                 addParent:
-                    attribute: add_parent
+                    attribute: edit_network
                     return_proxy: true
                 removeParent:
-                    attribute: remove_parent
+                    attribute: edit_network
                     return_proxy: true
                 getParents:
                     attribute: get_parents
                     return_proxy: true
                 addChild:
-                    attribute: add_child
+                    attribute: edit_network
                     return_proxy: true
                 removeChild:
-                    attribute: remove_child
+                    attribute: edit_network
                     return_proxy: true
                 getChildren:
                     attribute: get_children
