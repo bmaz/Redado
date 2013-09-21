@@ -117,6 +117,48 @@ class GroupTest extends\PHPUnit_Framework_TestCase
         $this->assertNotEmpty($inherited_admins);
         $this->assertContains($new_user, $inherited_admins);
         $this->assertContains(end($users), $inherited_admins);
+
+        // add user remove user
+        $user3 = new User();
+        $child2->addUser($user3);
+        $this->assertContains($user3, $child->getUsers());
+        $this->assertContains($user3, $child->getIndirectUsers());
+        $this->assertNotContains($user3, $child->getDirectUsers());
+        $child2->removeUser($user3);
+        $this->assertNotContains($user3, $child->getUsers());
+
+        return array(
+            'parent' => $child,
+            'child' => $child2,
+            'parent_admin' => end($users),
+            'child_admin' => $new_user
+        );
     }
 
+    /**
+     * @depends testCreateChild
+     */
+    public function testRemoveChild(array $data)
+    {
+        $this->assertContains($data['parent_admin'], $data['parent']->getAdmins());
+        $this->assertNotContains($data['parent_admin'], $data['child']->getAdmins());
+        $this->assertContains($data['child_admin'], $data['child']->getAdmins());
+        $this->assertNotContains($data['parent_admin'], $data['child']->getAdmins());
+        $this->assertContains($data['child'], $data['parent']->getChildren());
+
+        $child_admin_groups = $data['child']->getGrantedGroups('admin');
+        $this->assertContains($data['parent_admin'], $child_admin_groups[0]->getUsers());
+
+        $user = new User();
+        $data['child']->addUser($user);
+        $this->assertContains($user, $data['parent']->getUsers());
+
+        // test remove child oes remove user in parent groups ?
+        $data['parent']->removeChild($data['child']);
+        $this->assertNotContains($data['child'], $data['parent']->getChildren());
+        $this->assertNotContains($user, $data['parent']->getUsers());
+
+        $child_admin_groups = $data['child']->getGrantedGroups('admin');
+        $this->assertNotContains($data['parent_admin'], $child_admin_groups[0]->getUsers());
+    }
 }

@@ -276,7 +276,7 @@ class Group extends Role
 
                 foreach($this->getClosuresChildren() as $closure_child) {
                     if($closure_child->getInheritMembers()) {
-                        $users = array_merge($users, $closure_child->getChild()->getUsers()->toArray());
+                        $users = array_merge($users, $closure_child->getChild()->getUsers());
                     }
                 }
 
@@ -378,6 +378,15 @@ class Group extends Role
         foreach($this->closuresParents as $closure) {
             if($closure->getParent() == $parent) {
                 $this->closuresParents->removeElement($closure);
+                $parent->closuresChildren->removeElement($closure);
+                foreach ($parent->memberships as $membership) {
+                    $parent->autoRemoveUser($membership->getUser());
+                }
+                $parent_admin_groups = $parent->getGrantedGroups('admin');
+                $admin_groups = $this->getGrantedGroups('admin');
+                if (!empty($parent_admin_groups) && !empty($admin_groups)) {
+                    $admin_groups[0]->removeChild($parent_admin_groups[0]);
+                }
             }
         }
 
