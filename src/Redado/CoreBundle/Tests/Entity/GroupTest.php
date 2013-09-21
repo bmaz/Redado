@@ -74,11 +74,48 @@ class GroupTest extends\PHPUnit_Framework_TestCase
     public function testCreateChild(Group $group)
     {
         $users = $group->getUsers();
-        $this->assertNotEmpty($users);
         $child = $group->createChild(array(end($users)));
 
+        // create the child, is it in it ?
         $children = $group->getChildren();
         $this->assertContains($child, $children);
+
+        // is end($user) our admin ?
+        $admins = $child->getAdmins();
+        $this->assertContains(end($users), $admins);
+
+        //create a child of the child
+        $new_user = new User();
+        $child2 = $child->createChild(array($new_user));
+
+        // is it in it ?
+        $children2 = $child->getChildren();
+        $this->assertContains($child2, $children2);
+
+        // is new_user our admin ?
+        $admins2 = $child2->getAdmins();
+        $this->assertContains($new_user, $admins2);
+
+        // can we get the admin groups ?
+        $admin_group2 = $child2->getGrantedGroups('admin')[0];
+        $admin_group = $child->getGrantedGroups('admin')[0];
+        $this->assertNotEmpty($admin_group2);
+        $this->assertNotEmpty($admin_group);
+
+        // is end($users) granted for 'admin' on $child2 as $child2 is child of $child
+        // and end($user) is admin of $child ?
+
+        // is the admin group of the parent child of the admin group of the child ?
+        $admin_groups = $admin_group2->getChildren();
+        $this->assertNotEmpty($admin_groups);
+        $this->assertEquals($admin_groups[0], $admin_group);
+
+        // does the admin group of the child contains all the users of the admin group
+        // of the child and the parent ?
+        $inherited_admins = $admin_group2->getUsers();
+        $this->assertNotEmpty($inherited_admins);
+        $this->assertContains($new_user, $inherited_admins);
+        $this->assertContains(end($users), $inherited_admins);
     }
 
 }

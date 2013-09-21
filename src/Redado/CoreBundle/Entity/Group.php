@@ -354,7 +354,7 @@ class Group extends Role
             $parent->closuresChildren[] = $closure;
             $parent_admin_groups = $parent->getGrantedGroups('admin');
             $admin_groups = $this->getGrantedGroups('admin');
-            if (!empty($parent_admin_group) && !empty($admin_group)) {
+            if (!empty($parent_admin_groups) && !empty($admin_groups)) {
                 $admin_groups[0]->addChild($parent_admin_groups[0]);
             }
 
@@ -413,14 +413,14 @@ class Group extends Role
         return $this;
     }
 
-    public function createChild(array $admins, $name = null, $sysname = null)
+    public function createChild(array $admins, $inherit_members = true, $name = null, $sysname = null)
     {
         $child = new Group();
         $child->setName($name);
         $child->grantPermission($child, 'view_group');
         $child->setSysname($sysname);
         $child->createAdminGroup($admins);
-        $this->addChild($child);
+        $this->addChild($child, $inherit_members);
         return $child;
     }
 
@@ -444,7 +444,7 @@ class Group extends Role
      */
     public function getChildren()
     {
-        $children = new \Doctrine\Common\Collections\ArrayCollection();
+        $children = array();
 
         foreach($this->closuresChildren as $closure) {
             $children[] = $closure->getChild();
