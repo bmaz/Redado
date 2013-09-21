@@ -97,22 +97,23 @@ class GroupTest extends\PHPUnit_Framework_TestCase
         $this->assertContains($new_user, $admins2);
 
         // can we get the admin groups ?
-        $admin_group2 = $child2->getGrantedGroups('admin')[0];
-        $admin_group = $child->getGrantedGroups('admin')[0];
-        $this->assertNotEmpty($admin_group2);
-        $this->assertNotEmpty($admin_group);
+        $admin_groups2 = $child2->getGrantedGroups('admin');
+        $admin_groups = $child->getGrantedGroups('admin');
+        $this->assertNotEmpty($admin_groups2);
+        $this->assertNotEmpty($admin_groups);
+        $admin_group = $admin_groups[0];
 
         // is end($users) granted for 'admin' on $child2 as $child2 is child of $child
         // and end($user) is admin of $child ?
 
         // is the admin group of the parent child of the admin group of the child ?
-        $admin_groups = $admin_group2->getChildren();
+        $admin_groups = $admin_groups2[0]->getChildren();
         $this->assertNotEmpty($admin_groups);
         $this->assertEquals($admin_groups[0], $admin_group);
 
         // does the admin group of the child contains all the users of the admin group
         // of the child and the parent ?
-        $inherited_admins = $admin_group2->getUsers();
+        $inherited_admins = $admin_groups2[0]->getUsers();
         $this->assertNotEmpty($inherited_admins);
         $this->assertContains($new_user, $inherited_admins);
         $this->assertContains(end($users), $inherited_admins);
