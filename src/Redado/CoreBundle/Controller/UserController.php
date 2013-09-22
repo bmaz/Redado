@@ -82,7 +82,7 @@ class UserController extends Controller
 
         $deleteForm = $this->createDeleteForm($id);
 
-        $entity = $this->get('guilro_protection_proxy.access_manager')->getProxy($entity);
+        $entity = $this->get('guilro.protection_proxy')->getProxy($entity);
 
         return $this->render('RedadoCoreBundle:User:show.html.twig', array(
             'user'      => $entity,
