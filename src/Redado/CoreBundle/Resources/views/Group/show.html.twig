@@ -19,25 +19,31 @@
 
 {% extends "RedadoCoreBundle::layout.html.twig" %}
 
-{% block h1 %}{{ group.name }}{% endblock %}
 
-{% block headinfo %}
-    <p>
-        <strong>{% trans %}Creation date :{% endtrans %}</strong> {{ group.created|localizeddate('full', 'short') }}
-    </p>
-    <p>
-        <strong>{% trans %}Description :{% endtrans %}</strong> {{ group.description|nl2br }}
-    </p>
+{% block left_column %}
+    <h4>{{ group.name }}</h4>
+    {{ group.description|nl2br }}<br/>
+    <strong>{% trans %}Creation date :{% endtrans %}</strong> {{ group.created|localizeddate('full', 'short') }}
+    <div class="row-fluid">
+        <div class="span12">
+            {% if group.parents | length %}
+                <h5>{% trans %}Parents group :{% endtrans %}</h5>
+                <ul class="unstyled">
+                    {% for parent in group.parents %}
+                        <li><a href="{{ path('group_show', { 'id' : parent.id } ) }}">{{ parent.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+
 {% endblock %}
 
-{% block content %}
-	<table class="table table-bordered table-striped">
-                <thead>
+{% block left_content %}
+	<table class="table table-hover table-bordered">
+        <thead>
 			<tr>
 				<th>{% trans %}Members{% endtrans %}</th>
-                <th>{% trans %}Direct{% endtrans %}</th>
-				<th>{% trans %}Join date{% endtrans %}</th>
-                <th>{% trans %}Remove{% endtrans %}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -45,20 +51,6 @@
 			<tr>
 				<td>
 					<a href="{{ path('user_show', { id : membership.user.id }) }}">{{ membership.user.name }}</a>
-				</td>
-                <td>
-                    {% if membership.direct == true %}
-                        {% trans %}Yes{% endtrans %}
-                    {% else %}
-                        {% trans %}No{% endtrans %}
-                    {% endif %}
-                </td>
-				<td>{{ membership.created|localizeddate('full', 'short') }}</td>
-                <td>
-                    <a href="{{ path('group_removeuser', { id: group.id, user_id: membership.user.id }) }}"
-                    class="btn">
-                        Remove
-                    </a>
                 </td>
 			</tr>
 		{% endfor %}
@@ -66,27 +58,7 @@
 	</table>
 {% endblock %}
 
-{% block sidebar %}
-<div class="row-fluid">
-    <h5>{% trans %}Admins :{% endtrans %}</h5>
-    <ul>
-    {% for admin in group.admins %}
-        <li>{{ admin.name }}</li>
-    {% endfor %}
-    </ul>
-</div>
-<div class="row-fluid">
-    <div class="span12">
-        <h5>{% trans %}Parents group :{% endtrans %}</h5>
-        <ul class="unstyled">
-            {% for parent in group.parents %}
-                <li><a href="{{ path('group_show', { 'id' : parent.id } ) }}">{{ parent.name }}</a></li>
-            {% else %}
-                <li>{% trans %}No parents{% endtrans %}</li>
-            {% endfor %}
-        </ul>
-    </div>
-</div>
+{% block right_content %}
 <div class="row-fluid">
     <div class="span12">
         <h5>{% trans %}Sub-groups :{% endtrans %}</h5>
@@ -126,9 +98,23 @@
             {% else %}
             {% endfor %}
         </ul>
-        <a class="pull-right btn" href="{{ path('group_editstructure', { 'id' : group.id }) }}">
-            {% trans %}Edit{% endtrans %}
-        </a>
+    </div>
+</div>
+<div class="row-fluid" style="margin-top:5px;">
+    <table class="table table-hover table-bordered">
+        <thead>
+            <tr><th>{% trans %}Admins :{% endtrans %}</th></tr>
+        </thead>
+        <tbody>
+            {% for admin in group.admins %}
+                <tr><td>{{ admin.name }}</li>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="row-fluid" style="margin-top:5px;">
+    <div class="alert alert-info">
+        <b>Help</b>
     </div>
 </div>
 {% endblock %}
