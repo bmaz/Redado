@@ -34,7 +34,7 @@ class MainController extends Controller
     public function indexAction()
     {
         $user = $this->get('guilro.protection_proxy')->getProxy($this->getUser());
-		return $this->render('RedadoCoreBundle:Main:index.html.twig', array('user' => $user));
+		return $this->forward('RedadoCoreBundle:User:show', array('id' => $user->getId()));
 	}
 
 	public function loginAction()
