@@ -142,6 +142,7 @@
 
 {% block multiple_group_select_row %}
     {{ form_label(form) }}
+    {% block multiple_group_select_widget %}
     {{ form_widget(form, {'attr' : {'style' :'width: 500px;'}}) }}
     <script type="text/javascript">
         $('#{{ form.vars.id }}').select2({
@@ -177,4 +178,5 @@
             multiple: true
         })
     </script>
+    {% endblock %}
 {% endblock %}

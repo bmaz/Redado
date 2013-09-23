@@ -55,3 +55,11 @@ group_new:
 group_editpermission:
     pattern: /{id}/edit/permission
     defaults: { _controller: "RedadoCoreBundle:Group:editPermission" }
+
+group_settings_general:
+    pattern: /{id}/settings/general
+    defaults: { _controller: "RedadoCoreBundle:GroupSettings:index" }
+
+group_settings_permissions:
+    pattern: /{id}/settings/permissions
+    defaults: { _controller: "RedadoCoreBundle:GroupSettings:permissions" }

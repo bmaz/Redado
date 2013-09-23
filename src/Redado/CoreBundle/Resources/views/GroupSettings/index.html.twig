@@ -1,0 +1,38 @@
+{#
+ # This file is part of Redado.
+ #
+ # Copyright (C) 2013 Guillaume Royer
+ #
+ # Redado is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU Affero General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Redado is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU Affero General Public License for more details.
+ #
+ # You should have received a copy of the GNU Affero General Public License
+ # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
+ #}
+
+{% extends "RedadoCoreBundle::layout.html.twig" %}
+
+{% block left_column %}
+    <ul class="nav nav-pills nav-stacked">
+        <li class="active"><a href="#">General</a></li>
+        <li><a href="{{ path('group_settings_permissions', { 'id': group.id }) }}">Permissions</a></li>
+        <li><a href="#">Links with other groups</a></li>
+        <li><a href="#">Extensions</a></li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    {{ form_start(edit_form) }}
+        {{ form_row(edit_form.name) }}
+        {{ form_row(edit_form.sysname) }}
+        {{ form_label(edit_form.description) }}
+        {{ form_widget(edit_form.description, { 'attr': { 'style' :'width:75%;height:150px;'} }) }}
+    {{ form_end(edit_form) }}
+{% endblock %}

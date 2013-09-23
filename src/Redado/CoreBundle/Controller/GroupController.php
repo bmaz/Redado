@@ -22,13 +22,10 @@ namespace Redado\CoreBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Redado\CoreBundle\Entity\Group;
 use Redado\CoreBundle\Entity\Membership;
 use Redado\CoreBundle\Entity\User;
-
 use Redado\CoreBundle\Security\GroupProtectionProxy;
-
 use Redado\CoreBundle\Form\GroupType;
 use Redado\CoreBundle\Form\AddUserToGroupType;
 use Redado\CoreBundle\Form\Type\MultipleGroupSelectType;
@@ -107,40 +104,6 @@ class GroupController extends Controller
             'group' => $group,
             'parent' => $parent,
             'form'   => $form->createView(),
-        ));
-    }
-
-       /**
-     * Displays a form to edit an existing Group entity.
-     *
-     */
-    public function editAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $group = $em->getRepository('RedadoCoreBundle:Group')->find($id);
-
-        if (!$group) {
-            throw $this->createNotFoundException('Unable to find Group entity.');
-        }
-
-        $editForm = $this->createForm(new GroupType(), $group, array('em' => $em));
-        $deleteForm = $this->createDeleteForm($id);
-
-        $editForm->handleRequest($request);
-
-        if ($editForm->isValid()) {
-
-            $em->persist($group);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('group_show', array('id' => $id)));
-        }
-
-        return $this->render('RedadoCoreBundle:Group:edit.html.twig', array(
-            'group'      => $group,
-            'edit_form'   => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -421,77 +384,6 @@ class GroupController extends Controller
         );
     }
 
-    public function editPermissionAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $group = $em->getRepository('RedadoCoreBundle:Group')->find($id);
-
-        if(!$group) {
-            throw $this->createNotFoundException();
-        }
-
-        $transformer = new GroupArrayToSysnameListTransformer($em);
-
-        $module_permissions = $this->get('redado.manager')->getGroupPermissionList($group);
-
-        $builder = $this->createFormBuilder();
-
-        foreach($module_permissions as $module_name => $permissions) {
-            foreach ($permissions as $permission) {
-                $builder->add(
-                    $builder->create(
-                        $permission['name'],
-                        new MultipleGroupSelectType(),
-                        array('label' => $permission['description'])
-                    )->addViewTransformer($transformer)
-                );
-                $groups = $group->getGrantedGroups($permission['name']);
-                $groups = array_unique(array_merge($groups, $group->getGrantedGroups('all')));
-                $granted_groups[$permission['name']] = $groups;
-            }
-        }
-
-        $builder->add('Submit', 'submit');
-
-        $form = $builder->getForm();
-
-        $form->setData($granted_groups);
-
-        $form->handleRequest($request);
-
-        if($form->isValid()) {
-            $data = $form->getData();
-            foreach($module_permissions as $module_name => $permissions) {
-                foreach ($permissions as $permission) {
-                    if(!is_null($data[$permission['name']])) {
-                        foreach ($data[$permission['name']] as $granted_group) {
-                            $group->grantPermission($granted_group, $permission['name']);
-                        }
-                    } else {
-                        $data[$permission['name']] = array();
-                    }
-                    $revoked_groups = array_diff($granted_groups[$permission['name']], $data[$permission['name']]);
-                    foreach ($revoked_groups as $revoked_group) {
-                        if (in_array($revoked_group, $group->getGrantedGroups('all'))) {
-                            $group->removePermission($revoked_group, 'all');
-                            foreach ($permissions as $permission_) {
-                                $group->grantPermission($revoked_group, $permission_['name']);
-                            }
-                        }
-                        $group->removePermission($revoked_group, $permission['name']);
-                    }
-                }
-            }
-            $em->flush();
-        }
-
-        return $this->render('RedadoCoreBundle:Group:editPermissions.html.twig',
-            array(
-                'form' => $form->createView()
-            )
-        );
-    }
    /**
      * Creates a form to delete a Group entity by id.
      *

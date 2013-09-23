@@ -129,6 +129,10 @@ class Manager {
                     'description' => 'View that the group exists.'
                 ),
                 array(
+                    'name' => 'get_users',
+                    'description' => 'See users in the group.'
+                ),
+                array(
                     'name' => 'add_user',
                     'description' => 'Add users to the group.'
                 ),
@@ -137,20 +141,16 @@ class Manager {
                     'description' => 'Remove users from the group.'
                 ),
                 array(
-                    'name' => 'get_users',
-                    'description' => 'See users in the group.'
-                ),
-                array(
-                    'name' => 'edit_network',
-                    'description' => 'Add or remove parent and child groups to the group.'
-                ),
-                array(
                     'name' => 'get_children',
                     'description' => 'See the sub-groups of the group.'
                 ),
                 array(
                     'name' => 'get_parents',
                     'description' => 'See the parent groups of the group.'
+                ),
+                array(
+                    'name' => 'edit_network',
+                    'description' => 'Add or remove parent and child groups to the group.'
                 )
             )
         );

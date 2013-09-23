@@ -24,18 +24,19 @@ namespace Redado\CoreBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Redado\CoreBundle\Form\DataTransformer\GroupToNameTransformer;
+use Redado\CoreBundle\Form\DataTransformer\GroupToSysnameTransformer;
 
 class GroupType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $em = $options['em'];
-        $transformer = new GroupToNameTransformer($em);
 
         $builder
             ->add('name')
-            ->add('description');
+            ->add('sysname')
+            ->add('description')
+            ->add('submit', 'submit');
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

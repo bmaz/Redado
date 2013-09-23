@@ -21,7 +21,7 @@
 
 
 {% block left_column %}
-    <h4>{{ group.name }}</h4>
+    <h4>{{ group.name }} <a href="{{ path('group_settings_general', {'id': group.id})}}"><i class="icon-wrench"></i></a></h4>
     {{ group.description|nl2br }}<br/>
     <strong>{% trans %}Creation date :{% endtrans %}</strong> {{ group.created|localizeddate('full', 'short') }}
     <div class="row-fluid">
