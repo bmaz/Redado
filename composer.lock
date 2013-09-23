@@ -691,12 +691,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Guilro/GuilroProtectionProxyBundle.git",
-                "reference": "e4466e4c229b3f2886a0ff420b7e1939ef789930"
+                "reference": "50b258c5c9bd81a8cb965eb27123fc40ae69a9ab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Guilro/GuilroProtectionProxyBundle/zipball/e4466e4c229b3f2886a0ff420b7e1939ef789930",
-                "reference": "e4466e4c229b3f2886a0ff420b7e1939ef789930",
+                "url": "https://api.github.com/repos/Guilro/GuilroProtectionProxyBundle/zipball/50b258c5c9bd81a8cb965eb27123fc40ae69a9ab",
+                "reference": "50b258c5c9bd81a8cb965eb27123fc40ae69a9ab",
                 "shasum": ""
             },
             "require": {
@@ -720,7 +720,7 @@
             ],
             "description": "Protection proxy generator for Symfony2",
             "homepage": "https://github.com/Guilro/GuilroProtectionProxyBundle",
-            "time": "2013-09-20 08:49:16"
+            "time": "2013-09-22 21:59:42"
         },
         {
             "name": "incenteev/composer-parameter-handler",
