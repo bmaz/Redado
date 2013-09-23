@@ -418,28 +418,6 @@ class GroupController extends Controller
             ->getForm();
     }
 
-    private function createAdminGroup(Group $group, User $user)
-    {
-        $em = $this->getDoctrine()->getManager();
-
-        $sysname = $group->getSysname();
-
-        $admin_group = new Group(new GroupType());
-        $admin_group->setSysname($group->getSysname() . '-admin');
-        $admin_group->setName($group->getName() . ' administrators');
-        $admin_group->setDescription($group->getName() . ' administrators');
-        $admin_group->addParent($group);
-        $admin_group->addUser($user);
-
-        $admin_group->grantPermission($admin_group, 'all');
-
-        $em->persist($admin_group);
-
-        $group->grantPermission($admin_group, 'all');
-
-        $em->flush();
-    }
-
     private function createRemoveUserForm($id, $user_id)
     {
         return $this->createFormBuilder(array('id' => $id, 'user_id' => $user_id))

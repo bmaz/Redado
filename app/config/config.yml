@@ -91,6 +91,17 @@ redado_core:
 
 guilro_protection_proxy:
     protected_classes:
+        Redado\CoreBundle\Entity\Membership:
+            view: view_membership
+            methods:
+                getGroup:
+                    return_proxy: true
+        Redado\CoreBundle\Entity\User:
+            methods:
+                getGroups:
+                    return_proxy: true
+                getMemberships:
+                    return_proxy: true
         Redado\CoreBundle\Entity\Group:
             view: view_group
             methods:

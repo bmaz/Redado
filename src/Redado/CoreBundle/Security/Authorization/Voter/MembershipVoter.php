@@ -22,17 +22,24 @@ namespace Redado\CoreBundle\Security\Authorization\Voter;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Redado\CoreBundle\Entity\User;
+use Redado\CoreBundle\Entity\Group;
 
-class UserVoter implements VoterInterface
+class MembershipVoter implements VoterInterface
 {
+    private $container;
+
+    public function __construct($service_container)
+    {
+        $this->container = $service_container;
+    }
+
     public function supportsAttribute($attribute)
     {
-        return is_string($attribute);
+        return $attribute === 'view_membership';
     }
 
     public function supportsClass($class) {
-        return is_a($class, 'Redado\CoreBundle\Entity\User', true);
+        return is_a($class, 'Redado\CoreBundle\Entity\Membership', true);
     }
 
     public function vote(TokenInterface $token, $object, array $attributes)
@@ -53,7 +60,8 @@ class UserVoter implements VoterInterface
 
             $result = VoterInterface::ACCESS_DENIED;
 
-            if ($token->getUser() === $object) {
+            if ($this->container->get('security.context')->isGranted('view_group', $object->getGroup())
+                && $this->container->get('security.context')->isGranted('view_user', $object->getUser())) {
                 return VoterInterface::ACCESS_GRANTED;
             }
         }
