@@ -4,13 +4,12 @@
         <meta charset="UTF-8" />
         <title>{% block title %}Welcome!{% endblock %}</title>
 	{% block stylesheets %}
-		<link href="{{ asset('bundles/redadocore/css/bootstrap.css') }}" rel="stylesheet" type="text/css"/>
-		<link href="{{ asset('bundles/redadocore/css/font-awesome.css') }}" rel="stylesheet" type="text/css"/>
+		<link href="{{ asset('bundles/redadocore/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css"/>
 		<link href="{{ asset('bundles/redadocore/css/select2.css') }}" rel="stylesheet" type="text/css"/>
 		<link href="{{ asset('bundles/redadocore/css/select2-bootstrap.css') }}" rel="stylesheet" type="text/css"/>
 	{% endblock %}
 	<script src="{{ asset('bundles/redadocore/js/jquery.js') }}"></script>
-	<script src="{{ asset('bundles/redadocore/js/bootstrap.js') }}"></script>
+	<script src="{{ asset('bundles/redadocore/js/bootstrap.min.js') }}"></script>
 	<script src="{{ asset('bundles/redadocore/js/select2.min.js') }}"></script>
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
