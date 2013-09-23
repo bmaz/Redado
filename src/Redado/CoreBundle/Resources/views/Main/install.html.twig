@@ -28,7 +28,7 @@
 </div>
 <div class="row"><div class="span4 well" style="float:none;margin:auto;">
 
-{% if created_user == false and users_exist == false %}
+{% if installed == false %}
     {{ form_start(form) }}
     <p>
         <strong>
@@ -54,27 +54,20 @@
     {{ form_errors(form) }}
     <button type="submit" class="btn btn-primary">{% trans %}Install{% endtrans %}</button>
     {{ form_end(form) }}
-{% elseif created_user == false %}
+{% elseif installed == true and created_user == false %}
     <div class="alert alert-error">
         {% trans %}Redado is already installed.{% endtrans %}
     </div>
 {% endif %}
 
-{% if created_user == true %}
+{% if installed == true and created_user == true %}
     <div class="alert alert-success">
         {% set user_name = user.name %}
         {% trans %}Created user %user_name%.{% endtrans %}
     </div>
-    {% if created_group_global == true %}
-        <div class="alert alert-success">
-            {% trans %}Created group Global.{% endtrans %}
-        </div>
-    {% endif %}
-    {% if created_group_admin == true %}
-        <div class="alert alert-success">
-            {% trans %}Created group Administrator.{% endtrans %}
-        </div>
-    {% endif %}
+    <div class="alert alert-success">
+        {% trans %}Created group Global.{% endtrans %}
+    </div>
     <div class="alert alert-success">
         {% trans %}Redado sucessfully installed !{% endtrans %}
     </div>

@@ -68,34 +68,12 @@ class MainController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $group_global = $em->getRepository('RedadoCoreBundle:Group')->findOneByName('Global');
+        $group_root = $em->getRepository('RedadoCoreBundle:Group')->find(0);
 
-        if($group_global) {
-
-            $group_global_exist = true;
-
-            $group_admin = $em->getRepository('RedadoCoreBundle:Group')->findOneByName('Administrator');
-
-            if(in_array($group_admin, $group_global->getChildren()->toArray())) {
-
-                $group_admin_exist = true;
-
-                $users = $group_admin->getUsers();
-
-                if($users)
-                    $users_exist = true;
-                else
-                    $users_exist = false;
-
-            } else {
-                $group_admin_exist = false;
-                $users_exist = false;
-            }
-
+        if($group_root) {
+            $installed = true;
         } else {
-            $group_global_exist = false;
-            $group_admin_exist = false;
-            $users_exist = false;
+            $installed = false;
         }
 
         $new_user  = new User();
@@ -112,7 +90,7 @@ class MainController extends Controller
             ))
             ->getForm();
 
-        if(!$users_exist) {
+        if(!$installed) {
             $form->handleRequest($request);
 
             if ($form->isValid()) {
@@ -138,12 +116,24 @@ class MainController extends Controller
         }
 
 
-        if(!$group_global_exist && $created_user) {
-            $group_global = new Group(new GroupType());
-            $group_global
-                ->setName('Global')
-                ->setSysname('global')
-                ->setDescription('This is the global group, parent of all other groups. Do not delete it !');
+        if(!$installed && $created_user) {
+            $group_root = new Group();
+            $group_root
+                ->setName('Root')
+                ->setSysname('root')
+                ->setDescription('root');
+            $em->persist($group_root);
+
+            $created_group_root = true;
+        } else {
+            $created_group_root = false;
+        }
+
+
+
+        if(!$installed && $created_user) {
+            $group_global = $group_root->createChild(array($new_user), false, 'Global', 'global');
+            $group_global->addUser($new_user);
             $em->persist($group_global);
 
             $created_group_global = true;
@@ -151,37 +141,16 @@ class MainController extends Controller
             $created_group_global = false;
         }
 
-
-
-        if(!$group_admin_exist && $created_user) {
-            $group_admin = new Group(new GroupType());
-            $group_admin
-                ->setName('Administrator')
-                ->setSysname('admin')
-                ->setDescription("This is the main admin group. User in this group have all right, they are \"superuser\" and can do anything. Typically, there should be a very few users in this group, and their account should not be used like normal accounts.
-To give permissions to people, you would better manage their rights carefully with different groups.");
-            $em->persist($group_admin);
-
-            $created_group_admin = true;
-        } else {
-            $created_group_admin = false;
-        }
-
-        if($created_user) {
-            $group_admin->addUser($new_user);
-            $group_admin->addParent($group_global);
-            $group_admin->grantPermission($group_admin, 'all');
-            $group_global->grantPermission($group_admin, 'all');
+        if ($created_group_root && $created_group_global && $created_user) {
+            $installed = true;
         }
 
         $em->flush();
 
         return $this->render('RedadoCoreBundle:Main:install.html.twig', array(
             'form'   => $form->createView(),
-            'users_exist' => $users_exist,
             'created_user' => $created_user,
-            'created_group_admin' => $created_group_admin,
-            'created_group_global' => $created_group_global,
+            'installed' => $installed,
             'user' => $new_user
         ));
     }
