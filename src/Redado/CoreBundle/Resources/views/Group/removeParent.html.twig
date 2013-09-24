@@ -18,8 +18,8 @@
  #}
 {% extends 'RedadoCoreBundle::layout.html.twig' %}
 
-{% set parent_group_name_link = "<a href=\"#{ path('group_show', { 'id': parent_group.id }) }\">#{ parent_group.name }</a>" %}
-{% set group_name_link = "<a href=\"#{ path('group_show', { 'id': group.id }) }\">#{ group.name }</a>" %}
+{% set parent_group_name_link = "<a href=\"#{ path('group_show', { 'id': parent_group.sysname }) }\">#{ parent_group.name }</a>" %}
+{% set group_name_link = "<a href=\"#{ path('group_show', { 'id': group.sysname }) }\">#{ group.name }</a>" %}
 
 {% block h1 %}
 {% trans %}Remove %parent_group_name_link% ?{% endtrans %}
@@ -32,7 +32,7 @@
     {% endtrans %}
     </p>
         {{ form_start(form) }}
-            <a href="{{ path('group_editstructure', { 'id': group.id }) }}" class="btn">
+            <a href="{{ path('group_settings_structure', { 'id': group.sysname }) }}" class="btn">
             {% trans %}
                 Back
             {% endtrans %}

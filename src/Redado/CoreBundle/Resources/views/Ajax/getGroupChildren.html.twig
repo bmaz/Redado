@@ -22,7 +22,7 @@
         <span{% if child.children | length > 0 %} data-toggle="collapse" style="cursor:pointer;"{% endif %} id="achild{{ child.id }}{{ rand }}" data-target="#child{{ child.id }}{{ rand }}">
             <i class="icon-chevron-right{% if child.children | length == 0 %} icon-white{% endif %}"></i>
         </span>
-        <a href="{{ path('group_show', { 'id' : child.id })}}">{{ child.name }}</a>
+        <a href="{{ path('group_show', { 'id' : child.sysname })}}">{{ child.name }}</a>
         <span class="muted">({{ child.sysname }})</span>
         <ul id="child{{ child.id }}{{ rand }}" class="collapse">
         <br/>

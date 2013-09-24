@@ -19,7 +19,7 @@
 
 {% extends "RedadoCoreBundle::layout.html.twig" %}
 
-{% set group_name_link = "<a href=\"#{ path('group_show', { 'id': group.id }) }\">#{ group.name }</a>" %}
+{% set group_name_link = "<a href=\"#{ path('group_show', { 'id': group.sysname }) }\">#{ group.name }</a>" %}
 
 {% block h1 %}
 {% trans %}Edit group %group_name_link%{% endtrans %}

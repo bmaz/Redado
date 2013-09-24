@@ -22,15 +22,15 @@
 {% block left_column %}
     <ul class="nav nav-pills nav-stacked">
         <li class="active"><a href="#">General</a></li>
-        <li><a href="{{ path('group_settings_permissions', { 'id': group.id }) }}">Permissions</a></li>
-        <li><a href="{{ path('group_settings_structure', { 'id' : group.id }) }}">Links with other groups</a></li>
+        <li><a href="{{ path('group_settings_permissions', { 'id': group.sysname }) }}">Permissions</a></li>
+        <li><a href="{{ path('group_settings_structure', { 'id' : group.sysname }) }}">Links with other groups</a></li>
         <li><a href="#">Extensions</a></li>
     </ul>
 {% endblock %}
 
 {% block content %}
     <ul class="breadcrumb">
-        <li><a href="{{ path('group_show', {'id': group.id}) }}">{{ group.name}} ({{ group.sysname}})</a> <span class="divider">/</span></li>
+        <li><a href="{{ path('group_show', {'id': group.sysname}) }}">{{ group.name}} ({{ group.sysname}})</a> <span class="divider">/</span></li>
         <li class="active">{% trans %}Settings{% endtrans %}</li>
     </ul>
     {{ form_start(edit_form) }}

@@ -45,7 +45,7 @@ class GroupController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('RedadoCoreBundle:Group')->findNoLazy($id);
+        $entity = $em->getRepository('RedadoCoreBundle:Group')->findNoLazyBySysname($id);
         $group_protected = $this->get('guilro.protection_proxy')->getProxy($entity);
 
         if (!$entity) {

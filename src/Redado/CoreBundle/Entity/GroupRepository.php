@@ -50,6 +50,22 @@ class GroupRepository extends EntityRepository
             ->getResult();
     }
 
+    public function find($id)
+    {
+        $q = $this
+            ->createQueryBuilder('groups')
+            ->select('groups')
+            ->where('groups.id = :id')
+            ->setParameter('id', $id)
+            ->getQuery();
+
+        try {
+            return $q->getSingleResult();
+        } catch (NoResultException $e) {
+            return $this->findBySysname($id);
+        }
+    }
+
     public function findNoLazy($id)
     {
         $q = $this
@@ -63,6 +79,28 @@ class GroupRepository extends EntityRepository
             ->leftJoin('cclosures.child', 'children')
             ->where('groups.id = :id')
             ->setParameter('id', $id)
+            ->getQuery();
+
+        try {
+            return $q->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
+    }
+
+    public function findNoLazyBySysname($sysname)
+    {
+        $q = $this
+            ->createQueryBuilder('groups')
+            ->select('groups', 'memberships', 'users', 'cclosures', 'pclosures', 'children', 'parents')
+            ->leftJoin('groups.memberships', 'memberships')
+            ->leftJoin('memberships.user', 'users')
+            ->leftJoin('groups.closuresParents', 'pclosures')
+            ->leftJoin('pclosures.parent', 'parents')
+            ->leftJoin('groups.closuresChildren', 'cclosures')
+            ->leftJoin('cclosures.child', 'children')
+            ->where('groups.sysname = :sysname')
+            ->setParameter('sysname', $sysname)
             ->getQuery();
 
         try {

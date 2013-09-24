@@ -19,7 +19,7 @@
 
 {% extends "RedadoCoreBundle::layout.html.twig" %}
 
-{% set group_name_link = "<a href=\"#{ path('group_show', { 'id': group.id }) }\">#{ group.name }</a>" %}
+{% set group_name_link = "<a href=\"#{ path('group_show', { 'id': group.sysname }) }\">#{ group.name }</a>" %}
 
 {% block h1 %}
 {% trans %}Edit group %group_name_link%{% endtrans %}
@@ -58,7 +58,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ path('group_removeparent', { id: group.id, parent_id: closure.parent.id }) }}"
+                    <a href="{{ path('group_removeparent', { id: group.sysname, parent_id: closure.parent.id }) }}"
                     class="btn">
                         Remove
                     </a>
@@ -104,7 +104,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ path('group_removechild', { id: group.id, child_id: closure.child.id }) }}"
+                    <a href="{{ path('group_removechild', { id: group.sysname, child_id: closure.child.id }) }}"
                     class="btn">
                         Remove
                     </a>

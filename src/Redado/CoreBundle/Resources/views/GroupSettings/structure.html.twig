@@ -21,8 +21,8 @@
 
 {% block left_column %}
     <ul class="nav nav-pills nav-stacked">
-        <li><a href="{{ path('group_settings_general', {'id': group.id }) }}">General</a></li>
-        <li><a href="{{ path('group_settings_permissions', { 'id': group.id }) }}">Permissions</a></li>
+        <li><a href="{{ path('group_settings_general', {'id': group.sysname }) }}">General</a></li>
+        <li><a href="{{ path('group_settings_permissions', { 'id': group.sysname }) }}">Permissions</a></li>
         <li><a href="#">Links with other groups</a></li>
         <li><a href="#">Extensions</a></li>
     </ul>
@@ -30,8 +30,8 @@
 
 {% block content %}
     <ul class="breadcrumb">
-        <li><a href="{{ path('group_show', {'id': group.id}) }}">{{ group.name}} ({{ group.sysname}})</a> <span class="divider">/</span></li>
-        <li><a href="{{ path('group_settings_general', {'id': group.id}) }}">{% trans %}Settings{% endtrans %}</a> <span class="divider">/</span></li>
+        <li><a href="{{ path('group_show', {'id': group.sysname }) }}">{{ group.name}} ({{ group.sysname}})</a> <span class="divider">/</span></li>
+        <li><a href="{{ path('group_settings_general', {'id': group.sysname }) }}">{% trans %}Settings{% endtrans %}</a> <span class="divider">/</span></li>
         <li class="active">{% trans %}Links with other groups{% endtrans %}</li>
     </ul>
     {{ form_start(form_parent, { 'action': '#', 'attr' : { 'class': 'form form-inline'} }) }}
@@ -47,7 +47,7 @@
 		{% for closure in group.closuresParents %}
 			<tr>
 				<td>
-					<a href="{{ path('group_show', { id : closure.parent.id }) }}">{{ closure.parent.name }}</a> <span class="muted">({{ closure.parent.sysname }})</span>
+					<a href="{{ path('group_show', { id : closure.parent.sysname }) }}">{{ closure.parent.name }}</a> <span class="muted">({{ closure.parent.sysname }})</span>
 				</td>
                 <td>
                     {% if closure.inheritMembers == true %}
@@ -57,7 +57,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ path('group_removeparent', { id: group.id, parent_id: closure.parent.id }) }}"
+                    <a href="{{ path('group_removeparent', { id: group.sysname, parent_id: closure.parent.sysname }) }}"
                     class="btn">
                         Remove
                     </a>
@@ -93,7 +93,7 @@
 		{% for closure in group.closuresChildren %}
 			<tr>
 				<td>
-					<a href="{{ path('group_show', { id : closure.child.id }) }}">{{ closure.child.name }}</a> <span class="muted">({{ closure.child.sysname }})</span>
+					<a href="{{ path('group_show', { id : closure.child.sysname }) }}">{{ closure.child.name }}</a> <span class="muted">({{ closure.child.sysname }})</span>
 				</td>
                 <td>
                     {% if closure.inheritMembers == true %}
@@ -103,7 +103,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ path('group_removechild', { id: group.id, child_id: closure.child.id }) }}"
+                    <a href="{{ path('group_removechild', { id: group.sysname, child_id: closure.child.sysname }) }}"
                     class="btn">
                         Remove
                     </a>

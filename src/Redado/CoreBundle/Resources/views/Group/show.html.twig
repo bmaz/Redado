@@ -23,7 +23,7 @@
 {% block left_column %}
     <h4>{{ group.name }}
         {% if is_granted('admin', group) %}
-        <a href="{{ path('group_settings_general', {'id': group.id})}}" class="btn btn-mini">
+        <a href="{{ path('group_settings_general', {'id': group.sysname})}}" class="btn btn-mini">
             <i class="icon-wrench"></i> {% trans %}Settings{% endtrans %}
         </a>
         {% endif %}
@@ -41,7 +41,7 @@
                 <ul class="unstyled">
                     {% for parent in group.parents %}
                         <li>
-                        <a href="{{ path('group_show', { 'id' : parent.id } ) }}">{{ parent.name }}</a><span class="muted"> ({{ parent.sysname}})</span>
+                        <a href="{{ path('group_show', { 'id' : parent.sysname } ) }}">{{ parent.name }}</a><span class="muted"> ({{ parent.sysname}})</span>
                         </li>
                     {% endfor %}
                 </ul>
@@ -68,7 +68,7 @@
 		{% endfor %}
         <tr>
             <td>
-                <a href="{{ path('group_add_user', { 'id' : group.id }) }}" class="btn btn-small">
+                <a href="{{ path('group_add_user', { 'id' : group.sysname }) }}" class="btn btn-small">
                     {% trans %}Add{% endtrans %} <i class="icon-plus"></i>
                 <a>
             </td>
@@ -92,7 +92,7 @@
                     <span class="pull-left"{% if child.children | length > 0 %} data-toggle="collapse" style="cursor:pointer;width:15px;"{% endif %} id="achild{{ child.id }}{{ rand }}" data-target="#child{{ child.id }}{{ rand }}">
                         <i class="icon-chevron-right{% if child.children | length == 0 %} icon-white{% endif %}"></i>
                     </span>
-                    <a href="{{ path('group_show', { 'id' : child.id })}}">{{ child.name }}</a>
+                    <a href="{{ path('group_show', { 'id' : child.sysname })}}">{{ child.name }}</a>
                     <span class="muted">({{ child.sysname }})</span>
                     <ul id="child{{ child.id }}{{ rand }}" class="collapse">
                     <br/>
@@ -122,7 +122,7 @@
             {% else %}
             {% endfor %}
         </ul>
-        <a href="{{ path('group_new', {'parent_id' : group.id }) }}" class="btn btn-small">
+        <a href="{{ path('group_new', {'parent_id' : group.sysname }) }}" class="btn btn-small">
             {% trans %}Add{% endtrans %} <i class="icon-plus"></i>
         </a>
         </td></tr></tbody></table>
@@ -150,13 +150,13 @@
 
 {% block toolbar %}
 	{% if is_granted('edit_users', group) %}
-          <a href="{{ path('group_adduser', { 'id': group.id }) }}" class="btn btn-primary">
+          <a href="{{ path('group_adduser', { 'id': group.sysname }) }}" class="btn btn-primary">
             <i class="icon-plus icon-white"></i>
             {% trans %}Add user{% endtrans %}
           </a>
 	{% endif %}
     {% if is_granted('admin', group) %}
-        <a href="{{ path('group_editpermission', { 'id': group.id }) }}" class="btn">
+        <a href="{{ path('group_editpermission', { 'id': group.sysname }) }}" class="btn">
             {% trans %}Admin rights{% endtrans %}
         </a>
     {% endif %}
