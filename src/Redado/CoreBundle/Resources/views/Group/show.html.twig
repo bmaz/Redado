@@ -66,6 +66,13 @@
                 </td>
 			</tr>
 		{% endfor %}
+        <tr>
+            <td>
+                <a href="{{ path('group_add_user', { 'id' : group.id }) }}" class="btn btn-small">
+                    {% trans %}Add{% endtrans %} <i class="icon-plus"></i>
+                <a>
+            </td>
+        </tr>
 		</tbody>
 	</table>
 {% endblock %}
@@ -116,7 +123,7 @@
             {% endfor %}
         </ul>
         <a href="{{ path('group_new', {'parent_id' : group.id }) }}" class="btn btn-small">
-            Add <i class="icon-plus"></i>
+            {% trans %}Add{% endtrans %} <i class="icon-plus"></i>
         </a>
         </td></tr></tbody></table>
     </div>

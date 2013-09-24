@@ -28,7 +28,7 @@ group_delete:
     defaults: { _controller: "RedadoCoreBundle:Group:delete" }
     requirements: { _method: post|delete }
 
-group_adduser:
+group_add_user:
     pattern: /{id}/add/user
     defaults: { _controller: "RedadoCoreBundle:Group:addUser" }
 
