@@ -26,6 +26,10 @@
             <i class="icon-wrench"></i> {% trans %}Settings{% endtrans %}
         </a>
     </h4>
+    <span class="muted" id="help_sysname" data-placement="right"
+    title="{% trans %}This is the short system name of the group, unique in the application.{% endtrans %}"
+    >{{ group.sysname }}</span><br/>
+    <script type="text/javascript">$('#help_sysname').tooltip();</script>
     {{ group.description|nl2br }}<br/>
     <strong>{% trans %}Creation date :{% endtrans %}</strong> {{ group.created|localizeddate('full', 'short') }}
     <div class="row-fluid">
