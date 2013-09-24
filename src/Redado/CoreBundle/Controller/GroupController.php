@@ -144,6 +144,9 @@ class GroupController extends Controller
 			throw $this->createNotFoundException('Unable to find Group.');
 		}
 
+        if (!$this->get('security.context')->isGranted('add_user', $group)) {
+            return $this->createNotFoundException();
+        }
         $builder = $this->createFormBuilder();
         $transformer = new UserToEmailTransformer($em);
         $form = $builder
