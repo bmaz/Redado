@@ -47,7 +47,7 @@
 		{% for closure in group.closuresParents %}
 			<tr>
 				<td>
-					<a href="{{ path('group_show', { id : closure.parent.id }) }}">{{ closure.parent.name }}</a>
+					<a href="{{ path('group_show', { id : closure.parent.id }) }}">{{ closure.parent.name }}</a> <span class="muted">({{ closure.parent.sysname }})</span>
 				</td>
                 <td>
                     {% if closure.inheritMembers == true %}
@@ -93,7 +93,7 @@
 		{% for closure in group.closuresChildren %}
 			<tr>
 				<td>
-					<a href="{{ path('group_show', { id : closure.child.id }) }}">{{ closure.child.name }}</a>
+					<a href="{{ path('group_show', { id : closure.child.id }) }}">{{ closure.child.name }}</a> <span class="muted">({{ closure.child.sysname }})</span>
 				</td>
                 <td>
                     {% if closure.inheritMembers == true %}
