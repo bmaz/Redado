@@ -235,73 +235,6 @@ class GroupController extends Controller
         );
     }
 
-    public function editStructureAction(Request $request, $id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $group = $em->getRepository('RedadoCoreBundle:Group')->findNoLazy($id);
-
-        if (!$group) {
-            throw $this->createNotFoundException('Unable to find Group entity.');
-        }
-
-        $builder = $this->container->get('form.factory')->createNamedBuilder('form_child', 'form', array('id' => $id));
-        $transformer = new GroupToSysnameTransformer($em);
-
-        $form_child = $builder
-            ->add(
-                $builder->create(
-                    'child',
-                    new \Redado\CoreBundle\Form\Type\GroupTypeaheadType()
-                )->addViewTransformer($transformer)
-            )
-            ->add('inherit_members', 'checkbox', array('required' => false))
-            ->add('id', 'hidden')
-            ->getForm();
-
-
-        $builder = $this->container->get('form.factory')->createNamedBuilder('form_parent', 'form', array('id' => $id));
-
-        $form_parent = $builder
-            ->add(
-                $builder->create(
-                    'parent',
-                    new \Redado\CoreBundle\Form\Type\GroupTypeaheadType()
-                )->addViewTransformer($transformer)
-            )
-            ->add('inherit_members', 'checkbox', array('required' => false))
-            ->add('id', 'hidden')
-            ->getForm();
-
-        $form_child->handleRequest($request);
-        $form_parent->handleRequest($request);
-
-        if($form_child->isValid()) {
-            $data = $form_child->getData();
-            $child = $data['child'];
-
-            $group->addChild($child, $data['inherit_members']);
-
-            $em->flush();
-        }
-
-        if($form_parent->isValid()) {
-            $data = $form_parent->getData();
-            $parent = $data['parent'];
-
-            $group->addParent($parent, $data['inherit_members']);
-
-            $em->flush();
-        }
-
-        return $this->render('RedadoCoreBundle:Group:editStructure.html.twig',
-            array(
-                'form_child' => $form_child->createView(),
-                'form_parent' => $form_parent->createView(),
-                'group' => $group,
-            )
-        );
-    }
-
     public function removeParentAction(Request $request, $id, $parent_id)
     {
 	    $em = $this->getDoctrine()->getManager();
@@ -312,9 +245,9 @@ class GroupController extends Controller
 			throw $this->createNotFoundException('Unable to find entity.');
 		}
 
-        if(!$this->checkLastParent($parent_group, $group)) {
+        if(count($group->getParents()) == 0) {
             return $this->redirect(
-                $this->generateUrl('group_editstructure', array('id' => $id,))
+                $this->generateUrl('group_settings_structure', array('id' => $id,))
             );
         }
 
@@ -330,7 +263,7 @@ class GroupController extends Controller
 
             $em->flush();
 
-            return $this->redirect($this->generateUrl('group_editstructure', array('id' => $id)));
+            return $this->redirect($this->generateUrl('group_settings_structure', array('id' => $id)));
         }
 
         return $this->render('RedadoCoreBundle:Group:removeParent.html.twig',
@@ -356,9 +289,9 @@ class GroupController extends Controller
         $form = $this->createRemoveStructureForm($id, $child_id, false);
         $form->handleRequest($request);
 
-        if(!$this->checkLastParent($group, $child_group)) {
+        if(count($child->getParents()) == 0) {
             return $this->redirect(
-                $this->generateUrl('group_editstructure', array('id' => $id,))
+                $this->generateUrl('group_settings_structure', array('id' => $id,))
             );
         }
 
@@ -370,7 +303,7 @@ class GroupController extends Controller
 
             $em->flush();
 
-            return $this->redirect($this->generateUrl('group_editstructure', array('id' => $id)));
+            return $this->redirect($this->generateUrl('group_settings_structure', array('id' => $id)));
         }
 
         return $this->render('RedadoCoreBundle:Group:removeChild.html.twig',

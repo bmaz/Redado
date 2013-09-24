@@ -35,10 +35,12 @@
     <div class="row-fluid">
         <div class="span12">
             {% if group.parents | length %}
-                <h5>{% trans %}Parents group :{% endtrans %}</h5>
+                <h5>{% trans %}Parent groups :{% endtrans %}</h5>
                 <ul class="unstyled">
                     {% for parent in group.parents %}
-                        <li><a href="{{ path('group_show', { 'id' : parent.id } ) }}">{{ parent.name }}</a></li>
+                        <li>
+                        <a href="{{ path('group_show', { 'id' : parent.id } ) }}">{{ parent.name }}</a><span class="muted"> ({{ parent.sysname}})</span>
+                        </li>
                     {% endfor %}
                 </ul>
             {% endif %}

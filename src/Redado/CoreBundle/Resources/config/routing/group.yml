@@ -63,3 +63,7 @@ group_settings_general:
 group_settings_permissions:
     pattern: /{id}/settings/permissions
     defaults: { _controller: "RedadoCoreBundle:GroupSettings:permissions" }
+
+group_settings_structure:
+    pattern: /{id}/settings/structure
+    defaults: { _controller: "RedadoCoreBundle:GroupSettings:structure" }
