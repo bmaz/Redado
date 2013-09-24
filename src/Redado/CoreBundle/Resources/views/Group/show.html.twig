@@ -71,7 +71,7 @@
     <div class="span12">
     <table class="table table-bordered">
     <thead><tr><th>
-            {% trans %}Sub-groups :{% endtrans %} 
+            {% trans %}Sub-groups :{% endtrans %}
     </th></tr></thead>
     <tbody><tr><td>
         <ul class="unstyled">
@@ -82,6 +82,7 @@
                         <i class="icon-chevron-right{% if child.children | length == 0 %} icon-white{% endif %}"></i>
                     </span>
                     <a href="{{ path('group_show', { 'id' : child.id })}}">{{ child.name }}</a>
+                    <span class="muted">({{ child.sysname }})</span>
                     <ul id="child{{ child.id }}{{ rand }}" class="collapse">
                     <br/>
                     </ul>

@@ -23,6 +23,7 @@
             <i class="icon-chevron-right{% if child.children | length == 0 %} icon-white{% endif %}"></i>
         </span>
         <a href="{{ path('group_show', { 'id' : child.id })}}">{{ child.name }}</a>
+        <span class="muted">({{ child.sysname }})</span>
         <ul id="child{{ child.id }}{{ rand }}" class="collapse">
         <br/>
         </ul>
