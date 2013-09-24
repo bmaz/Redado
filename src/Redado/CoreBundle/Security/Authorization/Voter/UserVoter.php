@@ -53,9 +53,7 @@ class UserVoter implements VoterInterface
 
             $result = VoterInterface::ACCESS_DENIED;
 
-            if ($token->getUser() === $object) {
-                return VoterInterface::ACCESS_GRANTED;
-            }
+            return VoterInterface::ACCESS_GRANTED;
         }
         return $result;
     }
