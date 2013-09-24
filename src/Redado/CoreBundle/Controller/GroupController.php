@@ -29,8 +29,7 @@ use Redado\CoreBundle\Security\GroupProtectionProxy;
 use Redado\CoreBundle\Form\GroupType;
 use Redado\CoreBundle\Form\AddUserToGroupType;
 use Redado\CoreBundle\Form\Type\MultipleGroupSelectType;
-use Redado\CoreBundle\Form\DataTransformer\GroupToSysnameTransformer;
-use Redado\CoreBundle\Form\DataTransformer\GroupArrayToSysnameListTransformer;
+use Redado\CoreBundle\Form\DataTransformer\UserToEmailTransformer;
 
 /**
  * Group controller.
@@ -145,10 +144,15 @@ class GroupController extends Controller
 			throw $this->createNotFoundException('Unable to find Group.');
 		}
 
-        $form = $this->createFormBuilder()
-            ->add('user_email',
-                new \Redado\CoreBundle\Form\Type\UserTypeaheadType()
-                  )
+        $builder = $this->createFormBuilder();
+        $transformer = new UserToEmailTransformer($em);
+        $form = $builder
+            ->add(
+                $builder->create(
+                    'user_email',
+                    new \Redado\CoreBundle\Form\Type\UserTypeaheadType()
+                )->addViewTransformer($transformer)
+            )
             ->add('Save', 'submit')
             ->getForm();
 
@@ -165,11 +169,9 @@ class GroupController extends Controller
 
 		if ($form->isValid()) {
             $data = $form->getData();
-            $user_email = $data['user_email'];
+            $user = $data['user_email'];
 
             $em = $this->getDoctrine()->getManager();
-            $user = $em->getRepository('RedadoCoreBundle:User')->findOneByEmail($user_email);
-
 
             $group->addUser($user);
 
@@ -245,7 +247,7 @@ class GroupController extends Controller
 			throw $this->createNotFoundException('Unable to find entity.');
 		}
 
-        if(count($group->getParents()) == 0) {
+        if(!$this->get('redado.manager')->checkLastParent($parent_group, $group)) {
             return $this->redirect(
                 $this->generateUrl('group_settings_structure', array('id' => $id,))
             );
@@ -289,7 +291,7 @@ class GroupController extends Controller
         $form = $this->createRemoveStructureForm($id, $child_id, false);
         $form->handleRequest($request);
 
-        if(count($child->getParents()) == 0) {
+        if (!$this->get('redado.manager')->checkLastParent($group, $child_group)) {
             return $this->redirect(
                 $this->generateUrl('group_settings_structure', array('id' => $id,))
             );

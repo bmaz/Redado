@@ -137,6 +137,10 @@ class Manager {
                     'description' => 'Add users to the group.'
                 ),
                 array(
+                    'name' => 'enable_user',
+                    'description' => 'Register new user accounts'
+                ),
+                array(
                     'name' => 'remove_user',
                     'description' => 'Remove users from the group.'
                 ),
@@ -156,13 +160,13 @@ class Manager {
         );
     }
 
-    private function checkLastParent($parent, $child)
+    public function checkLastParent($parent, $child)
     {
         if (count($child->getParents()) == 1) {
-            $this->get('session')->getFlashBag()->add(
+            $this->services['session']->getFlashBag()->add(
                 'error',
                 $this
-                    ->service['translator']
+                    ->services['translator']
                     ->trans(
                         'Each group must have at least one parent. Group %parent% is the last parent of group %child%.',
                         array('%parent%' => $parent->getName(), '%child%' => $child->getName())

@@ -35,6 +35,7 @@ services:
                 mailer:                     @mailer
                 redado.settings:            @redado.settings
                 templating:                 @templating
+                translator:                 @translator
     redado.security.access.group_voter:
         class: Redado\CoreBundle\Security\Authorization\Voter\GroupVoter
         public: false
