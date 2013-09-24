@@ -21,7 +21,11 @@
 
 
 {% block left_column %}
-    <h4>{{ group.name }} <a href="{{ path('group_settings_general', {'id': group.id})}}"><i class="icon-wrench"></i></a></h4>
+    <h4>{{ group.name }}
+        <a href="{{ path('group_settings_general', {'id': group.id})}}" class="btn btn-mini">
+            <i class="icon-wrench"></i> {% trans %}Settings{% endtrans %}
+        </a>
+    </h4>
     {{ group.description|nl2br }}<br/>
     <strong>{% trans %}Creation date :{% endtrans %}</strong> {{ group.created|localizeddate('full', 'short') }}
     <div class="row-fluid">
@@ -61,7 +65,11 @@
 {% block right_content %}
 <div class="row-fluid">
     <div class="span12">
-        <h5>{% trans %}Sub-groups :{% endtrans %}</h5>
+    <table class="table table-bordered">
+    <thead><tr><th>
+            {% trans %}Sub-groups :{% endtrans %} 
+    </th></tr></thead>
+    <tbody><tr><td>
         <ul class="unstyled">
             {% for child in group.children %}
             {% set rand = random() %}
@@ -98,6 +106,10 @@
             {% else %}
             {% endfor %}
         </ul>
+        <a href="{{ path('group_new', {'parent_id' : group.id }) }}" class="btn btn-small">
+            Add <i class="icon-plus"></i>
+        </a>
+        </td></tr></tbody></table>
     </div>
 </div>
 <div class="row-fluid" style="margin-top:5px;">

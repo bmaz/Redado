@@ -69,9 +69,9 @@ class GroupController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $parent = $em->getRepository('RedadoCoreBundle:Group')->find($parent_id);
-        $group = $parent->createChild(array($this->getUser()));
 
-        $builder = $this->createFormBuilder($group, array(
+        $form_group = new Group();
+        $builder = $this->createFormBuilder($form_group, array(
             'validation_groups' => array('new')
         ));
 
@@ -80,28 +80,26 @@ class GroupController extends Controller
             ->add('name')
             ->add('sysname')
             ->add('description');
-
-
         $form = $builder->getForm();
 
         $form->handleRequest($request);
-        $group->addParent($parent);
 
         if ($form->isValid()) {
-
+            $inherit_members = $form->get('inherit_members')->getData();
+            $group = $parent->createChild(array($this->getUser()), $inherit_members);
+            $group->setSysname($form_group->getSysname());
+            $group->setName($form_group->getName());
+            $group->setDescription($form_group->getDescription());
             $group->addUser($this->getUser());
 
             $em->persist($group);
-
-            $this->createAdminGroup($group, $this->getUser());
-
             $em->flush();
 
             return $this->redirect($this->generateUrl('group_show', array('id' => $group->getId())));
         }
 
         return $this->render('RedadoCoreBundle:Group:new.html.twig', array(
-            'group' => $group,
+            'group' => $form_group,
             'parent' => $parent,
             'form'   => $form->createView(),
         ));

@@ -49,7 +49,7 @@ group_editstructure:
     defaults: { _controller: "RedadoCoreBundle:Group:editStructure" }
 
 group_new:
-    pattern:  /{parent_id}/edit/structure/new
+    pattern:  /{parent_id}/new/child
     defaults: { _controller: "RedadoCoreBundle:Group:new" }
 
 group_editpermission:

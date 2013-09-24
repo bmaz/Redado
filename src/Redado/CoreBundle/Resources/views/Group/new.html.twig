@@ -19,17 +19,29 @@
 
 {% extends "RedadoCoreBundle::layout.html.twig" %}
 
-{% block h1 %}
-Group creation
+{% block left_column %}
+<div class="alert alert-info" style="margin-top:100px;">
+<h4>Help</h4>
+</div>
 {% endblock %}
 
 {% block content %}
     {% set parent_name = parent.name %}
     <h3>{% trans %}Create a sub-group of group %parent_name%.{% endtrans %}</h3>
-    <form action="{{ path('group_new', {'parent_id': parent.id}) }}" method="post" {{ form_enctype(form) }}>
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+        <fieldset>
         <label>Parent:</label>
         <input type="text" readonly="true" value="{{ parent.name }}" />
-        {{ form_widget(form) }}
+        <label for="{{form.inherit_members.vars.id}}" class="checkbox">
+        {% trans %}Inherit members{% endtrans %}
+        {{ form_widget(form.inherit_members) }}
+        </label>
+        </fieldset>
+        <fieldset>
+        {{ form_row(form.name) }}
+        {{ form_row(form.sysname) }}
+        {{ form_row(form.description, {'attr' : {'style' : 'width:75%;height:150px;'}}) }}
         <script type="text/javascript">
             function suggest() {
                 suggestion = '{{ parent.sysname|lower }}' + '-' + $("#{{ form.name.vars.id }}").val();
@@ -39,9 +51,10 @@ Group creation
             $('#{{ form.name.vars.id }}').keyup(suggest);
             $('#{{ form.name.vars.id }}').change(suggest);
         </script>
+        </fieldset>
         <p>
-            <button type="submit">{% trans %}Create{% endtrans %}</button>
+            <button type="submit" class="btn btn-primary">{% trans %}Create{% endtrans %}</button>
         </p>
-    </form>
+    {{ form_end(form) }}
 
 {% endblock %}

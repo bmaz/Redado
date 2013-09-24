@@ -68,7 +68,7 @@ class MainController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $group_root = $em->getRepository('RedadoCoreBundle:Group')->find(0);
+        $group_root = $em->getRepository('RedadoCoreBundle:Group')->findBySysname('root');
 
         if($group_root) {
             $installed = true;

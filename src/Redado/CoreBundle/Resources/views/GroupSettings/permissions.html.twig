@@ -29,6 +29,11 @@
 {% endblock %}
 
 {% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{{ path('group_show', {'id': group.id}) }}">{{ group.name}}</a> <span class="divider">/</span></li>
+        <li><a href="{{ path('group_settings_general', {'id': group.id}) }}">{% trans %}Settings{% endtrans %}</a> <span class="divider">/</span></li>
+        <li class="active">{% trans %}Permissions{% endtrans %}</li>
+    </ul>
 {{ form_start(form, {'attr' :{'class' : 'form-horizontal'}} ) }}
 {% for module, permissions in module_permissions %}
     <h4>{{ module }}</h4>
