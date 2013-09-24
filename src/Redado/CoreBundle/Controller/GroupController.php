@@ -189,7 +189,7 @@ class GroupController extends Controller
             $user = $this->get('redado.manager')->createUser($data['email'],
                     $group);
 
-            if ($data['activate']) {
+            if ($data['activate'] && $user) {
                 $this->get('redado.manager')->enableUser($user->getId());
             }
 

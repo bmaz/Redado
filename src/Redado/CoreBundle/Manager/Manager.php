@@ -44,7 +44,7 @@ class Manager {
         $user->setEmail($email);
         $user->addGroup($group);
 
-        $errors = ($this->services['validator']->validate($user));
+        $errors = $this->services['validator']->validate($user, array('registration'));
 
 
         if (count($errors) == 0) {
@@ -55,8 +55,6 @@ class Manager {
 
             return $user;
         } else {
-            $this->services['doctrine']->getManager()->remove($user);
-
             foreach($errors as $error) {
                 $this->services['session']->getFlashBag()->add('error', 'User not valid.' . $error);
             }
