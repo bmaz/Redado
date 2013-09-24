@@ -44,7 +44,7 @@ class GroupSettingsController extends Controller
         }
 
         if(!$this->get('security.context')->isGranted('admin', $group)) {
-            throw $this->createNotFoundException('User does not exist');
+            throw $this->createNotFoundException();
         }
 
         $editForm = $this->createForm(new GroupType(), $group, array('em' => $em));
@@ -168,6 +168,10 @@ class GroupSettingsController extends Controller
 
         if (!$group) {
             throw $this->createNotFoundException('Unable to find Group entity.');
+        }
+
+        if(!$this->get('security.context')->isGranted('admin', $group)) {
+            throw $this->createNotFoundException();
         }
 
         $builder = $this->container->get('form.factory')->createNamedBuilder('form_child', 'form', array('id' => $id));

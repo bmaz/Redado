@@ -54,3 +54,4 @@ class UserToEmailTransformer implements DataTransformerInterface
 
         return $user;
     }
+}

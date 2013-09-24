@@ -22,9 +22,11 @@
 
 {% block left_column %}
     <h4>{{ group.name }}
+        {% if is_granted('admin', group) %}
         <a href="{{ path('group_settings_general', {'id': group.id})}}" class="btn btn-mini">
             <i class="icon-wrench"></i> {% trans %}Settings{% endtrans %}
         </a>
+        {% endif %}
     </h4>
     <span class="muted" id="help_sysname" data-placement="right"
     title="{% trans %}This is the short system name of the group, unique in the application.{% endtrans %}"
