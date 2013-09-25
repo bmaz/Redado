@@ -50,7 +50,7 @@
         {{ form_end(form_registered) }}
     </div>
     <div class="span6">
-        <h2>Create another user</h2>
+        <h2>{% trans %}Create another user{% endtrans %}</h2>
         {{ form_start(form_new, { 'attr': { 'class': 'form'}}) }}
             {{ form_widget(form_new.email, { 'attr':  {'placeholder' : 'Email'|trans }}) }}
             {% set title %}
