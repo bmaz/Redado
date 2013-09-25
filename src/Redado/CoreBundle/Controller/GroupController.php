@@ -52,11 +52,8 @@ class GroupController extends Controller
             throw $this->createNotFoundException('Unable to find Group entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-
         return $this->render('RedadoCoreBundle:Group:show.html.twig', array(
-            'group'      => $group_protected,
-            'delete_form' => $deleteForm->createView()
+            'group'      => $group_protected
             ));
     }
 
@@ -89,7 +86,6 @@ class GroupController extends Controller
             $group->setSysname($form_group->getSysname());
             $group->setName($form_group->getName());
             $group->setDescription($form_group->getDescription());
-            $group->addUser($this->getUser());
 
             $em->persist($group);
             $em->flush();

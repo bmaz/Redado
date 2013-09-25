@@ -80,13 +80,14 @@ class UserController extends Controller
             throw $this->createNotFoundException('Unable to find User entity.');
         }
 
-        $deleteForm = $this->createDeleteForm($id);
-
-        $entity = $this->get('guilro.protection_proxy')->getProxy($entity);
+        if ($entity == $this->getUser()) {
+            $admined_groups = $em->getRepository('RedadoCoreBundle:Group')->findByAdmin($entity);
+        } else { $admined_groups = array(); }
 
         return $this->render('RedadoCoreBundle:User:show.html.twig', array(
             'user'      => $this->get('guilro.protection_proxy')->getProxy($entity),
-            'delete_form' => $deleteForm->createView(),        ));
+            'admined_groups' => $admined_groups
+        ));
     }
 
 
