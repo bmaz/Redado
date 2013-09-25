@@ -1,0 +1,90 @@
+'Hello !': '__Hello !'
+'Someone created an account for you on %site_name%.': '__Someone created an account for you on %site_name%.'
+'You can connect with the following credentials :': '__You can connect with the following credentials :'
+'Identifier :': '__Identifier :'
+'Password :': '__Password :'
+Login: __Login
+Email: __Email
+Password: __Password
+'Create user': '__Create user'
+Save: __Save
+'Email :': '__Email :'
+Groups: __Groups
+'Administrated groups': '__Administrated groups'
+'Delete %user_name_link% ?': '__Delete %user_name_link% ?'
+'Do you really want to delete %user_name% account ?': '__Do you really want to delete %user_name% account ?'
+Delete: __Delete
+or: __or
+'Go back to user profile': '__Go back to user profile'
+'Edit %group_name_link%': '__Edit %group_name_link%'
+'Add parent group to group %group_name_link%': '__Add parent group to group %group_name_link%'
+'Please enter group name.': '__Please enter group name.'
+'Create a sub-group of group %parent_name%.': '__Create a sub-group of group %parent_name%.'
+'Automatically add users to parent group': '__Automatically add users to parent group'
+Create: __Create
+'Remove %child_group_name_link% ?': '__Remove %child_group_name_link% ?'
+'Do you really want to remove child %child_group_name_link% from %group_name_link% group ?': '__Do you really want to remove child %child_group_name_link% from %group_name_link% group ?'
+Back: __Back
+Remove: __Remove
+'Do you really want to remove %user_name_link% from %group_name_link% group ?': '__Do you really want to remove %user_name_link% from %group_name_link% group ?'
+'Edit group %group_name_link%': '__Edit group %group_name_link%'
+'Creation date :': '__Creation date :'
+'Description :': '__Description :'
+Parents: __Parents
+'Inherhit members': '__Inherhit members'
+'Remove or add': '__Remove or add'
+Yes: __Yes
+No: __No
+Add: __Add
+Children: __Children
+Settings: __Settings
+'This is the short system name of the group, unique in the application.': '__This is the short system name of the group, unique in the application.'
+'Parent groups :': '__Parent groups :'
+Members: __Members
+Manage: __Manage
+'Sub-groups :': '__Sub-groups :'
+'Admins :': '__Admins :'
+'Add user': '__Add user'
+'Admin rights': '__Admin rights'
+'Remove %parent_group_name_link% ?': '__Remove %parent_group_name_link% ?'
+'Do you really want to remove parent %parent_group_name_link% from %group_name_link% group ?': '__Do you really want to remove parent %parent_group_name_link% from %group_name_link% group ?'
+'Add a registered user': '__Add a registered user'
+'Please enter user''s email or do a search on his name.': '__Please enter user''s email or do a search on his name.'
+'If account is not activated, user will be just as a contact and will not be informed of the registration.': '__If account is not activated, user will be just as a contact and will not be informed of the registration.'
+'Activate user account and send a mail': '__Activate user account and send a mail'
+'Add child group to group %group_name_link%': '__Add child group to group %group_name_link%'
+Home: __Home
+'My account': '__My account'
+Logout: __Logout
+Search: __Search
+'Error :': '__Error :'
+'Redado is a free software :': '__Redado is a free software :'
+License: __License
+Code: __Code
+'Delete %user_name_link%''s account ?': '__Delete %user_name_link%''s account ?'
+'Do you really want to delete %user_name%''s account ?': '__Do you really want to delete %user_name%''s account ?'
+Close: __Close
+Install: __Install
+'Please create the admin user :': '__Please create the admin user :'
+'First Name': '__First Name'
+'Last Name': '__Last Name'
+'Redado is already installed.': '__Redado is already installed.'
+'Created user %user_name%.': '__Created user %user_name%.'
+'Created group Global.': '__Created group Global.'
+'Redado sucessfully installed !': '__Redado sucessfully installed !'
+'Go to login page': '__Go to login page'
+'Welcome %app_user_name% !': '__Welcome %app_user_name% !'
+'Here you wil find the list of all the groups you belong to. You can click on them to get on there pages': '__Here you wil find the list of all the groups you belong to. You can click on them to get on there pages'
+Aministration: __Aministration
+'Number of users registered': '__Number of users registered'
+'Number of groups registered': '__Number of groups registered'
+'Create group': '__Create group'
+'Group type settings': '__Group type settings'
+Permissions: __Permissions
+'Links with other groups': '__Links with other groups'
+Users: __Users
+Name: __Name
+'Join date': '__Join date'
+Activated: __Activated
+Actions: __Actions
+OK: __OK
