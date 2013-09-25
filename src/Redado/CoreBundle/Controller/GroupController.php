@@ -64,7 +64,7 @@ class GroupController extends Controller
     public function newAction(Request $request, $parent_id)
     {
         $em = $this->getDoctrine()->getManager();
-        $parent = $em->getRepository('RedadoCoreBundle:Group')->find($parent_id);
+        $parent = $em->getRepository('RedadoCoreBundle:Group')->findOneBySysname($parent_id);
 
         $form_group = new Group();
         $builder = $this->createFormBuilder($form_group, array(
@@ -240,9 +240,9 @@ class GroupController extends Controller
     {
 	    $em = $this->getDoctrine()->getManager();
 	    $group = $em->getRepository('RedadoCoreBundle:Group')->findOneBySysname($id);
-        $parent_group = $em->getRepository('RedadoCoreBundle:Group')->find($parent_id);
+        $parent_group = $em->getRepository('RedadoCoreBundle:Group')->findOneBySysname($parent_id);
 
-		if (!$group) {
+		if (!$group || !$parent_group) {
 			throw $this->createNotFoundException('Unable to find entity.');
 		}
 
@@ -281,9 +281,9 @@ class GroupController extends Controller
     {
 	    $em = $this->getDoctrine()->getManager();
 	    $group = $em->getRepository('RedadoCoreBundle:Group')->findOneBySysname($id);
-        $child_group = $em->getRepository('RedadoCoreBundle:Group')->find($child_id);
+        $child_group = $em->getRepository('RedadoCoreBundle:Group')->findOneBySysname($child_id);
 
-		if (!$group) {
+		if (!$group || !$child_group) {
 			throw $this->createNotFoundException('Unable to find entity.');
 		}
 
@@ -344,7 +344,7 @@ class GroupController extends Controller
         return $this->createFormBuilder(array('id' => $id, $structure . '_id' => $structure_id))
             ->add('id', 'hidden')
             ->add($structure . '_id', 'hidden')
-            ->setAction($this->generateUrl('group_remove' . $structure,
+            ->setAction($this->generateUrl('group_remove_' . $structure,
                 array('id' => $id, $structure . '_id' => $structure_id)
             ))
             ->getForm();
