@@ -248,9 +248,9 @@ class Group extends Role
     public function removeUser(\Redado\CoreBundle\Entity\User $user)
     {
         foreach($this->memberships as $membership) {
-            if($membership->getUser() == $user) {
-                $this->memberships->removeElement($membership);
-                $user->removeMembership($membership);
+            if($membership->getUser() == $user && $membership->getDirect()) {
+                $membership->setDirect(false);
+                $this->autoRemoveUser($user);
 
                 foreach($this->getParents() as $parent) {
                     $parent->autoRemoveUser($user);
