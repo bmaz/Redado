@@ -49,7 +49,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ path('group_removeparent', { id: group.sysname, parent_id: closure.parent.sysname }) }}"
+                    <a href="{{ path('group_remove_parent', { id: group.sysname, parent_id: closure.parent.sysname }) }}"
                     class="btn">
                         Remove
                     </a>
@@ -95,7 +95,7 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{{ path('group_removechild', { id: group.sysname, child_id: closure.child.sysname }) }}"
+                    <a href="{{ path('group_remove_child', { id: group.sysname, child_id: closure.child.sysname }) }}"
                     class="btn">
                         Remove
                     </a>
