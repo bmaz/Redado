@@ -34,7 +34,7 @@
         <label>Parent:</label>
         <input type="text" readonly="true" value="{{ parent.name }}" />
         <label for="{{form.inherit_members.vars.id}}" class="checkbox">
-        {% trans %}Inherit members{% endtrans %}
+        {% trans %}Automatically add users to parent group{% endtrans %}
         {{ form_widget(form.inherit_members) }}
         </label>
         </fieldset>
