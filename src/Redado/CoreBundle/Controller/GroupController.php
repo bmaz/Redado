@@ -45,7 +45,7 @@ class GroupController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository('RedadoCoreBundle:Group')->findNoLazyBySysname($id);
+        $entity = $em->getRepository('RedadoCoreBundle:Group')->findNoLazyOneBySysname($id);
         $group_protected = $this->get('guilro.protection_proxy')->getProxy($entity);
 
         if (!$entity) {
@@ -138,7 +138,7 @@ class GroupController extends Controller
     public function addUserAction(Request $request, $id)
     {
 		$em = $this->getDoctrine()->getManager();
-	    $group = $em->getRepository('RedadoCoreBundle:Group')->find($id);
+	    $group = $em->getRepository('RedadoCoreBundle:Group')->findOneBySysname($id);
 
 		if (!$group) {
 			throw $this->createNotFoundException('Unable to find Group.');
@@ -210,7 +210,7 @@ class GroupController extends Controller
     public function removeUserAction(Request $request, $id, $user_id)
     {
 		$em = $this->getDoctrine()->getManager();
-	    $group = $em->getRepository('RedadoCoreBundle:Group')->find($id);
+	    $group = $em->getRepository('RedadoCoreBundle:Group')->findOneBySysname($id);
         $user = $em->getRepository('RedadoCoreBundle:User')->find($user_id);
 
 		if (!$group) {
@@ -243,7 +243,7 @@ class GroupController extends Controller
     public function removeParentAction(Request $request, $id, $parent_id)
     {
 	    $em = $this->getDoctrine()->getManager();
-	    $group = $em->getRepository('RedadoCoreBundle:Group')->find($id);
+	    $group = $em->getRepository('RedadoCoreBundle:Group')->findOneBySysname($id);
         $parent_group = $em->getRepository('RedadoCoreBundle:Group')->find($parent_id);
 
 		if (!$group) {
@@ -284,7 +284,7 @@ class GroupController extends Controller
     public function removeChildAction(Request $request, $id, $child_id)
     {
 	    $em = $this->getDoctrine()->getManager();
-	    $group = $em->getRepository('RedadoCoreBundle:Group')->find($id);
+	    $group = $em->getRepository('RedadoCoreBundle:Group')->findOneBySysname($id);
         $child_group = $em->getRepository('RedadoCoreBundle:Group')->find($child_id);
 
 		if (!$group) {

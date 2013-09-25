@@ -38,7 +38,7 @@ class GroupSettingsController extends Controller
     public function indexAction($id, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $group = $em->getRepository('RedadoCoreBundle:Group')->find($id);
+        $group = $em->getRepository('RedadoCoreBundle:Group')->findOneBySysname($id);
         if(!$group) {
             throw $this->createNotFoundException('User does not exist');
         }
@@ -71,7 +71,7 @@ class GroupSettingsController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $group = $em->getRepository('RedadoCoreBundle:Group')->find($id);
+        $group = $em->getRepository('RedadoCoreBundle:Group')->findOneBySysname($id);
 
         if(!$group) {
             throw $this->createNotFoundException();
@@ -164,7 +164,7 @@ class GroupSettingsController extends Controller
     public function structureAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
-        $group = $em->getRepository('RedadoCoreBundle:Group')->findNoLazy($id);
+        $group = $em->getRepository('RedadoCoreBundle:Group')->findNoLazyOneBySysname($id);
 
         if (!$group) {
             throw $this->createNotFoundException('Unable to find Group entity.');
