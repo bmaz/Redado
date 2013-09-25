@@ -19,11 +19,10 @@
 
 {%trans %}Hello !{% endtrans %}
 
+
 {% trans %}Someone created an account for you on %site_name%.{% endtrans %}
 
-{% trans %}Your new password is %password%{% endtrans %}
 
-Ce mail est vraiment moche. Il faudra changer ça.
-Signé : le développeur.
-
-
+{% trans %}You can connect with the following credentials :{% endtrans %}
+{% trans %}Identifier :{% endtrans %} {{ email }}
+{% trans %}Password :{% endtrans %} {{ password }}

@@ -29,7 +29,7 @@
 
 {% block content %}
     <ul class="breadcrumb">
-        <li><a href="{{ path('group_show', {'id': group.id}) }}">{{ group.name}} ({{ group.sysname}})</a> <span class="divider">/</span></li>
+        <li><a href="{{ path('group_show', {'id': group.sysname}) }}">{{ group.name}} ({{ group.sysname}})</a> <span class="divider">/</span></li>
         <li class="active">{% trans %}Add user{% endtrans %}</li>
     </ul>
 <div class="row-fluid">

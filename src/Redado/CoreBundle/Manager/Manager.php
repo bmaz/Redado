@@ -94,14 +94,15 @@ class Manager {
         $em->flush();
 
         $message = \Swift_Message::newInstance()
-            ->setSubject('Activate your account on' . $this->services['redado.settings']->get('site_name'))
+            ->setSubject('Activate your account on ' . $this->services['redado.settings']->get('site_name'))
             ->setFrom($this->services['redado.settings']->get('email_adress'))
             ->setTo($user->getEmail())
             ->setBody($this->services['templating']->render(
                 'RedadoCoreBundle:Email:mail.txt.twig',
                 array(
                     'site_name' => $this->services['redado.settings']->get('site_name'),
-                    'password' => $password_clear
+                    'password' => $password_clear,
+                    'email' => $user->getEmail()
                 )
             ))
         ;

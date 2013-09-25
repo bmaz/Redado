@@ -50,22 +50,6 @@ class GroupRepository extends EntityRepository
             ->getResult();
     }
 
-    public function find($id)
-    {
-        $q = $this
-            ->createQueryBuilder('groups')
-            ->select('groups')
-            ->where('groups.id = :id')
-            ->setParameter('id', $id)
-            ->getQuery();
-
-        try {
-            return $q->getSingleResult();
-        } catch (NoResultException $e) {
-            return $this->findBySysname($id);
-        }
-    }
-
     public function findNoLazy($id)
     {
         $q = $this
@@ -88,7 +72,28 @@ class GroupRepository extends EntityRepository
         }
     }
 
-    public function findNoLazyBySysname($sysname)
+    public function findByAdmin($user)
+    {
+        $q = $this
+            ->createQueryBuilder('groups')
+            ->select('groups')
+            ->leftJoin('groups.permissions', 'permissions')
+            ->leftJoin('permissions.subject', 'admin_groups')
+            ->leftJoin('admin_groups.memberships', 'memberships')
+            ->leftJoin('memberships.user', 'admin')
+            ->where('admin.id = :admin_id AND permissions.name = :perm_name')
+            ->setParameter('admin_id', $user->getId())
+            ->setParameter('perm_name', 'admin')
+            ->getQuery();
+
+        try {
+            return $q->getResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
+    }
+
+    public function findNoLazyOneBySysname($sysname)
     {
         $q = $this
             ->createQueryBuilder('groups')
