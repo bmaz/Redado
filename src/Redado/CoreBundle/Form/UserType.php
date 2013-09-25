@@ -32,7 +32,7 @@ class UserType extends AbstractType
         $builder
             ->add('first_name', 'text')
             ->add('last_name', 'text')
-            ->add('submit', 'submit')
+            ->add('email', 'text')
             ->setMethod('POST');
         ;
     }

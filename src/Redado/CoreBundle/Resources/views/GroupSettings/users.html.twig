@@ -1,0 +1,76 @@
+{#
+ # This file is part of Redado.
+ #
+ # Copyright (C) 2013 Guillaume Royer
+ #
+ # Redado is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU Affero General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Redado is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU Affero General Public License for more details.
+ #
+ # You should have received a copy of the GNU Affero General Public License
+ # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
+ #}
+{% set active = 'users' %}
+
+{% extends "RedadoCoreBundle:GroupSettings:layout.html.twig" %}
+
+{% macro confirm_modal(id, label, title, body, path) %}
+<a href="#modal_{{ id }}" role="button" class="btn btn-mini" data-toggle="modal">{{ label }}</a>
+<div id="modal_{{id}}" class="modal hide fade" role="dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h5>{{ title }}</h5>
+    </div>
+    <div class="modal-body">
+        <p>{{ body }}</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">{% trans %}Back{% endtrans %}</a>
+        <a href="{{ path }}" class="btn btn-primary">{% trans %}OK{% endtrans %}</a>
+    </div>
+</div>
+{% endmacro %}
+{% import _self as m %}
+{% block content %}
+    <ul class="breadcrumb">
+        <li><a href="{{ path('group_show', {'id': group.sysname }) }}">{{ group.name}} ({{group.sysname}})</a> <span class="divider">/</span></li>
+        <li><a href="{{ path('group_settings_general', {'id': group.sysname }) }}">{% trans %}Settings{% endtrans %}</a> <span class="divider">/</span></li>
+        <li class="active">{% trans %}Users{% endtrans %}</li>
+    </ul>
+    <table class="table table-condensed">
+        <thead><tr>
+            <th>{% trans %}Name{% endtrans %}</th>
+            <th>{% trans %}Email{% endtrans %}</th>
+            <th>{% trans %}Join date{% endtrans %}</th>
+            <th>{% trans %}Activated{% endtrans %}</th>
+            <th>{% trans %}Actions{% endtrans %}</th>
+        </tr></thead>
+        <tbody>
+        {% for membership in group.memberships %}
+            <tr>
+                <td>{{ membership.user.name}}</td>
+                <td>{{ membership.user.email }}</td>
+                <td>{{ membership.created | localizeddate('medium', 'none') }}</td>
+                <td>{{ (membership.user.enabled) ? 'Yes' : m.confirm_modal(membership.user.id, 'Enable', 'Enable', 'Do you really want to enable this user account ?', '#') }}</td>
+                <td>
+                    <a href="{% if is_granted('edit', membership.user) %}{{ path('group_settings_users_edit', {'id' : membership.user.id, 'group_id' : group.sysname }) }}" class="btn btn-mini{% else %}#" class="btn btn-mini disabled{% endif %}">
+                        <i class="icon-edit"></i>
+                    </a>
+                    <a href="{{ path('group_remove_user', {'id' : group.sysname, 'user_id' : membership.user.id }) }}" class="btn btn-mini">
+                        <i class="icon-remove"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('group_add_user', { 'id' : group.sysname }) }}" class="btn btn-small">
+        {% trans %}Add{% endtrans %} <i class="icon-plus"></i>
+    <a>
+{% endblock %}

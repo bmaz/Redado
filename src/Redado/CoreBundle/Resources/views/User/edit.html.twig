@@ -21,22 +21,18 @@
 
 {% set user_name_link = "<a href=\"#{ path('user_show', { 'id': user.id }) }\">#{ user.name }</a>" %}
 
-{% block h1 %}
-{% trans %}Edit %user_name_link%{% endtrans %}
-{% endblock %}
-
 {% block content %}
-    <form action="{{ path('user_update', { 'id': user.id }) }}" method="post" {{ form_enctype(edit_form) }}>
-        <input type="hidden" name="_method" value="PUT" />
-        {{ form_widget(edit_form) }}
+    {{ form_start(edit_form) }}
+        {{ form_errors(edit_form) }}
+        {{ form_row(edit_form.first_name) }}
+        {{ form_row(edit_form.last_name) }}
+        {{ form_row(edit_form.email) }}
         <p>
             <button type="submit" class="btn">
                 {% trans %}
                     Save
                 {% endtrans %}
             </button>
-            {% include 'RedadoCoreBundle:User:deleteModal.html.twig' with { 'form' : delete_form, 'user' : user } %}
         </p>
-
-    </form>
+        {{ form_end(edit_form) }}
 {% endblock %}

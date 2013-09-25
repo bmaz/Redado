@@ -21,10 +21,6 @@
 {% set user_name_link = "<a href=\"#{ path('user_show', { 'id': user.id }) }\">#{ user.name }</a>" %}
 {% set group_name_link = "<a href=\"#{ path('group_show', { 'id': group.sysname }) }\">#{ group.name }</a>" %}
 
-{% block h1 %}
-{% trans %}Remove %user_name_link% ?{% endtrans %}
-{% endblock %}
-
 {% block content %}
     <p>
     {% trans %}
@@ -32,7 +28,7 @@
     {% endtrans %}
     </p>
         {{ form_start(form) }}
-            <a href="{{ path('group_show', { 'id': group.sysname }) }}" class="btn">
+            <a href="{{ path('group_settings_users', { 'id': group.sysname }) }}" class="btn">
             {% trans %}
                 Back
             {% endtrans %}

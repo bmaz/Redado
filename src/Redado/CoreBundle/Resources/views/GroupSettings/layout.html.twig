@@ -1,0 +1,41 @@
+{#
+ # This file is part of Redado.
+ #
+ # Copyright (C) 2013 Guillaume Royer
+ #
+ # Redado is free software: you can redistribute it and/or modify
+ # it under the terms of the GNU Affero General Public License as published by
+ # the Free Software Foundation, either version 3 of the License, or
+ # (at your option) any later version.
+ #
+ # Redado is distributed in the hope that it will be useful,
+ # but WITHOUT ANY WARRANTY; without even the implied warranty of
+ # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ # GNU Affero General Public License for more details.
+ #
+ # You should have received a copy of the GNU Affero General Public License
+ # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
+ #}
+
+{% extends "RedadoCoreBundle::layout.html.twig" %}
+
+{% block left_column %}
+    <ul class="nav nav-pills nav-stacked">
+        <li{% if active == 'general' %} class="active"{% endif %}>
+            <a href="{% if active == 'general' %}#
+            {% else %}{{ path('group_settings_general', {'id': group.sysname}) }}{% endif %}">General</a>
+        </li>
+        <li{% if active == 'users' %} class="active"{% endif %}>
+            <a href="{% if active == 'users' %}#
+            {% else %}{{ path('group_settings_users', {'id': group.sysname}) }}{% endif %}">Users</a>
+        </li>
+        <li{% if active == 'permissions' %} class="active"{% endif %}>
+            <a href="{% if active == 'permissions' %}#
+            {% else %}{{ path('group_settings_permissions', {'id': group.sysname}) }}{% endif %}">Permissions</a>
+        </li>
+        <li{% if active == 'structure' %} class="active"{% endif %}>
+            <a href="{% if active == 'structure' %}#
+            {% else %}{{ path('group_settings_structure', {'id': group.sysname}) }}{% endif %}">Links with other groups</a>
+        </li>
+    </ul>
+{% endblock %}

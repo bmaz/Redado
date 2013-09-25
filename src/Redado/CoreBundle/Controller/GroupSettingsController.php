@@ -231,4 +231,20 @@ class GroupSettingsController extends Controller
             )
         );
     }
+
+    public function usersAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $group = $em->getRepository('RedadoCoreBundle:Group')->findNoLazyOneBySysname($id);
+
+        if (!$group || !$this->get('security.context')->isGranted('admin', $group)) {
+            return $this->createNotFoundException();
+        }
+
+        return $this->render('RedadoCoreBundle:GroupSettings:users.html.twig',
+            array(
+                'group' => $group,
+            )
+        );
+    }
 }

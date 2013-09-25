@@ -16,17 +16,9 @@
  # You should have received a copy of the GNU Affero General Public License
  # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
  #}
+{% set active = 'structure' %}
 
-{% extends "RedadoCoreBundle::layout.html.twig" %}
-
-{% block left_column %}
-    <ul class="nav nav-pills nav-stacked">
-        <li><a href="{{ path('group_settings_general', {'id': group.sysname }) }}">General</a></li>
-        <li><a href="{{ path('group_settings_permissions', { 'id': group.sysname }) }}">Permissions</a></li>
-        <li><a href="#">Links with other groups</a></li>
-        <li><a href="#">Extensions</a></li>
-    </ul>
-{% endblock %}
+{% extends "RedadoCoreBundle:GroupSettings:layout.html.twig" %}
 
 {% block content %}
     <ul class="breadcrumb">

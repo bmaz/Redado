@@ -55,7 +55,9 @@
 	<table class="table table-hover table-bordered">
         <thead>
 			<tr>
-				<th>{% trans %}Members{% endtrans %}</th>
+				<th>
+                {% trans %}Members{% endtrans %}
+                </th>
 			</tr>
 		</thead>
 		<tbody>
@@ -66,13 +68,18 @@
                 </td>
 			</tr>
 		{% endfor %}
+        {% if is_granted('admin', group) %}
         <tr>
             <td>
                 <a href="{{ path('group_add_user', { 'id' : group.sysname }) }}" class="btn btn-small">
                     {% trans %}Add{% endtrans %} <i class="icon-plus"></i>
                 <a>
+                <a href="{{ path('group_settings_users', {'id': group.sysname}) }}" class="btn btn-small">
+                    {% trans %}Manage{% endtrans %}
+                </a>
             </td>
         </tr>
+        {% endif %}
 		</tbody>
 	</table>
 {% endblock %}
@@ -122,9 +129,14 @@
             {% else %}
             {% endfor %}
         </ul>
+        {% if is_granted('admin', group) %}
         <a href="{{ path('group_new', {'parent_id' : group.sysname }) }}" class="btn btn-small">
             {% trans %}Add{% endtrans %} <i class="icon-plus"></i>
         </a>
+        <a href="{{ path('group_settings_structure', {'id': group.sysname}) }}" class="btn btn-small">
+             {% trans %}Manage{% endtrans %}
+        </a>
+        {% endif %}
         </td></tr></tbody></table>
     </div>
 </div>

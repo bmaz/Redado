@@ -176,7 +176,7 @@ class GroupController extends Controller
 
 			$em->flush();
 
-			return $this->redirect($this->generateUrl('group_show', array('id' => $id)));
+			return $this->redirect($this->generateUrl('group_settings_users', array('id' => $id)));
 		}
 
         if ($form_new_user->isValid()) {
@@ -224,7 +224,7 @@ class GroupController extends Controller
 
             $em->flush();
 
-            return $this->redirect($this->generateUrl('group_show', array('id' => $id)));
+            return $this->redirect($this->generateUrl('group_settings_users', array('id' => $id)));
         }
 
         return $this->render('RedadoCoreBundle:Group:removeUser.html.twig',
@@ -355,7 +355,7 @@ class GroupController extends Controller
         return $this->createFormBuilder(array('id' => $id, 'user_id' => $user_id))
             ->add('id', 'hidden')
             ->add('user_id', 'hidden')
-            ->setAction($this->generateUrl('group_removeuser',
+            ->setAction($this->generateUrl('group_remove_user',
                 array('id' => $id, 'user_id' => $user_id)
             ))
             ->getForm();

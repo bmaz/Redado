@@ -25,9 +25,6 @@ Redado\CoreBundle\Entity\User:
         email:
             - NotBlank: { groups: [registration] }
             - Email: { groups : [registration] }
-        memberships:
-            - Count:
-                min: 1
 
 Redado\CoreBundle\Entity\Group:
     properties:

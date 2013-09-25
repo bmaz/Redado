@@ -1,10 +1,10 @@
 ajax_group_search:
     pattern: /search/group
     defaults: { _controller: "RedadoCoreBundle:Ajax:searchGroup" }
-#    requirements: { _method: post }
+    requirements: { _method: post }
 
 ajax_user_search:
-    pattern: /search/user/
+    pattern: /search/user
     defaults: { _controller: "RedadoCoreBundle:Ajax:searchUser" }
     requirements: { _method: post }
 

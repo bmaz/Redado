@@ -19,10 +19,6 @@ group_show:
     pattern:  /{id}/show
     defaults: { _controller: "RedadoCoreBundle:Group:show" }
 
-group_edit:
-    pattern:  /{id}/edit
-    defaults: { _controller: "RedadoCoreBundle:Group:edit" }
-
 group_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "RedadoCoreBundle:Group:delete" }
@@ -32,29 +28,21 @@ group_add_user:
     pattern: /{id}/add/user
     defaults: { _controller: "RedadoCoreBundle:Group:addUser" }
 
-group_removeuser:
+group_remove_user:
     pattern: /{id}/remove/user/{user_id}
     defaults: { _controller: "RedadoCoreBundle:Group:removeUser" }
 
-group_removechild:
+group_remove_child:
     pattern: /{id}/remove/child/{child_id}
     defaults: { _controller: "RedadoCoreBundle:Group:removeChild" }
 
-group_removeparent:
+group_remove_parent:
     pattern: /{id}/remove/parent/{parent_id}
     defaults: { _controller: "RedadoCoreBundle:Group:removeParent" }
-
-group_editstructure:
-    pattern: /{id}/edit/structure
-    defaults: { _controller: "RedadoCoreBundle:Group:editStructure" }
 
 group_new:
     pattern:  /{parent_id}/new/child
     defaults: { _controller: "RedadoCoreBundle:Group:new" }
-
-group_editpermission:
-    pattern: /{id}/edit/permission
-    defaults: { _controller: "RedadoCoreBundle:Group:editPermission" }
 
 group_settings_general:
     pattern: /{id}/settings/general
@@ -67,3 +55,11 @@ group_settings_permissions:
 group_settings_structure:
     pattern: /{id}/settings/structure
     defaults: { _controller: "RedadoCoreBundle:GroupSettings:structure" }
+
+group_settings_users:
+    pattern: /{id}/settings/users
+    defaults: { _controller: "RedadoCoreBundle:GroupSettings:users" }
+
+group_settings_users_edit:
+    pattern: /{group_id}/settings/user/{id}/edit
+    defaults: { _controller: "RedadoCoreBundle:User:edit" }

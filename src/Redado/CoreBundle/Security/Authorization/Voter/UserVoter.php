@@ -26,6 +26,11 @@ use Redado\CoreBundle\Entity\User;
 
 class UserVoter implements VoterInterface
 {
+    public function __construct($service_container)
+    {
+        $this->container = $service_container;
+    }
+
     public function supportsAttribute($attribute)
     {
         return is_string($attribute);
@@ -53,7 +58,19 @@ class UserVoter implements VoterInterface
 
             $result = VoterInterface::ACCESS_DENIED;
 
-            return VoterInterface::ACCESS_GRANTED;
+            if ($object->getId() == $token->getUser()->getId()) {
+                return VoterInterface::ACCESS_GRANTED;
+            } elseif ($attribute == 'view') {
+                return VoterInterface::ACCESS_GRANTED;
+            } elseif ($attribute == 'edit' && $object->isEnabled()) {
+                continue;
+            } elseif ($attribute == 'edit') {
+                foreach ($object->getGroups() as $group) {
+                    if ($this->container->get('security.context')->isGranted('admin', $group)) {
+                        return VoterInterface::ACCESS_GRANTED;
+                    }
+                }
+            }
         }
         return $result;
     }

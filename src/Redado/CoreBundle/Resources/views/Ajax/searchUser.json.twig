@@ -1,3 +1,4 @@
+{#
  # This file is part of Redado.
  #
  # Copyright (C) 2013 Guillaume Royer
@@ -14,16 +15,10 @@
  #
  # You should have received a copy of the GNU Affero General Public License
  # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
+ #}
 
-user_show:
-    pattern:  /{id}/show
-    defaults: { _controller: "RedadoCoreBundle:User:show" }
-
-user_edit:
-    pattern:  /{id}/edit
-    defaults: { _controller: "RedadoCoreBundle:User:edit" }
-
-user_delete:
-    pattern:  /{id}/delete
-    defaults: { _controller: "RedadoCoreBundle:User:delete" }
-    requirements: { _method: post|delete }
+[{%for user in results %}
+{% spaceless %}
+	{"userEmail": "{{ user.email }}", "userName": "{{ user.name }}"}{% if not loop.last%},{% endif %}
+{% endspaceless %}
+{% endfor %}]
