@@ -55,8 +55,10 @@ class AjaxController extends Controller
 
         $results = array_unique($results, SORT_REGULAR);
 
-        return $this->render('RedadoCoreBundle:Ajax:searchUser.json.twig', array(
-            'results' => $this->get('protection_proxy')->getProxies($results)
+        return $this->render('RedadoCoreBundle:Ajax:searchUser.json.twig',
+            array(
+                'results' => $this->get('protection_proxy')->getProxies($results)
+            )
         );
     }
 
