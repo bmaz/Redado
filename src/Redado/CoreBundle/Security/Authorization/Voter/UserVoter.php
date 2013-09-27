@@ -60,7 +60,7 @@ class UserVoter implements VoterInterface
 
             if ($object->getId() == $token->getUser()->getId()) {
                 return VoterInterface::ACCESS_GRANTED;
-            } elseif ($attribute == 'view') {
+            } elseif ($attribute == 'view_user') {
                 return VoterInterface::ACCESS_GRANTED;
             } elseif ($attribute == 'edit' && $object->isEnabled()) {
                 continue;
