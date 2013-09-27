@@ -64,6 +64,35 @@ class MainController extends Controller
 		);
     }
 
+    public function resetPasswordAction(Request $request)
+    {
+        $form = $this->createFormBuilder()
+            ->add('email', 'email')
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        $sent = false;
+        if ($form->isValid())
+        {
+            $data = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $group = $em->getRepository('RedadoCoreBundle:Group')->findOneByEmail($data['email']);
+
+            if ($group) {
+                $this->get('redado.manager')->resetPassword($user);
+            }
+            $sent = true;
+        }
+        return $this->render('Redado:Login:reset_password.html.twig',
+            array(
+                'form' => $form,
+                'sent' => $sent
+            )
+        );
+    }
+
     public function installAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();

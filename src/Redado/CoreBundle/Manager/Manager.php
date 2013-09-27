@@ -74,7 +74,6 @@ class Manager {
 
         if($user->isEnabled()) {
             return;
-            //TODO real handling
         }
 
         $generator = new SecureRandom('/dev/urandom');
@@ -119,7 +118,60 @@ class Manager {
         }
     }
 
-   public function getGroupPermissionList($group)
+    public function resetPassword($id)
+    {
+        $em = $this->services['doctrine']->getManager();
+        $user = $em->getRepository('RedadoCoreBundle:User')->find($id);
+
+        if(!$user) {
+            return;
+        }
+
+        $generator = new SecureRandom('/dev/urandom');
+        $password_clear = "";
+
+        for($i = 0; $i < 10; $i++) {
+            $password_clear = $password_clear . chr(rand(33, 126)) ;
+        }
+
+        $password = $this->services['security.encoder_factory']
+                             ->getEncoder($user)
+                             ->encodePassword($password_clear, $user->getSalt());
+
+        $user->setPassword($password);
+        $user->setEnabled(true);
+
+        $em->flush();
+
+        $message = \Swift_Message::newInstance()
+            ->setSubject('Reset your password on ' . $this->services['redado.settings']->get('site_name'))
+            ->setFrom($this->services['redado.settings']->get('email_adress'))
+            ->setTo($user->getEmail())
+            ->setBody($this->services['templating']->render(
+                'RedadoCoreBundle:Email:mail.txt.twig',
+                array(
+                    'site_name' => $this->services['redado.settings']->get('site_name'),
+                    'password' => $password_clear,
+                    'email' => $user->getEmail()
+                )
+            ))
+        ;
+
+        if($this->services['mailer']->send($message)) {
+            return true;
+        } else {
+            $this
+                ->services['session']
+                ->getFlashBag()
+                ->add('error', 'Could not send mail to' . $user->getEmail())
+            ;
+            return false;
+        }
+
+
+    }
+
+    public function getGroupPermissionList($group)
     {
         return array(
             'Group' => array(
