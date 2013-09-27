@@ -61,7 +61,7 @@ class GroupSettingsController extends Controller
 
         return $this->render('RedadoCoreBundle:GroupSettings:index.html.twig',
             array(
-                'group' => $group,
+                'group' => $this->get('guilro.protection_proxy')->getProxy($group),
                 'edit_form'   => $editForm->createView(),
             )
         );
@@ -154,7 +154,7 @@ class GroupSettingsController extends Controller
 
         return $this->render('RedadoCoreBundle:GroupSettings:permissions.html.twig',
             array(
-                'group' => $group,
+                'group' => $this->get('guilro.protection_proxy')->getProxy($group),
                 'form' => $form->createView(),
                 'module_permissions' => $module_permissions
             )

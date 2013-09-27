@@ -56,7 +56,7 @@ class AjaxController extends Controller
         $results = array_unique($results, SORT_REGULAR);
 
         return $this->render('RedadoCoreBundle:Ajax:searchUser.json.twig', array(
-            'results' => $results)
+            'results' => $this->get('protection_proxy')->getProxies($results)
         );
     }
 
@@ -66,11 +66,15 @@ class AjaxController extends Controller
 
         $group = $em->getRepository('RedadoCoreBundle:Group')->find($id);
 
-        if(!$group) {
+        if(!$group || !$this->get('security.context')->isGranted('get_children', $group)) {
             throw $this->createNotFoundException();
         }
 
-        return $this->render('RedadoCoreBundle:Ajax:getGroupChildren.html.twig', array('group' => $group));
+        return $this->render('RedadoCoreBundle:Ajax:getGroupChildren.html.twig',
+            array(
+                'group' => $this->get('guilro.protection_proxy')->getProxy($group)
+            )
+        );
     }
 
 }
