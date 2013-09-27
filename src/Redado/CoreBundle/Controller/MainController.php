@@ -154,45 +154,4 @@ class MainController extends Controller
             'user' => $new_user
         ));
     }
-
-    public function accountAction(Request $request)
-    {
-        $user = $this->getUser();
-
-        $form = $this->createForm(new UserType(), $user);
-
-        $form->handleRequest($request);
-
-        if($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-
-            $this->get('session')->getFlashBag()->add('message', 'Profile updated');
-        }
-
-
-        $password_form = $this->createFormBuilder()
-            ->add('old_password')
-            ->add('password', 'repeated',
-                array('first_name' =>'password',
-                'second_name' => 'confirm',
-                'type' => 'password'
-            ))
-            ->getForm();
-
-        return $this->render('RedadoCoreBundle:Main:account.html.twig',
-            array('form' => $form->createView())
-        );
-    }
-
-    public function testAction(Request $request)
-    {
-        $acl_manager = $this->get('problematic.acl_manager');
-
-        $em = $this->getDoctrine()->getManager();
-        $group = $em->getRepository('RedadoCoreBundle:Group')->find(4);
-        $group_ = $em->getRepository('RedadoCoreBundle:Group')->find(3);
-
-        return new \Symfony\Component\HttpFoundation\Response('COOL !');
-    }
 }

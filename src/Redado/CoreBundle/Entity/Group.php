@@ -223,13 +223,20 @@ class Group extends Role
                 }
             }
         } else if (!in_array($user, $this->getUsers())) {
-            $membership = new Membership($this, $user, $direct);
-            $this->memberships[] = $membership;
-            $user->addMembership($membership);
+            $parents = true;
             foreach($this->getClosuresParents() as $closure_parent) {
                 if($closure_parent->getInheritMembers()) {
-                    $closure_parent->getParent()->addUser($user, false);
+                    if (!$closure_parent->getParent()->addUser($user, false)) {
+                        $parents = false;
+                    }
                 }
+            }
+            if ($parents) {
+                $membership = new Membership($this, $user, $direct);
+                $this->memberships[] = $membership;
+                $user->addMembership($membership);
+            } else {
+                return false;
             }
         }
 
@@ -251,10 +258,6 @@ class Group extends Role
             if($membership->getUser() == $user && $membership->getDirect()) {
                 $membership->setDirect(false);
                 $this->autoRemoveUser($user);
-
-                foreach($this->getParents() as $parent) {
-                    $parent->autoRemoveUser($user);
-                }
             }
         }
 
@@ -282,11 +285,15 @@ class Group extends Role
 
                 if(!in_array($user, $users)) {
                     $this->memberships->removeElement($membership);
-                    $user->removeMembership($membership);
 
+                    $parents = true;
                     foreach($this->getParents() as $parent) {
-                        $parent->autoRemoveUser($user);
+                        if (!$parent->autoRemoveUser($user)) {
+                            $parents = false;
+                        }
                     }
+
+                    $parents ? null : $this->memberships->addElement($membership);
                 }
             }
         }

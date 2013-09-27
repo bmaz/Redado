@@ -90,7 +90,7 @@ class GroupController extends Controller
             $em->persist($group);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('group_show', array('id' => $group->getId())));
+            return $this->redirect($this->generateUrl('group_show', array('id' => $group->getSysname())));
         }
 
         return $this->render('RedadoCoreBundle:Group:new.html.twig', array(

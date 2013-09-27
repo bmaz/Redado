@@ -117,12 +117,15 @@ guilro_protection_proxy:
                 addUser:
                     attribute: add_user
                     return_proxy: true
+                    deny_value: false
                 removeUser:
                     attribute: remove_user
                     return_proxy: true
+                    deny_value: false
                 autoRemoveUser:
                     attribute: remove_user
                     return_proxy: true
+                    deny_value: false
                 getUsers:
                     attribute: get_users
                     return_proxy: true
