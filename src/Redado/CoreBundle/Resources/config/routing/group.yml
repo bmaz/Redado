@@ -16,7 +16,7 @@
  # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
 
 group_show:
-    pattern:  /{id}/show
+    pattern:  /{id}
     defaults: { _controller: "RedadoCoreBundle:Group:show" }
 
 group_delete:

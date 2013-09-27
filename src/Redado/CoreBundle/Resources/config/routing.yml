@@ -41,21 +41,10 @@ RedadoCoreBundle_user:
     resource: "@RedadoCoreBundle/Resources/config/routing/user.yml"
     prefix:   /user
 
-RedadoCoreBundle_basegroupp:
+RedadoCoreBundle_group:
     resource: "@RedadoCoreBundle/Resources/config/routing/group.yml"
     prefix:   /group
 
-#RedadoCoreBundle_grouptypeclosure:
-#    resource: "@RedadoCoreBundle/Resources/config/routing/grouptypeclosure.yml"
-#    prefix:   /grouptypeclosure
-
-RedadoCoreBundle_grouptype:
-    resource: "@RedadoCoreBundle/Resources/config/routing/grouptype.yml"
-    prefix:   /grouptype
-
-RedadoCoreBundle_structure:
-    resource: "@RedadoCoreBundle/Resources/config/routing/structure.yml"
-    prefix:   /structure
 
 RedadoCoreBundle_admin:
     resource: "@RedadoCoreBundle/Resources/config/routing/admin.yml"
