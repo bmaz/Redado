@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
 	        new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Guilro\ProtectionProxyBundle\GuilroProtectionProxyBundle(),
+            new FOS\UserBundle\FOSUserBundle(),
             new Redado\CoreBundle\RedadoCoreBundle()
         );
 

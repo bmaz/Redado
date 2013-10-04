@@ -34,5 +34,8 @@
                 {% endtrans %}
             </button>
         </p>
+        <a href="{{ path('fos_user_change_password') }}">
+            {{ 'Change my password' | trans }}
+        </a>
         {{ form_end(edit_form) }}
 {% endblock %}

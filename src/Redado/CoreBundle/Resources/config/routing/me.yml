@@ -19,6 +19,9 @@ me:
     pattern: /
     defaults: { _controller: "RedadoCoreBundle:Main:index" }
 
+fos_user_profile_show:
+    pattern: /
+    defaults: { _controller: "RedadoCoreBundle:Main:index" }
 me_settings:
     pattern: /account
     defaults: { _controller: "RedadoCoreBundle:Main:account" }

@@ -19,23 +19,12 @@ Redado\CoreBundle\Entity\User:
     type: entity
     repositoryClass: Redado\CoreBundle\Entity\UserRepository
     table: users
-    fields:
+    id:
         id:
             type: integer
-            id: true
             generator:
                 strategy: AUTO
-        email:
-            type: string
-            length: 255
-            unique: true
-        password:
-            type: string
-            length: 255
-            nullable: true
-        salt:
-            type: string
-            length: 32
+    fields:
         first_name:
             type: string
             length: 255
@@ -43,12 +32,6 @@ Redado\CoreBundle\Entity\User:
         last_name:
             type: string
             length: 255
-            nullable: true
-        enabled:
-            type: boolean
-            nullable: false
-        token:
-            type: string
             nullable: true
         created:
             type: datetime
