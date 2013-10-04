@@ -59,12 +59,12 @@ class MainController extends Controller
 			'RedadoCoreBundle:Login:login.html.twig',
 			array(
 				'last_username' => $session->get(SecurityContext::LAST_USERNAME),
-		                'error'         => $error,
+		        'error'         => $error,
 			)
 		);
     }
 
-    public function resetPasswordAction(Request $request)
+    public function resetPlainPasswordAction(Request $request)
     {
         $form = $this->createFormBuilder()
             ->add('email', 'email')
@@ -81,7 +81,7 @@ class MainController extends Controller
             $group = $em->getRepository('RedadoCoreBundle:Group')->findOneByEmail($data['email']);
 
             if ($group) {
-                $this->get('redado.manager')->resetPassword($user);
+                $this->get('redado.manager')->resetPlainPassword($user);
             }
             $sent = true;
         }
@@ -105,14 +105,14 @@ class MainController extends Controller
             $installed = false;
         }
 
-        $new_user  = new User();
+        $new_user  = $this->get('fos_user.user_manager')->createUser();
         $form = $this->createFormbuilder($new_user, array(
             'validation_groups' => array('registration'))
         )
             ->add('first_name')
             ->add('last_name')
             ->add('email')
-            ->add('password', 'repeated', array(
+            ->add('plain_password', 'repeated', array(
                 'first_name' => 'password',
                 'second_name' => 'confirm',
                 'type' => 'password'
@@ -124,16 +124,10 @@ class MainController extends Controller
 
             if ($form->isValid()) {
                 $new_user = $form->getData();
-                $password_clear = $new_user->getPassword();
-                $password = $this->get('security.encoder_factory')
-                             ->getEncoder($new_user)
-                             ->encodePassword($password_clear, $new_user->getSalt());
 
-                $new_user->setPassword($password);
                 $new_user->setEnabled(true);
+                $this->get('fos_user.user_manager')->updateUser($new_user);
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($new_user);
                 $em->flush();
 
                 $created_user = true;

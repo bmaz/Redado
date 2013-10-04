@@ -15,20 +15,6 @@
  # You should have received a copy of the GNU Affero General Public License
  # along with Redado.  If not, see <http://www.gnu.org/licenses/>.
 
-login:
-    pattern: /login
-    defaults: { _controller: RedadoCoreBundle:Main:login }
-
-login_check:
-    pattern: /login_check
-
-logout:
-    pattern: /logout
-
-test:
-    pattern: /test
-    defaults: { _controller: 'RedadoCoreBundle:Main:test' }
-
 install:
     pattern: /install
     defaults: { _controller: 'RedadoCoreBundle:Main:install' }

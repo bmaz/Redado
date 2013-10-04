@@ -22,24 +22,20 @@ namespace Redado\CoreBundle\Entity;
 
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Security\Core\Util\SecureRandom;
+use FOS\UserBundle\Model\User as BaseUser;
+use FOS\UserBundle\Model\GroupInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * User
  */
-class User implements AdvancedUserInterface, \Serializable
+class User extends BaseUser
 {
     /**
      * @var integer
      * @internal
      */
     protected $id;
-
-    /**
-     * @var string
-     * @internal
-     */
-    private $email;
 
     /**
      * @var string
@@ -52,30 +48,6 @@ class User implements AdvancedUserInterface, \Serializable
      * @internal
      */
     private $last_name;
-
-    /**
-     * @var string
-     * @internal
-     */
-    private $password;
-
-    /**
-     * @var string
-     * @internal
-     */
-    private $salt;
-
-    /**
-     * @var boolean
-     * @internal
-     */
-    private $enabled;
-
-    /**
-     * @var string
-     * @internal
-     */
-    private $token;
 
     /**
      * @var \DateTime
@@ -102,44 +74,12 @@ class User implements AdvancedUserInterface, \Serializable
      */
     public function __construct()
     {
+        parent::__construct();
         $this->memberships = new \Doctrine\Common\Collections\ArrayCollection();
 
 	    $generator = new SecureRandom('/dev/urandom');
 	    $this->salt = md5($generator->nextBytes(10));
         $this->enabled = false;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set email
-     *
-     * @param string $email
-     * @return User
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string 
-     */
-    public function getEmail()
-    {
-        return $this->email;
     }
 
     public function getName()
@@ -149,44 +89,6 @@ class User implements AdvancedUserInterface, \Serializable
         } else {
             return $this->getEmail();
         }
-    }
-
-    /**
-     * Set password
-     *
-     * This function set the password for the user. It should be given encrypted,
-     * as the entity cannot do the job by itself.
-     *
-     * @param string $password
-     * @return User
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    /**
-     * Get password.
-     *
-     * It is return encrypted.
-     *
-     * @return string 
-     */
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * Get salt
-     *
-     * @return string 
-     */
-    public function getSalt()
-    {
-        return $this->salt;
     }
 
     /**
@@ -213,31 +115,6 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->modified;
     }
 
-    public function isAccountNonExpired()
-    {
-        return true;
-    }
-
-    public function isAccountNonLocked()
-    {
-        return true;
-    }
-
-    public function isCredentialsNonExpired()
-    {
-        return true;
-    }
-
-    public function isEnabled()
-    {
-        return $this->enabled;
-    }
-
-    public function setEnabled($enabled)
-    {
-        $this->enabled = $enabled;
-    }
-
     /**
      * Add user to a group
      *
@@ -248,7 +125,7 @@ class User implements AdvancedUserInterface, \Serializable
      * @param \Redado\CoreBundle\Entity\Group $group
      * @return User
      */
-    public function addGroup(\Redado\CoreBundle\Entity\Group $group)
+    public function addGroup(GroupInterface $group)
     {
         $group->addUser($this);
 
@@ -264,7 +141,7 @@ class User implements AdvancedUserInterface, \Serializable
      * @param \Guilr\CoreBundle\Entity\Basegroup $group
      * @return User
      */
-    public function removeGroup(\Redado\CoreBundle\Entity\Group $group)
+    public function removeGroup(GroupInterface $group)
     {
         $group->removeUser($this);
 
@@ -322,28 +199,12 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->memberships;
     }
 
-     /**
-     * Get username, here it is email.
-     *
-     * This function is only here for compatibility
-     * with Symfony, and UserInterface implementation.
-     *
-     * @return string
-     */
-    public function getUsername() { return $this->getEmail(); }
-
     /**
      * Return the email.
      *
      * @return string
      */
     public function __toString() { return $this->getName(); }
-
-    /**
-     * UserInterface implementation.
-     * @internal
-     */
-    public function eraseCredentials() {}
 
     /**
      * UserInterface implementation.
@@ -365,25 +226,7 @@ class User implements AdvancedUserInterface, \Serializable
         return $roles;
     }
 
-    /**
-     * @internal
-     */
-    public function serialize() {
-        return \json_encode(
-            array($this->id)
-        );
-    }
-
-    /**
-     * @internal
-     */
-    public function unserialize($serialized) {
-        list (
-            $this->id
-        ) = \json_decode($serialized);
-    }
-
-    /**
+     /**
      * Set first_name
      *
      * @param string $firstName
@@ -429,23 +272,13 @@ class User implements AdvancedUserInterface, \Serializable
         return $this->last_name;
     }
 
-    /**
-     * Get token for activation or new password
-     * @return string
-     */
-    public function getToken()
+    public function setEmail($email)
     {
-        return $this->token;
-    }
+        parent::setEmail($email);
 
-    /**
-     * set token for activation or new password. Should be provided encrypted.
-     * @param string $token The token
-     */
-    public function setToken($token)
-    {
-        $this->token = $token;
+        $this->setUsername($email);
 
         return $this;
     }
+
 }

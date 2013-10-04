@@ -87,7 +87,7 @@ class Manager {
                              ->getEncoder($user)
                              ->encodePassword($password_clear, $user->getSalt());
 
-        $user->setPassword($password);
+        $user->setPlainPassword($password);
         $user->setEnabled(true);
 
         $em->flush();
@@ -118,7 +118,7 @@ class Manager {
         }
     }
 
-    public function resetPassword($id)
+    public function resetPlainPassword($id)
     {
         $em = $this->services['doctrine']->getManager();
         $user = $em->getRepository('RedadoCoreBundle:User')->find($id);
@@ -138,7 +138,7 @@ class Manager {
                              ->getEncoder($user)
                              ->encodePassword($password_clear, $user->getSalt());
 
-        $user->setPassword($password);
+        $user->setPlainPassword($password);
         $user->setEnabled(true);
 
         $em->flush();

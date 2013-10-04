@@ -4,21 +4,19 @@ security:
             pattern: ^/
             form_login:
                 provider: main
-                login_path: login
-                check_path: login_check
-            logout:
-                path: logout
+            logout: true
             anonymous: true
     encoders:
-        Redado\CoreBundle\Entity\User:
+        FOS\UserBundle\Model\UserInterface:
             algorithm: pbkdf2
 
     providers:
         main:
-            entity: { class: Redado\CoreBundle\Entity\User }
+            id: fos_user.user_provider.username
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/install$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/login_check$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/_wdt, role: IS_AUTHENTICATED_ANONYMOUSLY }

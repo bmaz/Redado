@@ -49,8 +49,8 @@
     {{ form_label(form.email, label) }}
     {{ form_widget(form.email, { 'attr': { 'class': 'input-block-level' } } )}}
     {{ form_errors(form.email) }}
-    {{ form_widget(form.password, { 'attr': { 'class': 'input-block-level' } }) }}
-    {{ form_errors(form.password) }}
+    {{ form_widget(form.plain_password, { 'attr': { 'class': 'input-block-level' } }) }}
+    {{ form_errors(form.plain_password) }}
     {{ form_errors(form) }}
     <button type="submit" class="btn btn-primary">{% trans %}Install{% endtrans %}</button>
     {{ form_end(form) }}

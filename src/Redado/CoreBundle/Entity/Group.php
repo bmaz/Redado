@@ -23,11 +23,12 @@ namespace Redado\CoreBundle\Entity;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\DependencyInjection\ContainerAware;
 use Redado\CoreBundle\Model\GroupModuleInterface;
+use FOS\UserBundle\Model\GroupInterface;
 
 /**
  * Group
  */
-class Group extends Role
+class Group extends Role implements GroupInterface
 {
     /**
      * @var integer $id
@@ -588,4 +589,30 @@ class Group extends Role
         return false;
     }
 
+
+    /**
+     * @internal
+     */
+    public function addRole($role) {
+    }
+    /**
+     * @internal
+     */
+    public function hasRole($role) {
+    }
+    /**
+     * @internal
+     */
+    public function getRoles() {
+    }
+    /**
+     * @internal
+     */
+    public function removeRole($role) {
+    }
+    /**
+     * @internal
+     */
+    public function setRoles(array $roles) {
+    }
 }
