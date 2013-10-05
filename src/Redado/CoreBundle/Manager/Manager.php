@@ -40,18 +40,20 @@ class Manager {
 
     public function createUser($email, $group)
     {
-        $user = new User();
+        $user_manager = $this->services['fos_user.user_manager'];
+        $user = $user_manager->createUser();
         $user->setEmail($email);
         $user->addGroup($group);
+        $this->resetPlainPassword($user);
 
         $errors = $this->services['validator']->validate($user, array('registration'));
 
+            echo 'lol';
 
         if (count($errors) == 0) {
 
-            $this->services['doctrine']->getManager()->persist($user);
-
-            $this->services['doctrine']->getManager()->flush();
+            $user_manager->updatePassword($user);
+            $user_manager->updateUser($user);
 
             return $user;
         } else {
@@ -118,15 +120,8 @@ class Manager {
         }
     }
 
-    public function resetPlainPassword($id)
+    public function resetPlainPassword(User $user)
     {
-        $em = $this->services['doctrine']->getManager();
-        $user = $em->getRepository('RedadoCoreBundle:User')->find($id);
-
-        if(!$user) {
-            return;
-        }
-
         $generator = new SecureRandom('/dev/urandom');
         $password_clear = "";
 
@@ -134,41 +129,9 @@ class Manager {
             $password_clear = $password_clear . chr(rand(33, 126)) ;
         }
 
-        $password = $this->services['security.encoder_factory']
-                             ->getEncoder($user)
-                             ->encodePassword($password_clear, $user->getSalt());
+        $user->setPlainPassword($password_clear);
 
-        $user->setPlainPassword($password);
-        $user->setEnabled(true);
-
-        $em->flush();
-
-        $message = \Swift_Message::newInstance()
-            ->setSubject('Reset your password on ' . $this->services['redado.settings']->get('site_name'))
-            ->setFrom($this->services['redado.settings']->get('email_adress'))
-            ->setTo($user->getEmail())
-            ->setBody($this->services['templating']->render(
-                'RedadoCoreBundle:Email:mail.txt.twig',
-                array(
-                    'site_name' => $this->services['redado.settings']->get('site_name'),
-                    'password' => $password_clear,
-                    'email' => $user->getEmail()
-                )
-            ))
-        ;
-
-        if($this->services['mailer']->send($message)) {
-            return true;
-        } else {
-            $this
-                ->services['session']
-                ->getFlashBag()
-                ->add('error', 'Could not send mail to' . $user->getEmail())
-            ;
-            return false;
-        }
-
-
+        return $password;
     }
 
     public function getGroupPermissionList($group)
