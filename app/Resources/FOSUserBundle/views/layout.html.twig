@@ -21,38 +21,38 @@
 {% block title %}Redado{% endblock %}
 
 {% block navbar %}
-    <nav class="navbar navbar-inverse navbar-static-top">
-        <div class="navbar-inner">
-            <div class="container">
-                <ul class="nav">
-                    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                        <li class="active">
-                            <a href="#">
-                            {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}
-                            </a>
-                        </li>
-                        <li>
-                        <a href="{{ path('fos_user_security_logout') }}">
-                            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+                    <li class="active">
+                        <a href="#">
+                        {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }}
                         </a>
-                        </li>
-                    {% else %}
-                        <li>
-                        <a href="{{ path('fos_user_security_login') }}">
-                            {{ 'layout.login'|trans({}, 'FOSUserBundle') }}
-                        </a>
-                        </li>
-                    {% endif %}
-                </ul>
-		        <form class="navbar-search pull-right" action="#">
-		            <input class="search-query" type="text" placeholder="{% trans %}Search{% endtrans %}" />
-                </form>
-            </div>
+                    </li>
+                    <li>
+                    <a href="{{ path('fos_user_security_logout') }}">
+                        {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+                    </a>
+                    </li>
+                {% else %}
+                    <li>
+                    <a href="{{ path('fos_user_security_login') }}">
+                        {{ 'layout.login'|trans({}, 'FOSUserBundle') }}
+                    </a>
+                    </li>
+                {% endif %}
+            </ul>
+            <form class="navbar-form pull-right" actimn="#">
+                <div class="form-group">
+                    <input class="form-control" type="text" placeholder="{% trans %}Search{% endtrans %}" />
+                </div>
+            </form>
         </div>
     </nav>
 {% endblock %}
 {% block body %}
-<div class="container">
+<div class="container" style="padding-top:70px;">
     <div class="row">
         {% for type, messages in app.session.flashbag.all() %}
             {% for message in messages %}
@@ -62,7 +62,7 @@
             {% endfor %}
         {% endfor %}
 
-        <div class="well span4" style="float:none;margin:auto;margin-top:20px;">
+        <div class="well col-md-4" style="float:none;margin:auto;margin-top:20px;">
             {% block fos_user_content %}
             {% endblock fos_user_content %}
         </div>

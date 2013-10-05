@@ -2,7 +2,7 @@
 
 {% block fos_user_content %}
 {% if error %}
-    <div class="alert alert-error">
+    <div class="alert alert-danger">
         {{ error|trans }}<br />
         <a href="{{ path('fos_user_resetting_request') }}">
             {{ 'Forgot your password ?' | trans }}
@@ -12,17 +12,16 @@
 
 <form action="{{ path("fos_user_security_check") }}" method="post">
     <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-    {% trans %}Please sign-in :{% endtrans %}
-    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'Email' | trans }}" class="input-block-level" />
-
-    <input type="password" id="password" name="_password" required="required" placeholder="{{ 'Password'|trans }}" class="input-block-level"/>
-
+    <p class="help-block">{% trans %}Please sign-in :{% endtrans %}</p>
+    <div class="form-group">
+    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" placeholder="{{ 'Email' | trans }}" class="form-control" />
+    <input type="password" id="password" name="_password" required="required" placeholder="{{ 'Password'|trans }}" class="form-control"/>
     <label class="checkbox" for="remember_me">
         <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
         {{ 'Remember me'|trans }}
     </label>
-
-    <button type="submit" id="_submit" name="_submit" class="btn btn-primary input-block-level" />
+    </div>
+    <button type="submit" id="_submit" name="_submit" class="btn btn-primary form-control" />
         {{ 'Login'|trans }}
     </button>
 

@@ -23,8 +23,8 @@
 {% block left_column %}
     <h4>{{ group.name }}
         {% if is_granted('admin', group) %}
-        <a href="{{ path('group_settings_general', {'id': group.sysname})}}" class="btn btn-mini">
-            <i class="icon-wrench"></i> {% trans %}Settings{% endtrans %}
+        <a href="{{ path('group_settings_general', {'id': group.sysname})}}" class="btn btn-default btn-xs">
+            <span class="glyphicon glyphicon-wrench"></span> {% trans %}Settings{% endtrans %}
         </a>
         {% endif %}
     </h4>
@@ -34,11 +34,11 @@
     <script type="text/javascript">$('#help_sysname').tooltip();</script>
     {{ group.description|nl2br }}<br/>
     <strong>{% trans %}Creation date :{% endtrans %}</strong> {{ group.created|localizeddate('full', 'short') }}
-    <div class="row-fluid">
-        <div class="span12">
+    <div class="row">
+        <div class="col-md-12">
             {% if group.parents | length %}
-                <h5>{% trans %}Parent groups :{% endtrans %}</h5>
-                <ul class="unstyled">
+               <h5>{% trans %}Parent groups :{% endtrans %}</h5>
+                <ul class="list-unstyled">
                     {% for parent in group.parents %}
                         <li>
                         <a href="{{ path('group_show', { 'id' : parent.sysname } ) }}">{{ parent.name }}</a><span class="muted"> ({{ parent.sysname}})</span>
@@ -52,7 +52,7 @@
 {% endblock %}
 
 {% block left_content %}
-	<table class="table table-hover table-bordered">
+	<table class="table table-hover">
         <thead>
 			<tr>
 				<th>
@@ -71,10 +71,10 @@
         {% if is_granted('admin', group) %}
         <tr>
             <td>
-                <a href="{{ path('group_add_user', { 'id' : group.sysname }) }}" class="btn btn-small">
-                    {% trans %}Add{% endtrans %} <i class="icon-plus"></i>
+                <a href="{{ path('group_add_user', { 'id' : group.sysname }) }}" class="btn btn-default btn-sm">
+                    {% trans %}Add{% endtrans %} <span class="glyphicon glyphicon-plus"></span>
                 <a>
-                <a href="{{ path('group_settings_users', {'id': group.sysname}) }}" class="btn btn-small">
+                <a href="{{ path('group_settings_users', {'id': group.sysname}) }}" class="btn btn-default btn-sm">
                     {% trans %}Manage{% endtrans %}
                 </a>
             </td>
@@ -85,27 +85,27 @@
 {% endblock %}
 
 {% block right_content %}
-<div class="row-fluid">
-    <div class="span12">
-    <table class="table table-bordered">
+<div class="row">
+    <div class="col-md-12">
+    <table class="table">
     <thead><tr><th>
             {% trans %}Sub-groups :{% endtrans %}
     </th></tr></thead>
     <tbody><tr><td>
-        <ul class="unstyled">
+        <ul class="list-unstyled">
             {% for child in group.children %}
             {% set rand = random() %}
                 <li>
                     <span class="pull-left"{% if child.children | length > 0 %} data-toggle="collapse" style="cursor:pointer;width:15px;"{% endif %} id="achild{{ child.id }}{{ rand }}" data-target="#child{{ child.id }}{{ rand }}">
-                        <i class="icon-chevron-right{% if child.children | length == 0 %} icon-white{% endif %}"></i>
+                        <span class="glyphicon glyphicon-chevron-right"{% if child.children | length == 0 %} style="color:white;cursor: default;"{% endif %}></span>
                     </span>
                     <a href="{{ path('group_show', { 'id' : child.sysname })}}">{{ child.name }}</a>
                     <span class="muted">({{ child.sysname }})</span>
-                    <ul id="child{{ child.id }}{{ rand }}" class="collapse">
+                    <ul id="child{{ child.id }}{{ rand }}" class="collapse list-unstyled" style="padding-left:15px;">
                     <br/>
                     </ul>
                     <script type="text/javascript">
-                        $("#child{{ child.id }}{{ rand }}").on('show', function () {
+                        $("#child{{ child.id }}{{ rand }}").on('show.bs.collapse', function () {
                             if( !$("#child{{ child.id }}{{ rand }}").hasClass('loaded') ) {
                                 $.ajax({
                                     url: "{{ path('ajax_get_group_children', {'id': child.id }) }}",
@@ -118,30 +118,32 @@
                                 });
                             }
                         });
-                        $("#child{{ child.id }}{{ rand }}").on('shown', function () {
-                            $("#achild{{ child.id }}{{ rand }}").html('<i class="icon-chevron-down"></i>');
+                        $("#child{{ child.id }}{{ rand }}").on('shown.bs.collapse', function () {
+                            $("#achild{{ child.id }}{{ rand }}").html('<span class="glyphicon glyphicon-chevron-down"></span>');
                         });
-                        $("#child{{ child.id }}{{ rand }}").on('hidden', function () {
-                            $("#achild{{ child.id }}{{ rand }}").html('<i class="icon-chevron-right"></i>');
+                        $("#child{{ child.id }}{{ rand }}").on('hidden.bs.collapse', function () {
+                            $("#achild{{ child.id }}{{ rand }}").html('<span class="glyphicon glyphicon-chevron-right"></span>');
                         });
                     </script>
                 </li>
             {% else %}
             {% endfor %}
         </ul>
+        </td></tr>
+        <tr><td>
         {% if is_granted('admin', group) %}
-        <a href="{{ path('group_new', {'parent_id' : group.sysname }) }}" class="btn btn-small">
-            {% trans %}Add{% endtrans %} <i class="icon-plus"></i>
+        <a href="{{ path('group_new', {'parent_id' : group.sysname }) }}" class="btn btn-default btn-sm">
+            {% trans %}Add{% endtrans %} <span class="glyphicon glyphicon-plus"></span>
         </a>
-        <a href="{{ path('group_settings_structure', {'id': group.sysname}) }}" class="btn btn-small">
+        <a href="{{ path('group_settings_structure', {'id': group.sysname}) }}" class="btn btn-default btn-sm">
              {% trans %}Manage{% endtrans %}
         </a>
         {% endif %}
         </td></tr></tbody></table>
     </div>
 </div>
-<div class="row-fluid" style="margin-top:5px;">
-    <table class="table table-hover table-bordered">
+<div class="row" style="margin-top:5px;">
+    <table class="table">
         <thead>
             <tr><th>{% trans %}Admins :{% endtrans %}</th></tr>
         </thead>
@@ -152,7 +154,7 @@
         </tbody>
     </table>
 </div>
-<div class="row-fluid" style="margin-top:5px;">
+<div class="row" style="margin-top:5px;">
     <div class="alert alert-info">
         <b>Help</b>
     </div>
@@ -163,12 +165,12 @@
 {% block toolbar %}
 	{% if is_granted('edit_users', group) %}
           <a href="{{ path('group_adduser', { 'id': group.sysname }) }}" class="btn btn-primary">
-            <i class="icon-plus icon-white"></i>
+            <span class="glyphicon glyphicon-plus icon-white"></span>
             {% trans %}Add user{% endtrans %}
           </a>
 	{% endif %}
     {% if is_granted('admin', group) %}
-        <a href="{{ path('group_editpermission', { 'id': group.sysname }) }}" class="btn">
+        <a href="{{ path('group_editpermission', { 'id': group.sysname }) }}" class="btn btn-default">
             {% trans %}Admin rights{% endtrans %}
         </a>
     {% endif %}

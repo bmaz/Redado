@@ -29,7 +29,7 @@
 {% endblock %}
 
 {% block left_content %}
-	<table class="table table-hover table-bordered">
+	<table class="table table-hover">
         <thead>
 			<tr>
 				<th>{% trans %}Groups{% endtrans %}</th>
@@ -49,7 +49,7 @@
 
 {%block right_content %}
 {% if admined_groups is not empty %}
-<table class="table table-bordered">
+<table class="table table-hover">
     <thead>
         <tr><th>{% trans %}Administrated groups{% endtrans %}</th></tr>
     </thead>

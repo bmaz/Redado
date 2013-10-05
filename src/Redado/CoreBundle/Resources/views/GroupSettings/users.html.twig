@@ -39,8 +39,8 @@
 {% import _self as m %}
 {% block content %}
     <ul class="breadcrumb">
-        <li><a href="{{ path('group_show', {'id': group.sysname }) }}">{{ group.name}} ({{group.sysname}})</a> <span class="divider">/</span></li>
-        <li><a href="{{ path('group_settings_general', {'id': group.sysname }) }}">{% trans %}Settings{% endtrans %}</a> <span class="divider">/</span></li>
+        <li><a href="{{ path('group_show', {'id': group.sysname }) }}">{{ group.name}} ({{group.sysname}})</a></li>
+        <li><a href="{{ path('group_settings_general', {'id': group.sysname }) }}">{% trans %}Settings{% endtrans %}</a></li>
         <li class="active">{% trans %}Users{% endtrans %}</li>
     </ul>
     <table class="table table-condensed">

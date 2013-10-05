@@ -20,15 +20,15 @@
 {% set rand = random() %}
     <li>
         <span{% if child.children | length > 0 %} data-toggle="collapse" style="cursor:pointer;"{% endif %} id="achild{{ child.id }}{{ rand }}" data-target="#child{{ child.id }}{{ rand }}">
-            <i class="icon-chevron-right{% if child.children | length == 0 %} icon-white{% endif %}"></i>
+            <span class="glyphicon glyphicon-chevron-right"{% if child.children | length == 0 %} style="color:white;cursor: default;"{% endif %}></span>
         </span>
         <a href="{{ path('group_show', { 'id' : child.sysname })}}">{{ child.name }}</a>
         <span class="muted">({{ child.sysname }})</span>
-        <ul id="child{{ child.id }}{{ rand }}" class="collapse">
+        <ul id="child{{ child.id }}{{ rand }}" class="collapse list-unstyled" style="padding-left:15px;">
         <br/>
         </ul>
         <script type="text/javascript">
-            $("#child{{ child.id }}{{ rand }}").on('show', function (event) {
+            $("#child{{ child.id }}{{ rand }}").on('show.bs.collapse', function (event) {
                 event.stopPropagation();
                 if( !$("#child{{ child.id }}{{ rand }}").hasClass('loaded') ) {
                     $.ajax({
@@ -42,13 +42,13 @@
                     });
                 }
             });
-            $("#child{{ child.id }}{{ rand }}").on('shown', function (event) {
+            $("#child{{ child.id }}{{ rand }}").on('shown.bs.collapse', function (event) {
                 event.stopPropagation();
-                $("#achild{{ child.id }}{{ rand }}").html('<i class="icon-chevron-down"></i>');
+                $("#achild{{ child.id }}{{ rand }}").html('<span class="glyphicon glyphicon-chevron-down"></span>');
             });
-            $("#child{{ child.id }}{{ rand }}").on('hidden', function (event) {
+            $("#child{{ child.id }}{{ rand }}").on('hidden.bs.collapse', function (event) {
                 event.stopPropagation();
-                $("#achild{{ child.id }}{{ rand }}").html('<i class="icon-chevron-right"></i>');
+                $("#achild{{ child.id }}{{ rand }}").html('<span class="glyphicon glyphicon-chevron-right"></span>');
             });
         </script>
     </li>

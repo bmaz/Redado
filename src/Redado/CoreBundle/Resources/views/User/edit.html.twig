@@ -21,14 +21,14 @@
 
 {% set user_name_link = "<a href=\"#{ path('user_show', { 'id': user.id }) }\">#{ user.name }</a>" %}
 
-{% block content %}
+{% block left_content %}
     {{ form_start(edit_form) }}
         {{ form_errors(edit_form) }}
         {{ form_row(edit_form.first_name) }}
         {{ form_row(edit_form.last_name) }}
         {{ form_row(edit_form.email) }}
         <p>
-            <button type="submit" class="btn">
+            <button type="submit" class="btn btn-primary">
                 {% trans %}
                     Save
                 {% endtrans %}
