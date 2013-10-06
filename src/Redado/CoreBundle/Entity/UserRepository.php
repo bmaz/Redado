@@ -26,50 +26,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
-class UserRepository extends EntityRepository implements UserProviderInterface
+class UserRepository extends EntityRepository
 {
-    public function loadUserByUsername($email)
-    {
-        $q = $this
-            ->createQueryBuilder('users')
-            ->select('users, memberships, groups')
-            ->leftJoin('users.memberships', 'memberships')
-            ->leftJoin('memberships.group', 'groups')
-            ->where('users.email = :email')
-            ->setParameter('email', $email)
-            ->getQuery();
-
-        try {
-            $user =$q->getSingleResult();
-        } catch (NoResultException $e) {
-            throw new UsernameNotFoundException();
-        }
-
-        return $user;
-    }
-
-    public function refreshUser(UserInterface $user)
-    {
-        $class = get_class($user);
-        if (!$this->supportsClass($class)) {
-            throw new UnsupportedUserException(
-                sprintf(
-                    'Instances of "%s" are not supported.',
-                    $class
-                )
-            );
-        }
-
-        return $this->findNoLazy($user->getId());
-    }
-
-    public function supportsClass($class)
-    {
-        return $this->getEntityName() === $class
-            || is_subclass_of($class, $this->getEntityName());
-    }
-
-
     public function findLikeEmail($email)
     {
         return $this->getEntityManager()
@@ -118,6 +76,44 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->leftJoin('memberships.group', 'groups')
             ->where('users.id = :id')
             ->setParameter('id', $id)
+            ->getQuery();
+
+        try {
+            return $q->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
+    }
+
+    public function findOneByUsernameWithPermissions($username)
+    {
+        $q = $this
+            ->createQueryBuilder('users')
+            ->select('users, memberships, groups, permissions')
+            ->leftJoin('users.memberships', 'memberships')
+            ->leftJoin('memberships.group', 'groups')
+            ->leftJoin('groups.permissions', 'permissions')
+            ->where('users.username = :username')
+            ->setParameter('username', $username)
+            ->getQuery();
+
+        try {
+            return $q->getSingleResult();
+        } catch (NoResultException $e) {
+            return null;
+        }
+    }
+
+    public function findOneByIdWithPermissions($username)
+    {
+        $q = $this
+            ->createQueryBuilder('users')
+            ->select('users, memberships, groups, permissions')
+            ->leftJoin('users.memberships', 'memberships')
+            ->leftJoin('memberships.group', 'groups')
+            ->leftJoin('groups.permissions', 'permissions')
+            ->where('users.id = :id')
+            ->setParameter('id', $username)
             ->getQuery();
 
         try {

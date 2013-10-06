@@ -37,6 +37,12 @@ services:
                 templating:                 @templating
                 translator:                 @translator
                 fos_user.user_manager:      @fos_user.user_manager
+    redado.security.user_provider:
+        class: Redado\CoreBundle\Security\UserProvider
+        arguments:
+            services:
+                doctrine:                   @doctrine
+                fos_user.user_manager:      @fos_user.user_manager
     redado.security.access.group_voter:
         class: Redado\CoreBundle\Security\Authorization\Voter\GroupVoter
         public: false
