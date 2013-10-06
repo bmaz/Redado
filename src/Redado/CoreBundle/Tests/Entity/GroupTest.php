@@ -51,15 +51,14 @@ class GroupTest extends\PHPUnit_Framework_TestCase
         return $group;
     }
 
-    public function testRemoveUser()
+    /**
+     * @depends testAddUser
+     */
+    public function testRemoveUser(Group $group)
     {
-        $group = new Group();
-
-        $group->addUser(new User());
-        $group->addUser(new User());
+        $user = new User();
 
         //add a user and remove it
-        $user = new User();
         $group->addUser($user);
         $group->removeUser($user);
         $users = $group->getUsers();

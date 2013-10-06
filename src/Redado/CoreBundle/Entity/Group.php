@@ -256,7 +256,7 @@ class Group extends Role implements GroupInterface
     public function removeUser(\Redado\CoreBundle\Entity\User $user)
     {
         foreach($this->memberships as $membership) {
-            if($membership->getUser() === $user && $membership->getDirect()) {
+            if($membership->getUser() == $user && $membership->getDirect()) {
                 $membership->setDirect(false);
                 $this->autoRemoveUser($user);
             }
@@ -275,7 +275,7 @@ class Group extends Role implements GroupInterface
     public function autoRemoveUser(\Redado\CoreBundle\Entity\User $user)
     {
         foreach($this->memberships as $membership) {
-            if($membership->getUser() === $user && $membership->getDirect() == false) {
+            if($membership->getUser() == $user && $membership->getDirect() == false) {
                 $users = array();
 
                 foreach($this->getClosuresChildren() as $closure_child) {
