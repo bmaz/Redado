@@ -26,9 +26,11 @@
         <li class="active">{% trans %}Settings{% endtrans %}</li>
     </ul>
     {{ form_start(edit_form) }}
+        <div class="form-group">
         {{ form_row(edit_form.name) }}
         {{ form_row(edit_form.sysname) }}
         {{ form_label(edit_form.description) }}
         {{ form_widget(edit_form.description, { 'attr': { 'style' :'width:75%;height:150px;'} }) }}
+        </div>
     {{ form_end(edit_form) }}
 {% endblock %}

@@ -69,7 +69,7 @@
         <div class="col-md-9">
             {% for error in app.session.flashbag.get('error') %}
                 <div class="row">
-                    <div class="alert alert-error">
+                    <div class="alert alert-danger">
                     <strong>{% trans %}Error : {% endtrans %}</strong>
                         {{ error }}
                     </div>

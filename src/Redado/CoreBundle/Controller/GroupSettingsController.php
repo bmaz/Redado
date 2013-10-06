@@ -111,8 +111,6 @@ class GroupSettingsController extends Controller
             }
         }
 
-        $builder->add('Submit', 'submit');
-
         $form = $builder->getForm();
 
         $form->setData($granted_groups);

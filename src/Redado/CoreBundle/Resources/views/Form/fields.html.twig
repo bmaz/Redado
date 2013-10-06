@@ -19,11 +19,11 @@
 
 {% block widget_attributes %}
 
-{% if attr['class'] is defined %}
-{% set attr = attr|merge({'class' : attr['class'] ~ ' form-control'}) %}
-{% else %}
-{% set attr = attr|merge({'class' : 'form-control'}) %}
-{% endif %}
+    {% if attr['class'] is defined %}
+    {% set attr = attr|merge({'class' : attr['class'] ~ ' form-control'}) %}
+    {% else %}
+    {% set attr = attr|merge({'class' : 'form-control'}) %}
+    {% endif %}
 
 {% spaceless %}
     id="{{ id }}" name="{{ full_name }}"{% if read_only %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if required %} required="required"{% endif %}{% if max_length %} maxlength="{{ max_length }}"{% endif %}{% if pattern %} pattern="{{ pattern }}"{% endif %}
@@ -31,6 +31,28 @@
 {% endspaceless %}
 
 {% endblock %}
+
+{% block button_attributes %}
+
+    {% if attr['class'] is defined %}
+    {% set attr = attr|merge({'class' : attr['class'] ~ ' btn ' ~ btn_type|default('btn-default')}) %}
+    {% else %}
+    {% set attr = attr|merge({'class' : 'btn ' ~ btn_type|default('btn-default')}) %}
+    {% endif %}
+
+{% spaceless %}
+    id="{{ id }}" name="{{ full_name }}"{% if disabled %} disabled="disabled"{% endif %}
+    {% for attrname, attrvalue in attr %}{{ attrname }}="{{ attrvalue }}" {% endfor %}
+{% endspaceless %}
+{% endblock button_attributes %}
+
+{% block submit_widget %}
+{% spaceless %}
+    {% set btn_type = 'btn-primary' %}
+    {% set type = type|default('submit') %}
+    {{ block('button_widget') }}
+{% endspaceless %}
+{% endblock submit_widget %}
 
 {% block typeahead_widget %}
   {{ form_widget(form) }}

@@ -43,5 +43,6 @@
         {{ form_widget(attribute(form, permission['name'])) }}
     {% endfor %}
 {% endfor %}
+<button class="btn btn-primary" type="submit">{{ 'Submit' | trans }}</button>
 {{ form_end(form)}}
 {% endblock %}
