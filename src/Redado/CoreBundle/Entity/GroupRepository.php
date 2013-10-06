@@ -97,13 +97,14 @@ class GroupRepository extends EntityRepository
     {
         $q = $this
             ->createQueryBuilder('groups')
-            ->select('groups', 'memberships', 'users', 'cclosures', 'pclosures', 'children', 'parents')
+            ->select('groups', 'memberships', 'users', 'cclosures', 'pclosures', 'children', 'parents', 'ccclosures')
             ->leftJoin('groups.memberships', 'memberships')
             ->leftJoin('memberships.user', 'users')
             ->leftJoin('groups.closuresParents', 'pclosures')
             ->leftJoin('pclosures.parent', 'parents')
             ->leftJoin('groups.closuresChildren', 'cclosures')
             ->leftJoin('cclosures.child', 'children')
+            ->leftJoin('children.closuresChildren', 'ccclosures')
             ->where('groups.sysname = :sysname')
             ->setParameter('sysname', $sysname)
             ->getQuery();

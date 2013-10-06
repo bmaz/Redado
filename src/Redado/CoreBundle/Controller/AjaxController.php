@@ -66,7 +66,7 @@ class AjaxController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        $group = $em->getRepository('RedadoCoreBundle:Group')->find($id);
+        $group = $em->getRepository('RedadoCoreBundle:Group')->findNoLazy($id);
 
         if(!$group || !$this->get('security.context')->isGranted('get_children', $group)) {
             throw $this->createNotFoundException();
