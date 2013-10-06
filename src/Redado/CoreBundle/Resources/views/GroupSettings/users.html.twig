@@ -21,18 +21,22 @@
 {% extends "RedadoCoreBundle:GroupSettings:layout.html.twig" %}
 
 {% macro confirm_modal(id, label, title, body, path) %}
-<a href="#modal_{{ id }}" role="button" class="btn btn-mini" data-toggle="modal">{{ label }}</a>
-<div id="modal_{{id}}" class="modal hide fade" role="dialog">
-    <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h5>{{ title }}</h5>
-    </div>
-    <div class="modal-body">
-        <p>{{ body }}</p>
-    </div>
-    <div class="modal-footer">
-        <a href="#" class="btn" data-dismiss="modal">{% trans %}Back{% endtrans %}</a>
-        <a href="{{ path }}" class="btn btn-primary">{% trans %}OK{% endtrans %}</a>
+<a href="#modal_{{ id }}" role="button" class="btn btn-default btn-xs" data-toggle="modal">{{ label }}</a>
+<div id="modal_{{id}}" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h5>{{ title }}</h5>
+            </div>
+            <div class="modal-body">
+                <p>{{ body }}</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#" class="btn btn-default" data-dismiss="modal">{% trans %}Back{% endtrans %}</a>
+                <a href="{{ path }}" class="btn btn-primary">{% trans %}OK{% endtrans %}</a>
+            </div>
+        </div>
     </div>
 </div>
 {% endmacro %}
@@ -59,18 +63,18 @@
                 <td>{{ membership.created | localizeddate('medium', 'none') }}</td>
                 <td>{{ (membership.user.enabled) ? 'Yes' : m.confirm_modal(membership.user.id, 'Enable', 'Enable', 'Do you really want to enable this user account ?', '#') }}</td>
                 <td>
-                    <a href="{% if is_granted('edit', membership.user) %}{{ path('group_settings_users_edit', {'id' : membership.user.id, 'group_id' : group.sysname }) }}" class="btn btn-mini{% else %}#" class="btn btn-mini disabled{% endif %}">
-                        <i class="icon-edit"></i>
+                    <a href="{% if is_granted('edit', membership.user) %}{{ path('group_settings_users_edit', {'id' : membership.user.id, 'group_id' : group.sysname }) }}" class="btn btn-default btn-xs{% else %}#" class="btn btn-default btn-xs disabled{% endif %}">
+                        <span class="glyphicon glyphicon-edit"></span>
                     </a>
-                    <a href="{{ path('group_remove_user', {'id' : group.sysname, 'user_id' : membership.user.id }) }}" class="btn btn-mini">
-                        <i class="icon-remove"></i>
+                    <a href="{{ path('group_remove_user', {'id' : group.sysname, 'user_id' : membership.user.id }) }}" class="btn btn-default btn-xs">
+                        <span class="glyphicon glyphicon-remove"></span>
                     </a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    <a href="{{ path('group_add_user', { 'id' : group.sysname }) }}" class="btn btn-small">
-        {% trans %}Add{% endtrans %} <i class="icon-plus"></i>
-    <a>
+    <a href="{{ path('group_add_user', { 'id' : group.sysname }) }}" class="btn btn-default btn-sm">
+        {% trans %}Add{% endtrans %} <span class="glyphicon glyphicon-plus"></span>
+    </a>
 {% endblock %}

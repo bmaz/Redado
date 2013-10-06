@@ -48,12 +48,9 @@ class Manager {
 
         $errors = $this->services['validator']->validate($user, array('registration'));
 
-            echo 'lol';
-
         if (count($errors) == 0) {
 
-            $user_manager->updatePassword($user);
-            $user_manager->updateUser($user);
+            $user_manager->updateUser($user, false);
 
             return $user;
         } else {
@@ -65,15 +62,8 @@ class Manager {
 
     }
 
-    public function enableUser($id)
+    public function enableUser(User $user)
     {
-        $em = $this->services['doctrine']->getManager();
-        $user = $em->getRepository('RedadoCoreBundle:User')->find($id);
-
-        if(!$user) {
-            return;
-        }
-
         if($user->isEnabled()) {
             return;
         }
@@ -81,18 +71,14 @@ class Manager {
         $generator = new SecureRandom('/dev/urandom');
         $password_clear = "";
 
-        for($i = 0; $i < 10; $i++) {
-            $password_clear = $password_clear . chr(rand(33, 126)) ;
+        $password_clear .= chr(rand(65, 90) + ( rand(0,1) == 1 ? 32 : 0));
+        for($i = 0; $i < 8; $i++) {
+            $password_clear .= chr(rand(33, 126)) ;
         }
+        $password_clear .= chr(rand(65,90) + ( rand(0,1) == 1 ? 32 : 0));
 
-        $password = $this->services['security.encoder_factory']
-                             ->getEncoder($user)
-                             ->encodePassword($password_clear, $user->getSalt());
-
-        $user->setPlainPassword($password);
+        $user->setPlainPassword($password_clear);
         $user->setEnabled(true);
-
-        $em->flush();
 
         $message = \Swift_Message::newInstance()
             ->setSubject('Activate your account on ' . $this->services['redado.settings']->get('site_name'))
@@ -131,7 +117,7 @@ class Manager {
 
         $user->setPlainPassword($password_clear);
 
-        return $password;
+        return $password_clear;
     }
 
     public function getGroupPermissionList($group)

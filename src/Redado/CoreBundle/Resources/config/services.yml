@@ -36,6 +36,7 @@ services:
                 redado.settings:            @redado.settings
                 templating:                 @templating
                 translator:                 @translator
+                fos_user.user_manager:      @fos_user.user_manager
     redado.security.access.group_voter:
         class: Redado\CoreBundle\Security\Authorization\Voter\GroupVoter
         public: false

@@ -186,8 +186,10 @@ class GroupController extends Controller
                     $group);
 
             if ($data['activate'] && $user) {
-                $this->get('redado.manager')->enableUser($user->getId());
+                $this->get('redado.manager')->enableUser($user);
             }
+
+            $this->get('fos_user.user_manager')->updateUser($user);
 
             if ($user) {
                 return $this->redirect(
