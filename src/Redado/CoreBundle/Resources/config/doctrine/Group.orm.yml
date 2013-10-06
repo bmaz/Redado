@@ -66,5 +66,10 @@ Redado\CoreBundle\Entity\Group:
             mappedBy: object
             cascade: [persist, remove]
             orphanRemoval: true
+        permissions_object:
+            targetEntity: Permission
+            mappedBy: subject
+            cascade: [persist, remove]
+            orphanRemoval: true
 
     lifecycleCallbacks: {  }

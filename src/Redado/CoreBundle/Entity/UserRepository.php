@@ -92,7 +92,7 @@ class UserRepository extends EntityRepository
             ->select('users, memberships, groups, permissions')
             ->leftJoin('users.memberships', 'memberships')
             ->leftJoin('memberships.group', 'groups')
-            ->leftJoin('groups.permissions', 'permissions')
+            ->leftJoin('groups.permissions_object', 'permissions')
             ->where('users.username = :username')
             ->setParameter('username', $username)
             ->getQuery();
@@ -111,7 +111,7 @@ class UserRepository extends EntityRepository
             ->select('users, memberships, groups, permissions')
             ->leftJoin('users.memberships', 'memberships')
             ->leftJoin('memberships.group', 'groups')
-            ->leftJoin('groups.permissions', 'permissions')
+            ->leftJoin('groups.permissions_object', 'permissions')
             ->where('users.id = :id')
             ->setParameter('id', $username)
             ->getQuery();

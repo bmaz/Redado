@@ -54,8 +54,8 @@ class GroupVoter implements VoterInterface
             $result = VoterInterface::ACCESS_DENIED;
 
             foreach ($token->getUser()->getGroups() as $group) {
-                if (in_array($group, $object->getGrantedGroups($attribute))
-                || in_array($group, $object->getGrantedGroups('admin'))) {
+                if (in_array($object, $group->getGrantedObjects($attribute))
+                || in_array($object, $group->getGrantedObjects('admin'))) {
                     return VoterInterface::ACCESS_GRANTED;
                 }
             }

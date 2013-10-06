@@ -89,6 +89,12 @@ class Group extends Role implements GroupInterface
      * @internal
      */
     private $permissions;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     * @internal
+     */
+    private $permissions_object;
     /**
      * @var \Redado\CoreBundle\Entity\GroupType
      * @internal
@@ -523,6 +529,22 @@ class Group extends Role implements GroupInterface
                 $this->permissions->removeElement($permission);
             }
         }
+    }
+
+    public function getPermissionsObject()
+    {
+        return $this->permissions_object;
+    }
+
+    public function getGrantedObjects($name)
+    {
+        $return = array();
+        foreach($this->permissions_object as $permission) {
+            if($permission->getName() == $name) {
+                $return[] = $permission->getObject();
+            }
+        }
+        return $return;
     }
 
     /**
