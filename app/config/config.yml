@@ -172,6 +172,8 @@ guilro_protection_proxy:
                     return_proxy: true
                 getGrantedGroups:
                     return_proxy: false
+                getGrantedObjects:
+                    return_proxy: false
                 grantPermission:
                     attribute: admin
                     return_proxy: true

@@ -48,6 +48,8 @@ services:
         public: false
         tags:
             - { name: security.voter }
+        arguments:
+            service_container: @service_container
     redado.security.access.membership_voter:
         class: Redado\CoreBundle\Security\Authorization\Voter\MembershipVoter
         public: false

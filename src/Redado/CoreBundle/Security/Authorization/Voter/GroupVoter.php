@@ -26,6 +26,12 @@ use Redado\CoreBundle\Entity\Group;
 
 class GroupVoter implements VoterInterface
 {
+    private $container;
+
+    public function __construct($container)
+    {
+        $this->container = $container;
+    }
     public function supportsAttribute($attribute)
     {
         return is_string($attribute);
@@ -42,6 +48,10 @@ class GroupVoter implements VoterInterface
         if (!$this->supportsClass(get_class($object))) {
             return $result;
         }
+
+        $object = $this->container->
+            get('doctrine')->getManager()->getRepository('\Redado\CoreBundle\Entity\Group')
+            ->find($object->getId());
 
         foreach ($attributes as $attribute) {
             if ($attribute == '') {
