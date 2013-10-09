@@ -74,8 +74,6 @@ class UserController extends Controller
         $editForm->handleRequest($request);
 
         if ($editForm->isValid()) {
-            echo 'lol';
-
             $em->persist($entity);
             $em->flush();
 
@@ -89,6 +87,31 @@ class UserController extends Controller
             'user'      => $entity,
             'edit_form'   => $editForm->createView(),
         ));
+    }
+
+    public function enableAction(Request $request, $id, $group_id = null)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository('RedadoCoreBundle:User')->find($id);
+        if (!$user ) {
+            return $this->createNotFoundException();
+        } elseif (!$this->get('security.context')->isGranted(array('enable'), $user)) {
+            return $this->createAcessDeniedException();
+        }
+        $enableForm = $this->createFormBuilder()->getForm();
+        $enableForm->handleRequest($request);
+        if ($enableForm->isValid()) {
+            $this->get('redado.manager')->enableUser($user);
+            $em->flush();
+        } else {
+            foreach ($enableForm->getErrors() as $error) {
+                $this->getRequest()->getSession()->getFlashBag()->add('error', $error);
+            }
+        }
+        if ($group_id) {
+            return $this->redirect($this->generateUrl('group_settings_users', array('id' => $group_id)));
+        }
+        return $this->redirect($this->generateUrl('user_show', array('id' => $id)));
     }
 
     /**

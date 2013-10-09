@@ -27,3 +27,8 @@ user_delete:
     pattern:  /{id}/delete
     defaults: { _controller: "RedadoCoreBundle:User:delete" }
     requirements: { _method: post|delete }
+
+user_enable:
+    pattern: /{id}/enable
+    defaults: { _controller: "RedadoCoreBundle:User:enable" }
+    requirements: { _method: post }

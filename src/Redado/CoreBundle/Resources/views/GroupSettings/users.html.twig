@@ -20,7 +20,7 @@
 
 {% extends "RedadoCoreBundle:GroupSettings:layout.html.twig" %}
 
-{% macro confirm_modal(id, label, title, body, path) %}
+{% macro confirm_modal(id, label, title, body, enableForm, user_id, group_id) %}
 <a href="#modal_{{ id }}" role="button" class="btn btn-default btn-xs" data-toggle="modal">{{ label }}</a>
 <div id="modal_{{id}}" class="modal fade" role="dialog">
     <div class="modal-dialog">
@@ -33,8 +33,13 @@
                 <p>{{ body }}</p>
             </div>
             <div class="modal-footer">
+                {{ form_start(enableForm, { 'attr' : { 'class': 'form-inline' },
+                'action' : path('group_settings_users_enable', { 'id' : user_id, 'group_id' : group_id} )}) }}
+                <div class="form-group">
                 <a href="#" class="btn btn-default" data-dismiss="modal">{% trans %}Back{% endtrans %}</a>
-                <a href="{{ path }}" class="btn btn-primary">{% trans %}OK{% endtrans %}</a>
+                <input type="submit" class="btn btn-primary" value="{{ 'OK' | trans }}" />
+                </div>
+                {{ form_end(enableForm) }}
             </div>
         </div>
     </div>
@@ -61,7 +66,7 @@
                 <td>{{ membership.user.name}}</td>
                 <td>{{ membership.user.email }}</td>
                 <td>{{ membership.created | localizeddate('medium', 'none') }}</td>
-                <td>{{ (membership.user.enabled) ? 'Yes' : m.confirm_modal(membership.user.id, 'Enable', 'Enable', 'Do you really want to enable this user account ?', '#') }}</td>
+                <td>{{ (membership.user.enabled) ? 'Yes' : m.confirm_modal(membership.user.id, 'Enable', 'Enable', 'Do you really want to enable this user account ?', enableForm, membership.user.id, group.sysname) }}</td>
                 <td>
                     <a href="{% if is_granted('edit', membership.user) %}{{ path('group_settings_users_edit', {'id' : membership.user.id, 'group_id' : group.sysname }) }}" class="btn btn-default btn-xs{% else %}#" class="btn btn-default btn-xs disabled{% endif %}">
                         <span class="glyphicon glyphicon-edit"></span>

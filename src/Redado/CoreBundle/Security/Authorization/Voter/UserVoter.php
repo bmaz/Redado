@@ -64,7 +64,7 @@ class UserVoter implements VoterInterface
                 return VoterInterface::ACCESS_GRANTED;
             } elseif ($attribute == 'edit' && $object->isEnabled()) {
                 continue;
-            } elseif ($attribute == 'edit') {
+            } elseif ($attribute == 'edit' || $attribute == 'enable') {
                 foreach ($object->getGroups() as $group) {
                     if ($this->container->get('security.context')->isGranted('admin', $group)) {
                         return VoterInterface::ACCESS_GRANTED;

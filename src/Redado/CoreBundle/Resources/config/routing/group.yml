@@ -61,5 +61,9 @@ group_settings_users:
     defaults: { _controller: "RedadoCoreBundle:GroupSettings:users" }
 
 group_settings_users_edit:
-    pattern: /{group_id}/settings/user/{id}/edit
+    pattern: /{group_id}/settings/users/{id}/edit
     defaults: { _controller: "RedadoCoreBundle:User:edit" }
+
+group_settings_users_enable:
+    pattern: /{group_id}/settings/users/{id}/enable
+    defaults: { _controller: "RedadoCoreBundle:User:enable" }

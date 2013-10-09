@@ -239,9 +239,12 @@ class GroupSettingsController extends Controller
             return $this->createNotFoundException();
         }
 
+        $enableForm = $this->createFormBuilder()->getForm();
+
         return $this->render('RedadoCoreBundle:GroupSettings:users.html.twig',
             array(
                 'group' => $group,
+                'enableForm' => $enableForm->createView()
             )
         );
     }
