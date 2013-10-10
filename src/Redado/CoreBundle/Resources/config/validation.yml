@@ -23,8 +23,8 @@ Redado\CoreBundle\Entity\User:
 
     properties:
         email:
-            - NotBlank: { groups: [registration] }
-            - Email: { groups : [registration] }
+            - NotBlank: { groups: [Default, registration] }
+            - Email: { groups : [Default, registration] }
 
 Redado\CoreBundle\Entity\Group:
     properties:
