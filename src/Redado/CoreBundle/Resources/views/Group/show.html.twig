@@ -67,6 +67,14 @@
 					<a href="{{ path('user_show', { id : membership.user.id }) }}">{{ membership.user.name }}</a>
                 </td>
 			</tr>
+        {% else %}
+            <tr>
+                <td>
+                    {% trans %}
+                        There is not any visible member in this group.
+                    {% endtrans %}
+                </td>
+            </tr>
 		{% endfor %}
         {% if is_granted('admin', group) %}
         <tr>
@@ -86,6 +94,7 @@
 
 {% block right_content %}
 <div class="row">
+    {% if group.children | length > 0 %}
     <div class="col-md-12">
     <table class="table">
     <thead><tr><th>
@@ -141,18 +150,7 @@
         {% endif %}
         </td></tr></tbody></table>
     </div>
-</div>
-<div class="row" style="margin-top:5px;">
-    <table class="table">
-        <thead>
-            <tr><th>{% trans %}Admins :{% endtrans %}</th></tr>
-        </thead>
-        <tbody>
-            {% for admin in group.admins %}
-                <tr><td>{{ admin.name }}</li>
-            {% endfor %}
-        </tbody>
-    </table>
+    {% endif %}
 </div>
 <div class="row" style="margin-top:5px;">
     <div class="alert alert-info">

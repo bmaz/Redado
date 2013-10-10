@@ -42,6 +42,14 @@
 					<a href="{{ path('group_show', { 'id' : membership.group.sysname }) }}">{{ membership.group.name }}</a> <span class="muted">({{ membership.group.sysname }})</span>
 				</td>
 			</tr>
+        {% else %}
+            <tr>
+                <td>
+                    {% trans %}
+                        Not any visible groups !
+                    {% endtrans %}
+                </td>
+            </tr>
 		{% endfor %}
 		</tbody>
 	</table>
